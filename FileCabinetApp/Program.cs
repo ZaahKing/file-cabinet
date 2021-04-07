@@ -116,7 +116,13 @@ namespace FileCabinetApp
             string lastName = Console.ReadLine();
             Console.Write("Date of birth(dd/mm/yyyy): ");
             DateTime birthDate = DateTime.Parse(Console.ReadLine());
-            int id = fileCabinetService.CreateRecord(firstName, lastName, birthDate);
+            Console.Write("Digit key: ");
+            short digitKey = short.Parse(Console.ReadLine());
+            Console.Write("Account value: ");
+            decimal account = decimal.Parse(Console.ReadLine());
+            Console.Write("Sex: ");
+            char sex = char.Parse(Console.ReadLine());
+            int id = fileCabinetService.CreateRecord(firstName, lastName, birthDate, digitKey, account, sex);
             Console.WriteLine($"Record #{id} is created.");
         }
 
@@ -124,7 +130,7 @@ namespace FileCabinetApp
         {
             foreach (var record in fileCabinetService.GetRecords())
             {
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth.ToString("yyyy-MMM-dd")}");
+                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth.ToString("yyyy-MMM-dd")}, {record.DigitKey}, {record.Account}, {record.Sex}");
             }
         }
     }

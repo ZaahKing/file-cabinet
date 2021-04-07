@@ -10,7 +10,7 @@ namespace FileCabinetApp
     {
         private readonly List<FileCabinetRecord> list = new ();
 
-        public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth)
+        public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
             var record = new FileCabinetRecord
             {
@@ -18,6 +18,9 @@ namespace FileCabinetApp
                 FirstName = firstName,
                 LastName = lastName,
                 DateOfBirth = dateOfBirth,
+                DigitKey = digitKey,
+                Account = account,
+                Sex = sex,
             };
 
             this.list.Add(record);
