@@ -9,6 +9,7 @@ namespace FileCabinetApp
     public class FileCabinetService
     {
         private readonly List<FileCabinetRecord> list = new ();
+        private readonly FileCabinetRecordValidator validator = new ();
 
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
@@ -39,44 +40,46 @@ namespace FileCabinetApp
             return this.list.Count;
         }
 
+        public FileCabinetRecordValidator GetValidator() => this.validator;
+
         private void MemberValidation(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
-            if (string.IsNullOrWhiteSpace(firstName))
+            if (this.validator.IsNameEmpty(firstName))
             {
                 throw new ArgumentNullException(nameof(firstName), "Firstname can't be null, emty or has only whitespaces");
             }
 
-            if (firstName.Length < 2 || firstName.Length > 60)
+            if (this.validator.IsNameShort(firstName) && this.validator.IsNameLong(firstName))
             {
                 throw new ArgumentException("Firstname can't be less 2 or bigger then 60 letters", nameof(firstName));
             }
 
-            if (string.IsNullOrWhiteSpace(lastName))
+            if (this.validator.IsNameEmpty(lastName))
             {
                 throw new ArgumentNullException(nameof(lastName), "Lastname can't be null, emty or has only whitespaces");
             }
 
-            if (lastName.Length < 2 || lastName.Length > 60)
+            if (this.validator.IsNameShort(lastName) || this.validator.IsNameLong(lastName))
             {
                 throw new ArgumentException("Lastname can't be less 2 or bigger then 60 letters", nameof(lastName));
             }
 
-            if (dateOfBirth < new DateTime(1950, 1, 1) || dateOfBirth > DateTime.Now)
+            if (this.validator.IsDateOfBirthSmall(dateOfBirth) || this.validator.IsDateOfBirthBig(dateOfBirth))
             {
-                throw new ArgumentException("Date of birth be less 2 or bigger then 60 ", nameof(dateOfBirth));
+                throw new ArgumentException("Date of birth can't be earlier 1950-01-01 or later now", nameof(dateOfBirth));
             }
 
-            if (digitKey < 0 || digitKey > 9999)
+            if (this.validator.IsDigitKeyInRange(digitKey))
             {
                 throw new ArgumentException("Digit key contains 4 digits only", nameof(digitKey));
             }
 
-            if (account < 0)
+            if (this.validator.IsAccountNegative(account))
             {
                 throw new ArgumentException("Account can't be negative", nameof(account));
             }
 
-            if (!char.IsLetter(sex))
+            if (!this.validator.IsSexLetter(sex))
             {
                 throw new ArgumentException("Sex parabeter has to contain a letter describing a sex", nameof(sex));
             }
