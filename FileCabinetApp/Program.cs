@@ -149,8 +149,8 @@ namespace FileCabinetApp
 
         private static void Find(string parameters)
         {
-            string[] args = parameters.Split(' ');
-            if (args.Length != 2 || string.IsNullOrWhiteSpace(parameters))
+            string[] args = parameters.Split(' ', 2);
+            if (args.Length < 2 || string.IsNullOrWhiteSpace(parameters))
             {
                 Console.WriteLine("Wrong parameters count. Format is find [field] \"[key]\"");
                 return;
@@ -164,6 +164,12 @@ namespace FileCabinetApp
                 case "firstname":
                     {
                         list = fileCabinetService.FindByFirstName(findKey);
+                        break;
+                    }
+
+                case "lastname":
+                    {
+                        list = fileCabinetService.FindByLastName(findKey);
                         break;
                     }
 

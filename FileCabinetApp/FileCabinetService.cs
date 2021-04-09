@@ -64,6 +64,11 @@ namespace FileCabinetApp
             return this.list.Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToArray();
         }
 
+        public FileCabinetRecord[] FindByLastName(string firstName)
+        {
+            return this.list.Where(x => x.LastName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToArray();
+        }
+
         public FileCabinetRecord[] GetRecords()
         {
             return this.list.ToArray();
