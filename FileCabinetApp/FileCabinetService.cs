@@ -69,6 +69,11 @@ namespace FileCabinetApp
             return this.list.Where(x => x.LastName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToArray();
         }
 
+        public FileCabinetRecord[] FindByBirthDate(DateTime date)
+        {
+            return this.list.Where(x => x.DateOfBirth == date).ToArray();
+        }
+
         public FileCabinetRecord[] GetRecords()
         {
             return this.list.ToArray();

@@ -173,6 +173,21 @@ namespace FileCabinetApp
                         break;
                     }
 
+                case "dateofbirth":
+                    {
+                        if (DateTime.TryParse(findKey, out var date))
+                        {
+                            list = fileCabinetService.FindByBirthDate(date);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Date is not correct.");
+                            return;
+                        }
+
+                        break;
+                    }
+
                 default:
                     {
                         Console.WriteLine("Field is not exist.");
@@ -185,6 +200,12 @@ namespace FileCabinetApp
 
         private static void PrintFileCabinetRecordsList(FileCabinetRecord[] list)
         {
+            if (list.Length == 0)
+            {
+                Console.WriteLine("Nothing to display.");
+                return;
+            }
+
             foreach (var record in list)
             {
                 Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
