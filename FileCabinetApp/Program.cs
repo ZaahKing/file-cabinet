@@ -113,18 +113,7 @@ namespace FileCabinetApp
 
         private static void Create(string parameters)
         {
-            Console.Write("First name: ");
-            string firstName = Console.ReadLine();
-            Console.Write("Last name: ");
-            string lastName = Console.ReadLine();
-            Console.Write("Date of birth(dd/mm/yyyy): ");
-            DateTime birthDate = DateTime.Parse(Console.ReadLine());
-            Console.Write("Digit key: ");
-            short digitKey = short.Parse(Console.ReadLine());
-            Console.Write("Account value: ");
-            decimal account = decimal.Parse(Console.ReadLine());
-            Console.Write("Sex: ");
-            char sex = char.Parse(Console.ReadLine());
+            GetFileCabinetRecordFromOutput(out var firstName, out var lastName, out var birthDate, out var digitKey, out var account, out var sex);
             int id = fileCabinetService.CreateRecord(firstName, lastName, birthDate, digitKey, account, sex);
             Console.WriteLine($"Record #{id} is created.");
         }
@@ -133,8 +122,47 @@ namespace FileCabinetApp
         {
             foreach (var record in fileCabinetService.GetRecords())
             {
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth.ToString("yyyy-MMM-dd")}, {record.DigitKey}, {record.Account}, {record.Sex}");
+                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
             }
+        }
+
+        private static void GetFileCabinetRecordFromOutput(out string firstName, out string lastName, out DateTime dateOfBirth, out short digitKey, out decimal account, out char sex)
+        {
+            var validator = fileCabinetService.GetValidator();
+            firstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.IsNameCorrect, "Firstname can't be empty, less 2 or longer 60 letters.");
+            lastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.IsNameCorrect, "Lasttname can't be empty, less 2 or longer 60 letters.");
+            dateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.IsDateOfBirthCorrect, "Date of birth can't be earlier 1950-01-01 or later now");
+            digitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.IsDigitKeyCorrect, "Digit key contains 4 digits only");
+            account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.IsAccountCorrect, "Account can't be negative");
+            sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.IsSexCorrect, "Sex parabeter has to contain a letter describing a sex");
+        }
+
+        private static T GetOutput<T>(string message, Func<T> convert, Func<T, bool> validation, string errorMessage)
+        {
+            bool hasErrors;
+            T outputValue = default(T);
+            do
+            {
+                try
+                {
+                    hasErrors = false;
+                    Console.Write(message);
+                    outputValue = convert();
+                    if (!validation(outputValue))
+                    {
+                        hasErrors = true;
+                        Console.WriteLine(errorMessage);
+                    }
+                }
+                catch (Exception e)
+                {
+                    hasErrors = true;
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Try again please.");
+                }
+            }
+            while (hasErrors);
+            return outputValue;
         }
     }
 }

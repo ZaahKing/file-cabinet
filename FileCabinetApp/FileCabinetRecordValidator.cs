@@ -22,7 +22,7 @@ namespace FileCabinetApp
 
         public bool IsDateOfBirthCorrect(DateTime date) => !this.IsDateOfBirthSmall(date) && !this.IsDateOfBirthBig(date);
 
-        public bool IsDigitKeyInRange(short key) => key < 0 && key > 9999;
+        public bool IsDigitKeyInRange(short key) => key >= 0 && key <= 9999;
 
         public bool IsDigitKeyCorrect(short key) => this.IsDigitKeyInRange(key);
 

@@ -69,7 +69,7 @@ namespace FileCabinetApp
                 throw new ArgumentException("Date of birth can't be earlier 1950-01-01 or later now", nameof(dateOfBirth));
             }
 
-            if (this.validator.IsDigitKeyInRange(digitKey))
+            if (!this.validator.IsDigitKeyInRange(digitKey))
             {
                 throw new ArgumentException("Digit key contains 4 digits only", nameof(digitKey));
             }
