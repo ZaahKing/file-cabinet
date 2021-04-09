@@ -11,6 +11,14 @@ namespace FileCabinetApp
         private readonly List<FileCabinetRecord> list = new ();
         private readonly FileCabinetRecordValidator validator = new ();
 
+        public FileCabinetService()
+        {
+            this.CreateRecord("Alex", "Whiter", new DateTime(1982, 12, 6), 1234, 45m, 'm');
+            this.CreateRecord("Alex", "Booter", new DateTime(1990, 10, 10), 1234, 45m, 'm');
+            this.CreateRecord("Xena", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
+            this.CreateRecord("Anastatia", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
+        }
+
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
             this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
@@ -26,7 +34,6 @@ namespace FileCabinetApp
             };
 
             this.list.Add(record);
-
             return record.Id;
         }
 
@@ -50,6 +57,11 @@ namespace FileCabinetApp
         public FileCabinetRecord FindRecordById(int id)
         {
             return this.list.FirstOrDefault(x => x.Id == id);
+        }
+
+        public FileCabinetRecord[] FindByFirstName(string firstName)
+        {
+            return this.list.Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToArray();
         }
 
         public FileCabinetRecord[] GetRecords()
