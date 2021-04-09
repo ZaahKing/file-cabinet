@@ -10,6 +10,7 @@ namespace FileCabinetApp
     {
         private readonly List<FileCabinetRecord> list = new ();
         private readonly FileCabinetRecordValidator validator = new ();
+        private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
 
         public FileCabinetService()
         {
@@ -34,6 +35,8 @@ namespace FileCabinetApp
             };
 
             this.list.Add(record);
+            this.AddIndex(this.firstNameDictionary, firstName, record);
+
             return record.Id;
         }
 
@@ -46,12 +49,28 @@ namespace FileCabinetApp
             }
 
             this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
+            var oldRecord = new FileCabinetRecord
+            {
+                Id = record.Id,
+                FirstName = record.FirstName,
+                LastName = record.LastName,
+                DateOfBirth = record.DateOfBirth,
+                DigitKey = record.DigitKey,
+                Account = record.Account,
+                Sex = record.Sex,
+            };
             record.FirstName = firstName;
             record.LastName = lastName;
             record.DateOfBirth = dateOfBirth;
             record.DigitKey = digitKey;
             record.Account = account;
             record.Sex = sex;
+
+            if (oldRecord.FirstName != firstName)
+            {
+                this.RemoveFirstNameIndex(oldRecord.FirstName, record);
+                this.AddIndex(this.firstNameDictionary, oldRecord.FirstName, record);
+            }
         }
 
         public FileCabinetRecord FindRecordById(int id)
@@ -61,7 +80,12 @@ namespace FileCabinetApp
 
         public FileCabinetRecord[] FindByFirstName(string firstName)
         {
-            return this.list.Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToArray();
+            if (this.firstNameDictionary.ContainsKey(firstName))
+            {
+                return this.firstNameDictionary[firstName].ToArray();
+            }
+
+            return Array.Empty<FileCabinetRecord>();
         }
 
         public FileCabinetRecord[] FindByLastName(string firstName)
@@ -127,6 +151,28 @@ namespace FileCabinetApp
             {
                 throw new ArgumentException("Sex parabeter has to contain a letter describing a sex", nameof(sex));
             }
+        }
+
+        private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
+            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
+        {
+            if (!dictinary.ContainsKey(key))
+            {
+                dictinary.Add(key, new List<FileCabinetRecord>());
+            }
+
+            dictinary[key].Add(record);
+        }
+
+        private void RemoveIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
+            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
+        {
+            if (!dictinary.ContainsKey(key) && dictinary[key].Count <= 1)
+            {
+                dictinary.Remove(key);
+            }
+
+            dictinary[key].Remove(record);
         }
     }
 }
