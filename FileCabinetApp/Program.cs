@@ -22,6 +22,7 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("create", Create),
             new Tuple<string, Action<string>>("edit", Edit),
             new Tuple<string, Action<string>>("list", List),
+            new Tuple<string, Action<string>>("find", Find),
         };
 
         private static string[][] helpMessages = new string[][]
@@ -32,6 +33,7 @@ namespace FileCabinetApp
             new string[] { "edit", "edit record", "The 'edit' command modify a record." },
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
+            new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
         };
 
         public static void Main(string[] args)
@@ -142,7 +144,69 @@ namespace FileCabinetApp
 
         private static void List(string parameters)
         {
-            foreach (var record in fileCabinetService.GetRecords())
+            PrintFileCabinetRecordsList(fileCabinetService.GetRecords());
+        }
+
+        private static void Find(string parameters)
+        {
+            string[] args = parameters.Split(' ', 2);
+            if (args.Length < 2 || string.IsNullOrWhiteSpace(parameters))
+            {
+                Console.WriteLine("Wrong parameters count. Format is find [field] \"[key]\"");
+                return;
+            }
+
+            FileCabinetRecord[] list;
+            string fieldName = args[0].ToLower();
+            string findKey = args[1].Trim('"');
+            switch (fieldName)
+            {
+                case "firstname":
+                    {
+                        list = fileCabinetService.FindByFirstName(findKey);
+                        break;
+                    }
+
+                case "lastname":
+                    {
+                        list = fileCabinetService.FindByLastName(findKey);
+                        break;
+                    }
+
+                case "dateofbirth":
+                    {
+                        if (DateTime.TryParse(findKey, out var date))
+                        {
+                            list = fileCabinetService.FindByBirthDate(date);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Date is not correct.");
+                            return;
+                        }
+
+                        break;
+                    }
+
+                default:
+                    {
+                        Console.WriteLine("Field is not exist.");
+                        return;
+                    }
+            }
+
+            PrintFileCabinetRecordsList(list);
+        }
+
+        private static void PrintFileCabinetRecordsList(FileCabinetRecord[] list)
+        {
+            if (list.Length == 0)
+            {
+                Console.WriteLine("Nothing to display.");
+                return;
+            }
+
+            foreach (var record in list)
             {
                 Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
             }

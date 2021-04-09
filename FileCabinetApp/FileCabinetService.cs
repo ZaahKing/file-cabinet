@@ -10,6 +10,17 @@ namespace FileCabinetApp
     {
         private readonly List<FileCabinetRecord> list = new ();
         private readonly FileCabinetRecordValidator validator = new ();
+        private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
+        private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
+        private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
+
+        public FileCabinetService()
+        {
+            this.CreateRecord("Alex", "Whiter", new DateTime(1982, 12, 6), 1234, 45m, 'm');
+            this.CreateRecord("Alex", "Booter", new DateTime(1990, 10, 10), 1234, 45m, 'm');
+            this.CreateRecord("Xena", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
+            this.CreateRecord("Anastatia", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
+        }
 
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
@@ -26,6 +37,9 @@ namespace FileCabinetApp
             };
 
             this.list.Add(record);
+            this.AddIndex(this.firstNameDictionary, firstName, record);
+            this.AddIndex(this.lastNameDictionary, lastName, record);
+            this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
 
             return record.Id;
         }
@@ -39,17 +53,75 @@ namespace FileCabinetApp
             }
 
             this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
+            var oldRecord = new FileCabinetRecord
+            {
+                Id = record.Id,
+                FirstName = record.FirstName,
+                LastName = record.LastName,
+                DateOfBirth = record.DateOfBirth,
+                DigitKey = record.DigitKey,
+                Account = record.Account,
+                Sex = record.Sex,
+            };
             record.FirstName = firstName;
             record.LastName = lastName;
             record.DateOfBirth = dateOfBirth;
             record.DigitKey = digitKey;
             record.Account = account;
             record.Sex = sex;
+
+            if (oldRecord.FirstName != firstName)
+            {
+                this.RemoveIndex(this.firstNameDictionary, oldRecord.FirstName, record);
+                this.AddIndex(this.firstNameDictionary, firstName, record);
+            }
+
+            if (oldRecord.LastName != lastName)
+            {
+                this.RemoveIndex(this.lastNameDictionary, oldRecord.LastName, record);
+                this.AddIndex(this.lastNameDictionary, lastName, record);
+            }
+
+            if (oldRecord.DateOfBirth != dateOfBirth)
+            {
+                this.RemoveIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record);
+                this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
+            }
         }
 
         public FileCabinetRecord FindRecordById(int id)
         {
             return this.list.FirstOrDefault(x => x.Id == id);
+        }
+
+        public FileCabinetRecord[] FindByFirstName(string firstName)
+        {
+            if (this.firstNameDictionary.ContainsKey(firstName))
+            {
+                return this.firstNameDictionary[firstName].ToArray();
+            }
+
+            return Array.Empty<FileCabinetRecord>();
+        }
+
+        public FileCabinetRecord[] FindByLastName(string lastName)
+        {
+            if (this.lastNameDictionary.ContainsKey(lastName))
+            {
+                return this.lastNameDictionary[lastName].ToArray();
+            }
+
+            return Array.Empty<FileCabinetRecord>();
+        }
+
+        public FileCabinetRecord[] FindByBirthDate(DateTime date)
+        {
+            if (this.bithdayDictionary.ContainsKey(date))
+            {
+                return this.bithdayDictionary[date].ToArray();
+            }
+
+            return Array.Empty<FileCabinetRecord>();
         }
 
         public FileCabinetRecord[] GetRecords()
@@ -105,6 +177,28 @@ namespace FileCabinetApp
             {
                 throw new ArgumentException("Sex parabeter has to contain a letter describing a sex", nameof(sex));
             }
+        }
+
+        private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
+            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
+        {
+            if (!dictinary.ContainsKey(key))
+            {
+                dictinary.Add(key, new List<FileCabinetRecord>());
+            }
+
+            dictinary[key].Add(record);
+        }
+
+        private void RemoveIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
+            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
+        {
+            if (!dictinary.ContainsKey(key) && dictinary[key].Count <= 1)
+            {
+                dictinary.Remove(key);
+            }
+
+            dictinary[key].Remove(record);
         }
     }
 }
