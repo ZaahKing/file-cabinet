@@ -12,6 +12,7 @@ namespace FileCabinetApp
         private readonly FileCabinetRecordValidator validator = new ();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
+        private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
 
         public FileCabinetService()
         {
@@ -38,6 +39,7 @@ namespace FileCabinetApp
             this.list.Add(record);
             this.AddIndex(this.firstNameDictionary, firstName, record);
             this.AddIndex(this.lastNameDictionary, lastName, record);
+            this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
 
             return record.Id;
         }
@@ -71,13 +73,19 @@ namespace FileCabinetApp
             if (oldRecord.FirstName != firstName)
             {
                 this.RemoveIndex(this.firstNameDictionary, oldRecord.FirstName, record);
-                this.AddIndex(this.firstNameDictionary, oldRecord.FirstName, record);
+                this.AddIndex(this.firstNameDictionary, firstName, record);
             }
 
             if (oldRecord.LastName != lastName)
             {
                 this.RemoveIndex(this.lastNameDictionary, oldRecord.LastName, record);
-                this.AddIndex(this.lastNameDictionary, oldRecord.LastName, record);
+                this.AddIndex(this.lastNameDictionary, lastName, record);
+            }
+
+            if (oldRecord.DateOfBirth != dateOfBirth)
+            {
+                this.RemoveIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record);
+                this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
             }
         }
 
@@ -108,7 +116,12 @@ namespace FileCabinetApp
 
         public FileCabinetRecord[] FindByBirthDate(DateTime date)
         {
-            return this.list.Where(x => x.DateOfBirth == date).ToArray();
+            if (this.bithdayDictionary.ContainsKey(date))
+            {
+                return this.bithdayDictionary[date].ToArray();
+            }
+
+            return Array.Empty<FileCabinetRecord>();
         }
 
         public FileCabinetRecord[] GetRecords()
