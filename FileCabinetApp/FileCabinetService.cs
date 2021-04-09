@@ -30,6 +30,28 @@ namespace FileCabinetApp
             return record.Id;
         }
 
+        public void EditRecord(int id, string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
+        {
+            var record = this.FindRecordById(id);
+            if (record is null)
+            {
+                throw new ArgumentException($"Record #{id} is not exist.");
+            }
+
+            this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
+            record.FirstName = firstName;
+            record.LastName = lastName;
+            record.DateOfBirth = dateOfBirth;
+            record.DigitKey = digitKey;
+            record.Account = account;
+            record.Sex = sex;
+        }
+
+        public FileCabinetRecord FindRecordById(int id)
+        {
+            return this.list.FirstOrDefault(x => x.Id == id);
+        }
+
         public FileCabinetRecord[] GetRecords()
         {
             return this.list.ToArray();

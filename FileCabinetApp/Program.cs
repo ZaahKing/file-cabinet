@@ -20,6 +20,7 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("exit", Exit),
             new Tuple<string, Action<string>>("stat", Stat),
             new Tuple<string, Action<string>>("create", Create),
+            new Tuple<string, Action<string>>("edit", Edit),
             new Tuple<string, Action<string>>("list", List),
         };
 
@@ -27,7 +28,8 @@ namespace FileCabinetApp
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
-            new string[] { "create", "create record", "The 'create' command creates record." },
+            new string[] { "create", "create record", "The 'create' command creates a record." },
+            new string[] { "edit", "edit record", "The 'edit' command modify a record." },
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
         };
@@ -116,6 +118,26 @@ namespace FileCabinetApp
             GetFileCabinetRecordFromOutput(out var firstName, out var lastName, out var birthDate, out var digitKey, out var account, out var sex);
             int id = fileCabinetService.CreateRecord(firstName, lastName, birthDate, digitKey, account, sex);
             Console.WriteLine($"Record #{id} is created.");
+        }
+
+        private static void Edit(string parameters)
+        {
+            if (!int.TryParse(parameters, out var id))
+            {
+                Console.WriteLine("Need a numeric parameter.");
+                return;
+            }
+
+            var record = fileCabinetService.FindRecordById(id);
+            if (record is null)
+            {
+                Console.WriteLine($"Record #{id} is not exist.");
+                return;
+            }
+
+            GetFileCabinetRecordFromOutput(out var firstName, out var lastName, out var birthDate, out var digitKey, out var account, out var sex);
+            fileCabinetService.EditRecord(id, firstName, lastName, birthDate, digitKey, account, sex);
+            Console.WriteLine($"Record #{id} is updated.");
         }
 
         private static void List(string parameters)
