@@ -11,6 +11,7 @@ namespace FileCabinetApp
         private readonly List<FileCabinetRecord> list = new ();
         private readonly FileCabinetRecordValidator validator = new ();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
+        private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
 
         public FileCabinetService()
         {
@@ -36,6 +37,7 @@ namespace FileCabinetApp
 
             this.list.Add(record);
             this.AddIndex(this.firstNameDictionary, firstName, record);
+            this.AddIndex(this.lastNameDictionary, lastName, record);
 
             return record.Id;
         }
@@ -68,8 +70,14 @@ namespace FileCabinetApp
 
             if (oldRecord.FirstName != firstName)
             {
-                this.RemoveFirstNameIndex(oldRecord.FirstName, record);
+                this.RemoveIndex(this.firstNameDictionary, oldRecord.FirstName, record);
                 this.AddIndex(this.firstNameDictionary, oldRecord.FirstName, record);
+            }
+
+            if (oldRecord.LastName != lastName)
+            {
+                this.RemoveIndex(this.lastNameDictionary, oldRecord.LastName, record);
+                this.AddIndex(this.lastNameDictionary, oldRecord.LastName, record);
             }
         }
 
@@ -88,9 +96,14 @@ namespace FileCabinetApp
             return Array.Empty<FileCabinetRecord>();
         }
 
-        public FileCabinetRecord[] FindByLastName(string firstName)
+        public FileCabinetRecord[] FindByLastName(string lastName)
         {
-            return this.list.Where(x => x.LastName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToArray();
+            if (this.lastNameDictionary.ContainsKey(lastName))
+            {
+                return this.lastNameDictionary[lastName].ToArray();
+            }
+
+            return Array.Empty<FileCabinetRecord>();
         }
 
         public FileCabinetRecord[] FindByBirthDate(DateTime date)
