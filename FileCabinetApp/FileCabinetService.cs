@@ -23,37 +23,26 @@ namespace FileCabinetApp
         /// <param name="gateway">Depency inject for datagateway.</param>
         public FileCabinetService(IFileCabinetGateway gateway)
         {
-            this.list = gateway.GetFileCabinetRecords();
+            this.list = new List<FileCabinetRecord>();
+            foreach (var item in gateway.GetFileCabinetRecords())
+            {
+                this.CreateRecord(item);
+            }
         }
 
         /// <summary>
         /// Add new record.
         /// </summary>
-        /// <param name="firstName">First name.</param>
-        /// <param name="lastName">Last name.</param>
-        /// <param name="dateOfBirth">Date of Birth.</param>
-        /// <param name="digitKey">Digital key.</param>
-        /// <param name="account">Account.</param>
-        /// <param name="sex">Sex.</param>
+        /// <param name="record">File cabinet record.</param>
         /// <returns>Returns Id of new record.</returns>
-        public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
+        public int CreateRecord(FileCabinetRecord record)
         {
-            this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
-            var record = new FileCabinetRecord
-            {
-                Id = this.list.Count + 1,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                DigitKey = digitKey,
-                Account = account,
-                Sex = sex,
-            };
-
+            this.MemberValidation(record);
+            record.Id = this.list.Count + 1;
             this.list.Add(record);
-            this.AddIndex(this.firstNameDictionary, firstName, record);
-            this.AddIndex(this.lastNameDictionary, lastName, record);
-            this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
+            this.AddIndex(this.firstNameDictionary, record.FirstName, record);
+            this.AddIndex(this.lastNameDictionary, record.LastName, record);
+            this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
 
             return record.Id;
         }
@@ -61,42 +50,23 @@ namespace FileCabinetApp
         /// <summary>
         /// Edit existing record found by Id.
         /// </summary>
-        /// <param name="id">Id.</param>
-        /// <param name="firstName">First name.</param>
-        /// <param name="lastName">Last name.</param>
-        /// <param name="dateOfBirth">Date of Birth.</param>
-        /// <param name="digitKey">Digital key.</param>
-        /// <param name="account">Account.</param>
-        /// <param name="sex">Sex.</param>
-        public void EditRecord(int id, string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
+        /// <param name="record">File cabinet record.</param>
+        public void EditRecord(FileCabinetRecord record)
         {
-            var record = this.FindRecordById(id);
-            if (record is null)
+            var oldRecord = this.FindRecordById(record.Id);
+            if (oldRecord is null)
             {
-                throw new ArgumentException($"Record #{id} is not exist.");
+                throw new ArgumentException($"Record #{record.Id} is not exist.");
             }
 
-            this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
-            var oldRecord = new FileCabinetRecord
-            {
-                Id = record.Id,
-                FirstName = record.FirstName,
-                LastName = record.LastName,
-                DateOfBirth = record.DateOfBirth,
-                DigitKey = record.DigitKey,
-                Account = record.Account,
-                Sex = record.Sex,
-            };
-            record.FirstName = firstName;
-            record.LastName = lastName;
-            record.DateOfBirth = dateOfBirth;
-            record.DigitKey = digitKey;
-            record.Account = account;
-            record.Sex = sex;
+            this.MemberValidation(record);
 
-            this.ChangeIndex(this.firstNameDictionary, oldRecord.FirstName, firstName, record);
-            this.ChangeIndex(this.lastNameDictionary, oldRecord.LastName, lastName, record);
-            this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, dateOfBirth, record);
+            this.list.Remove(oldRecord);
+            this.list.Add(record);
+
+            this.ChangeIndex(this.firstNameDictionary, oldRecord.FirstName, record.FirstName, record);
+            this.ChangeIndex(this.lastNameDictionary, oldRecord.LastName, record.LastName, record);
+            this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record.DateOfBirth, record);
         }
 
         /// <summary>
@@ -177,6 +147,9 @@ namespace FileCabinetApp
         /// </summary>
         /// <returns>Validator.</returns>
         public FileCabinetRecordValidator GetValidator() => this.validator;
+
+        private void MemberValidation(FileCabinetRecord record) =>
+            this.MemberValidation(record.FirstName, record.LastName, record.DateOfBirth, record.DigitKey, record.Account, record.Sex);
 
         private void MemberValidation(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
