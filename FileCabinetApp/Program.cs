@@ -15,7 +15,7 @@ namespace FileCabinetApp
 
         private static bool isRunning = true;
 
-        private static FileCabinetService fileCabinetService = new (new FileCabinetMemoryGateway());
+        private static FileCabinetService fileCabinetService = new FileCabinetDefaultService(new FileCabinetMemoryGateway());
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
@@ -221,17 +221,17 @@ namespace FileCabinetApp
         private static FileCabinetRecord GetFileCabinetRecordFromOutput()
         {
             var record = new FileCabinetRecord();
-            var validator = fileCabinetService.GetValidator();
-            record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.IsNameCorrect, "Firstname can't be empty, less 2 or longer 60 letters.");
-            record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.IsNameCorrect, "Lasttname can't be empty, less 2 or longer 60 letters.");
-            record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.IsDateOfBirthCorrect, "Date of birth can't be earlier 1950-01-01 or later now");
-            record.DigitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.IsDigitKeyCorrect, "Digit key contains 4 digits only");
-            record.Account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.IsAccountCorrect, "Account can't be negative");
-            record.Sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.IsSexCorrect, "Sex parabeter has to contain a letter describing a sex");
+            var validator = fileCabinetService.Validator;
+            record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
+            record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
+            record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);
+            record.DigitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.CheckDigitKey);
+            record.Account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.CheckAccount);
+            record.Sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.CheckSex);
             return record;
         }
 
-        private static T GetOutput<T>(string message, Func<T> convert, Func<T, bool> validation, string errorMessage)
+        private static T GetOutput<T>(string message, Func<T> convert, Action<T> validation)
         {
             bool hasErrors;
             T outputValue = default(T);
@@ -242,11 +242,7 @@ namespace FileCabinetApp
                     hasErrors = false;
                     Console.Write(message);
                     outputValue = convert();
-                    if (!validation(outputValue))
-                    {
-                        hasErrors = true;
-                        Console.WriteLine(errorMessage);
-                    }
+                    validation(outputValue);
                 }
                 catch (Exception e)
                 {

@@ -7,28 +7,20 @@ using System.Threading.Tasks;
 namespace FileCabinetApp
 {
     /// <summary>
-    /// Service for filecabint data.
+    /// Abstract service for filecabinet data.
     /// </summary>
-    public class FileCabinetService
+    public abstract class FileCabinetService
     {
-        private readonly ICollection<FileCabinetRecord> list;
-        private readonly FileCabinetRecordValidator validator = new ();
+        private readonly ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileCabinetService"/> class.
+        /// Gets validator.
         /// </summary>
-        /// <param name="gateway">Depency inject for datagateway.</param>
-        public FileCabinetService(IFileCabinetGateway gateway)
-        {
-            this.list = new List<FileCabinetRecord>();
-            foreach (var item in gateway.GetFileCabinetRecords())
-            {
-                this.CreateRecord(item);
-            }
-        }
+        /// <value>Validator.</value>
+        public IRecordValidator Validator { get; init; }
 
         /// <summary>
         /// Add new record.
@@ -37,7 +29,7 @@ namespace FileCabinetApp
         /// <returns>Returns Id of new record.</returns>
         public int CreateRecord(FileCabinetRecord record)
         {
-            this.MemberValidation(record);
+            this.ValidateParameters(record);
             record.Id = this.list.Count + 1;
             this.list.Add(record);
             this.AddIndex(this.firstNameDictionary, record.FirstName, record);
@@ -59,7 +51,7 @@ namespace FileCabinetApp
                 throw new ArgumentException($"Record #{record.Id} is not exist.");
             }
 
-            this.MemberValidation(record);
+            this.ValidateParameters(record);
 
             this.list.Remove(oldRecord);
             this.list.Add(record);
@@ -146,53 +138,13 @@ namespace FileCabinetApp
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>
-        public FileCabinetRecordValidator GetValidator() => this.validator;
+        public IRecordValidator GetValidator() => this.Validator;
 
-        private void MemberValidation(FileCabinetRecord record) =>
-            this.MemberValidation(record.FirstName, record.LastName, record.DateOfBirth, record.DigitKey, record.Account, record.Sex);
-
-        private void MemberValidation(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
-        {
-            if (this.validator.IsNameEmpty(firstName))
-            {
-                throw new ArgumentNullException(nameof(firstName), "Firstname can't be null, emty or has only whitespaces");
-            }
-
-            if (this.validator.IsNameShort(firstName) && this.validator.IsNameLong(firstName))
-            {
-                throw new ArgumentException("Firstname can't be less 2 or bigger then 60 letters", nameof(firstName));
-            }
-
-            if (this.validator.IsNameEmpty(lastName))
-            {
-                throw new ArgumentNullException(nameof(lastName), "Lastname can't be null, emty or has only whitespaces");
-            }
-
-            if (this.validator.IsNameShort(lastName) || this.validator.IsNameLong(lastName))
-            {
-                throw new ArgumentException("Lastname can't be less 2 or bigger then 60 letters", nameof(lastName));
-            }
-
-            if (this.validator.IsDateOfBirthSmall(dateOfBirth) || this.validator.IsDateOfBirthBig(dateOfBirth))
-            {
-                throw new ArgumentException("Date of birth can't be earlier 1950-01-01 or later now", nameof(dateOfBirth));
-            }
-
-            if (!this.validator.IsDigitKeyInRange(digitKey))
-            {
-                throw new ArgumentException("Digit key contains 4 digits only", nameof(digitKey));
-            }
-
-            if (this.validator.IsAccountNegative(account))
-            {
-                throw new ArgumentException("Account can't be negative", nameof(account));
-            }
-
-            if (!this.validator.IsSexLetter(sex))
-            {
-                throw new ArgumentException("Sex parabeter has to contain a letter describing a sex", nameof(sex));
-            }
-        }
+        /// <summary>
+        /// Validation method.
+        /// </summary>
+        /// <param name="record">File cabinet record.</param>
+        protected abstract void ValidateParameters(FileCabinetRecord record);
 
         private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
             where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
