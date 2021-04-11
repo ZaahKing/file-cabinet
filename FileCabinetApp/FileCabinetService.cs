@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
+    /// <summary>
+    /// Service for filecabint data.
+    /// </summary>
     public class FileCabinetService
     {
         private readonly ICollection<FileCabinetRecord> list;
@@ -14,11 +17,25 @@ namespace FileCabinetApp
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileCabinetService"/> class.
+        /// </summary>
+        /// <param name="gateway">Depency inject for datagateway.</param>
         public FileCabinetService(IFileCabinetGateway gateway)
         {
             this.list = gateway.GetFileCabinetRecords();
         }
 
+        /// <summary>
+        /// Add new record.
+        /// </summary>
+        /// <param name="firstName">First name.</param>
+        /// <param name="lastName">Last name.</param>
+        /// <param name="dateOfBirth">Date of Birth.</param>
+        /// <param name="digitKey">Digital key.</param>
+        /// <param name="account">Account.</param>
+        /// <param name="sex">Sex.</param>
+        /// <returns>Returns Id of new record.</returns>
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
             this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
@@ -41,6 +58,16 @@ namespace FileCabinetApp
             return record.Id;
         }
 
+        /// <summary>
+        /// Edit existing record found by Id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <param name="firstName">First name.</param>
+        /// <param name="lastName">Last name.</param>
+        /// <param name="dateOfBirth">Date of Birth.</param>
+        /// <param name="digitKey">Digital key.</param>
+        /// <param name="account">Account.</param>
+        /// <param name="sex">Sex.</param>
         public void EditRecord(int id, string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
         {
             var record = this.FindRecordById(id);
@@ -72,11 +99,21 @@ namespace FileCabinetApp
             this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, dateOfBirth, record);
         }
 
+        /// <summary>
+        /// Helps to find record by Id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>FileCabinetRecord. </returns>
         public FileCabinetRecord FindRecordById(int id)
         {
             return this.list.FirstOrDefault(x => x.Id == id);
         }
 
+        /// <summary>
+        /// Helps to find record by first name.
+        /// </summary>
+        /// <param name="firstName">FirstName.</param>
+        /// <returns>FileCabinetRecord. </returns>
         public FileCabinetRecord[] FindByFirstName(string firstName)
         {
             if (this.firstNameDictionary.ContainsKey(firstName))
@@ -87,6 +124,11 @@ namespace FileCabinetApp
             return Array.Empty<FileCabinetRecord>();
         }
 
+        /// <summary>
+        /// Helps to find record by last name.
+        /// </summary>
+        /// <param name="lastName">FirstName.</param>
+        /// <returns>FileCabinetRecord. </returns>
         public FileCabinetRecord[] FindByLastName(string lastName)
         {
             if (this.lastNameDictionary.ContainsKey(lastName))
@@ -97,6 +139,11 @@ namespace FileCabinetApp
             return Array.Empty<FileCabinetRecord>();
         }
 
+        /// <summary>
+        /// Helps to find record by date of birth.
+        /// </summary>
+        /// <param name="date">Date of birth.</param>
+        /// <returns>FileCabinetRecord. </returns>
         public FileCabinetRecord[] FindByBirthDate(DateTime date)
         {
             if (this.bithdayDictionary.ContainsKey(date))
@@ -107,16 +154,28 @@ namespace FileCabinetApp
             return Array.Empty<FileCabinetRecord>();
         }
 
+        /// <summary>
+        /// Returns all FileCabinetRecords.
+        /// </summary>
+        /// <returns>Array of FileCabinetRecords.</returns>
         public FileCabinetRecord[] GetRecords()
         {
             return this.list.ToArray();
         }
 
+        /// <summary>
+        /// Returns count of records.
+        /// </summary>
+        /// <returns>Count of records.</returns>
         public int GetStat()
         {
             return this.list.Count;
         }
 
+        /// <summary>
+        /// Returns validator used in service.
+        /// </summary>
+        /// <returns>Validator.</returns>
         public FileCabinetRecordValidator GetValidator() => this.validator;
 
         private void MemberValidation(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)

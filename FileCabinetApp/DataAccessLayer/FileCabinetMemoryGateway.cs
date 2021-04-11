@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
+    /// <summary>
+    /// This class helps to init FileCabinet data.
+    /// </summary>
     public class FileCabinetMemoryGateway : IFileCabinetGateway
     {
+        /// <summary>
+        /// This method returns list of FileCabinetRecords with 4 hardcoded records.
+        /// </summary>
+        /// <returns>List of FileCabinrtRecors.</returns>
         public ICollection<FileCabinetRecord> GetFileCabinetRecords()
         {
             return new List<FileCabinetRecord>

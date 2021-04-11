@@ -2,6 +2,9 @@
 
 namespace FileCabinetApp
 {
+    /// <summary>
+    /// Enter point class.
+    /// </summary>
     public static class Program
     {
         private const string DeveloperName = "Alexander Belyakoff";
@@ -36,6 +39,10 @@ namespace FileCabinetApp
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
         };
 
+        /// <summary>
+        /// Programm enter point.
+        /// </summary>
+        /// <param name="args"> Parameters from consol.</param>
         public static void Main(string[] args)
         {
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
