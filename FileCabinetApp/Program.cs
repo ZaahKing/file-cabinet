@@ -12,7 +12,7 @@ namespace FileCabinetApp
 
         private static bool isRunning = true;
 
-        private static FileCabinetService fileCabinetService = new ();
+        private static FileCabinetService fileCabinetService = new (new FileCabinetMemoryGateway());
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {

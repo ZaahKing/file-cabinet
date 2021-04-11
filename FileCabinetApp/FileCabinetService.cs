@@ -8,18 +8,15 @@ namespace FileCabinetApp
 {
     public class FileCabinetService
     {
-        private readonly List<FileCabinetRecord> list = new ();
+        private readonly ICollection<FileCabinetRecord> list;
         private readonly FileCabinetRecordValidator validator = new ();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
 
-        public FileCabinetService()
+        public FileCabinetService(IFileCabinetGateway gateway)
         {
-            this.CreateRecord("Alex", "Whiter", new DateTime(1982, 12, 6), 1234, 45m, 'm');
-            this.CreateRecord("Alex", "Booter", new DateTime(1990, 10, 10), 1234, 45m, 'm');
-            this.CreateRecord("Xena", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
-            this.CreateRecord("Anastatia", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
+            this.list = gateway.GetFileCabinetRecords();
         }
 
         public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
@@ -70,23 +67,9 @@ namespace FileCabinetApp
             record.Account = account;
             record.Sex = sex;
 
-            if (oldRecord.FirstName != firstName)
-            {
-                this.RemoveIndex(this.firstNameDictionary, oldRecord.FirstName, record);
-                this.AddIndex(this.firstNameDictionary, firstName, record);
-            }
-
-            if (oldRecord.LastName != lastName)
-            {
-                this.RemoveIndex(this.lastNameDictionary, oldRecord.LastName, record);
-                this.AddIndex(this.lastNameDictionary, lastName, record);
-            }
-
-            if (oldRecord.DateOfBirth != dateOfBirth)
-            {
-                this.RemoveIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record);
-                this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
-            }
+            this.ChangeIndex(this.firstNameDictionary, oldRecord.FirstName, firstName, record);
+            this.ChangeIndex(this.lastNameDictionary, oldRecord.LastName, lastName, record);
+            this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, dateOfBirth, record);
         }
 
         public FileCabinetRecord FindRecordById(int id)
@@ -199,6 +182,16 @@ namespace FileCabinetApp
             }
 
             dictinary[key].Remove(record);
+        }
+
+        private void ChangeIndex<TDictionary, TKey>(TDictionary dictinary, TKey oldKey, TKey newKey, FileCabinetRecord record)
+            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
+        {
+            if (!oldKey.Equals(newKey))
+            {
+                this.RemoveIndex(dictinary, oldKey, record);
+                this.AddIndex(dictinary, newKey, record);
+            }
         }
     }
 }
