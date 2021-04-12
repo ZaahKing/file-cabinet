@@ -150,6 +150,15 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Make file cabinet records snapshot.
+        /// </summary>
+        /// <returns>FileCabinetServiceSnapshot.</returns>
+        public FileCabinetServiceSnapshot MakeSnapshot()
+        {
+            return new FileCabinetServiceSnapshot(this.list.ToArray());
+        }
+
+        /// <summary>
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>
