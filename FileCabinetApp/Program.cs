@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FileCabinetApp
 {
+    /// <summary>
+    /// Enter point class.
+    /// </summary>
     public static class Program
     {
         private const string DeveloperName = "Alexander Belyakoff";
@@ -12,7 +16,7 @@ namespace FileCabinetApp
 
         private static bool isRunning = true;
 
-        private static FileCabinetService fileCabinetService = new ();
+        private static IFileCabinetService fileCabinetService;
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
@@ -36,9 +40,16 @@ namespace FileCabinetApp
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
         };
 
+        /// <summary>
+        /// Programm enter point.
+        /// </summary>
+        /// <param name="args"> Parameters from consol.</param>
         public static void Main(string[] args)
         {
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
+            (string serviceName, IRecordValidator validator) = GetFileCabinetValidatorFromCommandLineParams(args);
+            fileCabinetService = new FileCabinetService(new FileCabinetMemoryGateway(), validator);
+            Console.WriteLine($"Using {serviceName} validation rules.");
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();
 
@@ -68,6 +79,44 @@ namespace FileCabinetApp
                 }
             }
             while (isRunning);
+        }
+
+        private static (string, IRecordValidator) GetFileCabinetValidatorFromCommandLineParams(string[] args)
+        {
+            string key = default;
+            string value = default;
+            for (int i = 0; i < args.Length; ++i)
+            {
+                if (args[i].StartsWith("-v"))
+                {
+                    key = "-v";
+                }
+                else if (args[i].StartsWith("--validation-rules"))
+                {
+                    key = "--validation-rules";
+                }
+
+                if (!string.IsNullOrEmpty(key))
+                {
+                    if (args[i] == key)
+                    {
+                        value = i + 1 < args.Length ? args[i + 1] : default;
+                    }
+                    else
+                    {
+                        var pair = args[i].Split("=", 2);
+                        value = pair?[1];
+                    }
+
+                    break;
+                }
+            }
+
+            return value?.ToLower() switch
+            {
+                "custom" => (value, new CustomValidator()),
+                _ => ("default", new DefaultValidator()),
+            };
         }
 
         private static void PrintMissedCommandInfo(string command)
@@ -117,8 +166,7 @@ namespace FileCabinetApp
 
         private static void Create(string parameters)
         {
-            GetFileCabinetRecordFromOutput(out var firstName, out var lastName, out var birthDate, out var digitKey, out var account, out var sex);
-            int id = fileCabinetService.CreateRecord(firstName, lastName, birthDate, digitKey, account, sex);
+            int id = fileCabinetService.CreateRecord(GetFileCabinetRecordFromOutput());
             Console.WriteLine($"Record #{id} is created.");
         }
 
@@ -130,15 +178,15 @@ namespace FileCabinetApp
                 return;
             }
 
-            var record = fileCabinetService.FindRecordById(id);
-            if (record is null)
+            if (fileCabinetService.FindRecordById(id) is null)
             {
                 Console.WriteLine($"Record #{id} is not exist.");
                 return;
             }
 
-            GetFileCabinetRecordFromOutput(out var firstName, out var lastName, out var birthDate, out var digitKey, out var account, out var sex);
-            fileCabinetService.EditRecord(id, firstName, lastName, birthDate, digitKey, account, sex);
+            var record = GetFileCabinetRecordFromOutput();
+            record.Id = id;
+            fileCabinetService.EditRecord(record);
             Console.WriteLine($"Record #{id} is updated.");
         }
 
@@ -156,7 +204,7 @@ namespace FileCabinetApp
                 return;
             }
 
-            FileCabinetRecord[] list;
+            IReadOnlyCollection<FileCabinetRecord> list;
             string fieldName = args[0].ToLower();
             string findKey = args[1].Trim('"');
             switch (fieldName)
@@ -198,9 +246,9 @@ namespace FileCabinetApp
             PrintFileCabinetRecordsList(list);
         }
 
-        private static void PrintFileCabinetRecordsList(FileCabinetRecord[] list)
+        private static void PrintFileCabinetRecordsList(IReadOnlyCollection<FileCabinetRecord> list)
         {
-            if (list.Length == 0)
+            if (list.Count == 0)
             {
                 Console.WriteLine("Nothing to display.");
                 return;
@@ -212,18 +260,20 @@ namespace FileCabinetApp
             }
         }
 
-        private static void GetFileCabinetRecordFromOutput(out string firstName, out string lastName, out DateTime dateOfBirth, out short digitKey, out decimal account, out char sex)
+        private static FileCabinetRecord GetFileCabinetRecordFromOutput()
         {
+            var record = new FileCabinetRecord();
             var validator = fileCabinetService.GetValidator();
-            firstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.IsNameCorrect, "Firstname can't be empty, less 2 or longer 60 letters.");
-            lastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.IsNameCorrect, "Lasttname can't be empty, less 2 or longer 60 letters.");
-            dateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.IsDateOfBirthCorrect, "Date of birth can't be earlier 1950-01-01 or later now");
-            digitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.IsDigitKeyCorrect, "Digit key contains 4 digits only");
-            account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.IsAccountCorrect, "Account can't be negative");
-            sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.IsSexCorrect, "Sex parabeter has to contain a letter describing a sex");
+            record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
+            record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
+            record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);
+            record.DigitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.CheckDigitKey);
+            record.Account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.CheckAccount);
+            record.Sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.CheckSex);
+            return record;
         }
 
-        private static T GetOutput<T>(string message, Func<T> convert, Func<T, bool> validation, string errorMessage)
+        private static T GetOutput<T>(string message, Func<T> convert, Action<T> validation)
         {
             bool hasErrors;
             T outputValue = default(T);
@@ -234,11 +284,7 @@ namespace FileCabinetApp
                     hasErrors = false;
                     Console.Write(message);
                     outputValue = convert();
-                    if (!validation(outputValue))
-                    {
-                        hasErrors = true;
-                        Console.WriteLine(errorMessage);
-                    }
+                    validation(outputValue);
                 }
                 catch (Exception e)
                 {

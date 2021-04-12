@@ -4,5 +4,384 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
+        <member name="T:FileCabinetApp.FileCabinetMemoryGateway">
+            <summary>
+            This class helps to init FileCabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryGateway.GetFileCabinetRecords">
+            <summary>
+            This method returns list of FileCabinetRecords with 4 hardcoded records.
+            </summary>
+            <returns>List of FileCabinrtRecors.</returns>
+        </member>
+        <member name="T:FileCabinetApp.IFileCabinetGateway">
+            <summary>
+            Data access layer interface allows to get filecabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetGateway.GetFileCabinetRecords">
+            <summary>
+            This method returns list of FileCabinetRecords.
+            </summary>
+            <returns>Collection of FileCabinrtRecors.</returns>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecord">
+            <summary>
+            Describe personal data.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.Id">
+            <summary>
+            Gets or sets idetification number.
+            </summary>
+            <returns> Identification number of user.</returns>
+            <value>Idetification number.</value>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.FirstName">
+            <summary>
+            Gets or sets first name.
+            </summary>
+            <returns> First name of user.</returns>
+            <value> First name.</value>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.LastName">
+            <summary>
+            Gets or sets last name.
+            </summary>
+            <returns> Last name of user.</returns>
+            <value> Last name.</value>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.DateOfBirth">
+            <summary>
+            Gets or sets date of birth.
+            </summary>
+            <returns> Date of birth of user.</returns>
+            <value> Date of birth.</value>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.DigitKey">
+            <summary>
+            Gets or sets digital access key.
+            </summary>
+            <returns> Digital access key of user.</returns>
+            <value> Digital access key of birth.</value>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.Account">
+            <summary>
+            Gets or sets account.
+            </summary>
+            <returns> Account of user.</returns>
+            <value> Account.</value>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetRecord.Sex">
+            <summary>
+            Gets or sets sex.
+            </summary>
+            <returns> Sex of user.</returns>
+            <value> Sex.</value>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetService">
+            <summary>
+            Service for filecabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetService"/> class.
+            </summary>
+            <param name="gateway">DAL.</param>
+            <param name="validator">Get validator.</param>
+        </member>
+        <member name="P:FileCabinetApp.FileCabinetService.Validator">
+            <summary>
+            Gets validator.
+            </summary>
+            <value>Validator.</value>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Add new record.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <returns>Returns Id of new record.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Edit existing record found by Id.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.FindRecordById(System.Int32)">
+            <summary>
+            Helps to find record by Id.
+            </summary>
+            <param name="id">Id.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.FindByFirstName(System.String)">
+            <summary>
+            Helps to find record by first name.
+            </summary>
+            <param name="firstName">FirstName.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.FindByLastName(System.String)">
+            <summary>
+            Helps to find record by last name.
+            </summary>
+            <param name="lastName">FirstName.</param>
+            <returns>FileCabinetRecords. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.FindByBirthDate(System.DateTime)">
+            <summary>
+            Helps to find record by date of birth.
+            </summary>
+            <param name="date">Date of birth.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.GetRecords">
+            <summary>
+            Returns all FileCabinetRecords.
+            </summary>
+            <returns>Array of FileCabinetRecords.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.GetStat">
+            <summary>
+            Returns count of records.
+            </summary>
+            <returns>Count of records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.GetValidator">
+            <summary>
+            Returns validator used in service.
+            </summary>
+            <returns>Validator.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.ValidateParameters(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Validation method.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
+        <member name="T:FileCabinetApp.IFileCabinetService">
+            <summary>
+            Interface of service for filecabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Add new record.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <returns>Returns Id of new record.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Edit existing record found by Id.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindByBirthDate(System.DateTime)">
+            <summary>
+            Helps to find record by date of birth.
+            </summary>
+            <param name="date">Date of birth.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindByFirstName(System.String)">
+            <summary>
+            Helps to find record by first name.
+            </summary>
+            <param name="firstName">FirstName.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindByLastName(System.String)">
+            <summary>
+            Helps to find record by last name.
+            </summary>
+            <param name="lastName">FirstName.</param>
+            <returns>FileCabinetRecords. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindRecordById(System.Int32)">
+            <summary>
+            Helps to find record by Id.
+            </summary>
+            <param name="id">Id.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetRecords">
+            <summary>
+            Returns all FileCabinetRecords.
+            </summary>
+            <returns>Array of FileCabinetRecords.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetStat">
+            <summary>
+            Returns count of records.
+            </summary>
+            <returns>Count of records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetValidator">
+            <summary>
+            Returns validator used in service.
+            </summary>
+            <returns>Validator.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Program">
+            <summary>
+            Enter point class.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Program.Main(System.String[])">
+            <summary>
+            Programm enter point.
+            </summary>
+            <param name="args"> Parameters from consol.</param>
+        </member>
+        <member name="T:FileCabinetApp.CustomValidator">
+            <summary>
+            Custom file record validator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckAccount(System.Decimal)">
+            <summary>
+            Check is account correct.
+            </summary>
+            <param name="account">Account.</param>
+            <exception cref="T:System.ArgumentException">When account is negative.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckDateOfBirth(System.DateTime)">
+            <summary>
+            Check is date of birth correct.
+            </summary>
+            <param name="dateofBirth">Date of birth.</param>
+            <exception cref="T:System.ArgumentException">When date is out of range.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckDigitKey(System.Int16)">
+            <summary>
+            Check is digit key correct.
+            </summary>
+            <param name="digitKey">Digital key.</param>
+            <exception cref="T:System.ArgumentException">When key is not 4 digits.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckFirstName(System.String)">
+            <summary>
+            Check is firstname correct.
+            </summary>
+            <param name="firstName">Firstname.</param>
+            <exception cref="T:System.ArgumentNullException">When name is empty.</exception>
+            <exception cref="T:System.ArgumentException">When length less 2 or bigger then 60 letters.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckLastName(System.String)">
+            <summary>
+            Check is lastname correct.
+            </summary>
+            <param name="lastName">Lastname.</param>
+            <exception cref="T:System.ArgumentNullException">When name is empty.</exception>
+            <exception cref="T:System.ArgumentException">When length less 2 or bigger then 60 letters.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckSex(System.Char)">
+            <summary>
+            Check is sex correct.
+            </summary>
+            <param name="sex">Sex.</param>
+            <exception cref="T:System.ArgumentException">When is not 'F' or 'M'.</exception>
+        </member>
+        <member name="T:FileCabinetApp.DefaultValidator">
+            <summary>
+            Default file record validator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.CheckAccount(System.Decimal)">
+            <summary>
+            Check is account correct.
+            </summary>
+            <param name="account">Account.</param>
+            <exception cref="T:System.ArgumentException">When account is negative.</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.CheckDateOfBirth(System.DateTime)">
+            <summary>
+            Check is date of birth correct.
+            </summary>
+            <param name="dateofBirth">Date of birth.</param>
+            <exception cref="T:System.ArgumentException">When date is out of range.</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.CheckDigitKey(System.Int16)">
+            <summary>
+            Check is digit key correct.
+            </summary>
+            <param name="digitKey">Digital key.</param>
+            <exception cref="T:System.ArgumentException">When key is not 4 digits.</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.CheckFirstName(System.String)">
+            <summary>
+            Check is firstname correct.
+            </summary>
+            <param name="firstName">Firstname.</param>
+            <exception cref="T:System.ArgumentNullException">When name is empty.</exception>
+            <exception cref="T:System.ArgumentException">When length less 2 or bigger then 60 letters.</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.CheckLastName(System.String)">
+            <summary>
+            Check is lastname correct.
+            </summary>
+            <param name="lastName">Lastname.</param>
+            <exception cref="T:System.ArgumentNullException">When name is empty.</exception>
+            <exception cref="T:System.ArgumentException">When length less 2 or bigger then 60 letters.</exception>
+        </member>
+        <member name="M:FileCabinetApp.DefaultValidator.CheckSex(System.Char)">
+            <summary>
+            Check is sex correct.
+            </summary>
+            <param name="sex">Sex.</param>
+            <exception cref="T:System.ArgumentException">When is not a letter.</exception>
+        </member>
+        <member name="T:FileCabinetApp.IRecordValidator">
+            <summary>
+            File cabinet record validation interface.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckFirstName(System.String)">
+            <summary>
+            Check is firstname correct.
+            </summary>
+            <param name="firstName">Firstname.</param>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckLastName(System.String)">
+            <summary>
+            Check is lastname correct.
+            </summary>
+            <param name="lastName">Lastname.</param>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckDateOfBirth(System.DateTime)">
+            <summary>
+            Check is date of birth correct.
+            </summary>
+            <param name="dateofBirth">Date of birth.</param>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckDigitKey(System.Int16)">
+            <summary>
+            Check is digit key correct.
+            </summary>
+            <param name="digitKey">Digital key.</param>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckAccount(System.Decimal)">
+            <summary>
+            Check is account correct.
+            </summary>
+            <param name="account">Account.</param>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckSex(System.Char)">
+            <summary>
+            Check is sex correct.
+            </summary>
+            <param name="sex">Sex.</param>
+        </member>
+        <member name="M:FileCabinetApp.IRecordValidator.CheckAll(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Check is file cabinet record correct.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
     </members>
 </doc>

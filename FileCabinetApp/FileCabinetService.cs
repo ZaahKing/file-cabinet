@@ -1,182 +1,167 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
-    public class FileCabinetService
+    /// <summary>
+    /// Service for filecabinet data.
+    /// </summary>
+    public class FileCabinetService : IFileCabinetService
     {
-        private readonly List<FileCabinetRecord> list = new ();
-        private readonly FileCabinetRecordValidator validator = new ();
+        private readonly ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
 
-        public FileCabinetService()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileCabinetService"/> class.
+        /// </summary>
+        /// <param name="gateway">DAL.</param>
+        /// <param name="validator">Get validator.</param>
+        public FileCabinetService(IFileCabinetGateway gateway, IRecordValidator validator)
         {
-            this.CreateRecord("Alex", "Whiter", new DateTime(1982, 12, 6), 1234, 45m, 'm');
-            this.CreateRecord("Alex", "Booter", new DateTime(1990, 10, 10), 1234, 45m, 'm');
-            this.CreateRecord("Xena", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
-            this.CreateRecord("Anastatia", "Queen", new DateTime(1982, 12, 6), 1234, 45m, 'f');
+            this.Validator = validator;
+            foreach (var item in gateway.GetFileCabinetRecords())
+            {
+                this.CreateRecord(item);
+            }
         }
 
-        public int CreateRecord(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
-        {
-            this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
-            var record = new FileCabinetRecord
-            {
-                Id = this.list.Count + 1,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dateOfBirth,
-                DigitKey = digitKey,
-                Account = account,
-                Sex = sex,
-            };
+        /// <summary>
+        /// Gets validator.
+        /// </summary>
+        /// <value>Validator.</value>
+        public IRecordValidator Validator { get; init; }
 
+        /// <summary>
+        /// Add new record.
+        /// </summary>
+        /// <param name="record">File cabinet record.</param>
+        /// <returns>Returns Id of new record.</returns>
+        public int CreateRecord(FileCabinetRecord record)
+        {
+            this.ValidateParameters(record);
+            record.Id = this.list.Count + 1;
             this.list.Add(record);
-            this.AddIndex(this.firstNameDictionary, firstName, record);
-            this.AddIndex(this.lastNameDictionary, lastName, record);
-            this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
+            this.AddIndex(this.firstNameDictionary, record.FirstName, record);
+            this.AddIndex(this.lastNameDictionary, record.LastName, record);
+            this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
 
             return record.Id;
         }
 
-        public void EditRecord(int id, string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
+        /// <summary>
+        /// Edit existing record found by Id.
+        /// </summary>
+        /// <param name="record">File cabinet record.</param>
+        public void EditRecord(FileCabinetRecord record)
         {
-            var record = this.FindRecordById(id);
-            if (record is null)
+            var oldRecord = this.FindRecordById(record.Id);
+            if (oldRecord is null)
             {
-                throw new ArgumentException($"Record #{id} is not exist.");
+                throw new ArgumentException($"Record #{record.Id} is not exist.");
             }
 
-            this.MemberValidation(firstName, lastName, dateOfBirth, digitKey, account, sex);
-            var oldRecord = new FileCabinetRecord
-            {
-                Id = record.Id,
-                FirstName = record.FirstName,
-                LastName = record.LastName,
-                DateOfBirth = record.DateOfBirth,
-                DigitKey = record.DigitKey,
-                Account = record.Account,
-                Sex = record.Sex,
-            };
-            record.FirstName = firstName;
-            record.LastName = lastName;
-            record.DateOfBirth = dateOfBirth;
-            record.DigitKey = digitKey;
-            record.Account = account;
-            record.Sex = sex;
+            this.ValidateParameters(record);
 
-            if (oldRecord.FirstName != firstName)
-            {
-                this.RemoveIndex(this.firstNameDictionary, oldRecord.FirstName, record);
-                this.AddIndex(this.firstNameDictionary, firstName, record);
-            }
+            this.list.Remove(oldRecord);
+            this.list.Add(record);
 
-            if (oldRecord.LastName != lastName)
-            {
-                this.RemoveIndex(this.lastNameDictionary, oldRecord.LastName, record);
-                this.AddIndex(this.lastNameDictionary, lastName, record);
-            }
-
-            if (oldRecord.DateOfBirth != dateOfBirth)
-            {
-                this.RemoveIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record);
-                this.AddIndex(this.bithdayDictionary, dateOfBirth, record);
-            }
+            this.ChangeIndex(this.firstNameDictionary, oldRecord.FirstName, record.FirstName, record);
+            this.ChangeIndex(this.lastNameDictionary, oldRecord.LastName, record.LastName, record);
+            this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record.DateOfBirth, record);
         }
 
+        /// <summary>
+        /// Helps to find record by Id.
+        /// </summary>
+        /// <param name="id">Id.</param>
+        /// <returns>FileCabinetRecord. </returns>
         public FileCabinetRecord FindRecordById(int id)
         {
             return this.list.FirstOrDefault(x => x.Id == id);
         }
 
-        public FileCabinetRecord[] FindByFirstName(string firstName)
+        /// <summary>
+        /// Helps to find record by first name.
+        /// </summary>
+        /// <param name="firstName">FirstName.</param>
+        /// <returns>FileCabinetRecord. </returns>
+        public IReadOnlyCollection<FileCabinetRecord> FindByFirstName(string firstName)
         {
             if (this.firstNameDictionary.ContainsKey(firstName))
             {
-                return this.firstNameDictionary[firstName].ToArray();
+                return new ReadOnlyCollection<FileCabinetRecord>(this.firstNameDictionary[firstName]);
             }
 
-            return Array.Empty<FileCabinetRecord>();
+            return new ReadOnlyCollection<FileCabinetRecord>(new List<FileCabinetRecord>());
         }
 
-        public FileCabinetRecord[] FindByLastName(string lastName)
+        /// <summary>
+        /// Helps to find record by last name.
+        /// </summary>
+        /// <param name="lastName">FirstName.</param>
+        /// <returns>FileCabinetRecords. </returns>
+        public ReadOnlyCollection<FileCabinetRecord> FindByLastName(string lastName)
         {
             if (this.lastNameDictionary.ContainsKey(lastName))
             {
-                return this.lastNameDictionary[lastName].ToArray();
+                return new ReadOnlyCollection<FileCabinetRecord>(this.lastNameDictionary[lastName]);
             }
 
-            return Array.Empty<FileCabinetRecord>();
+            return new ReadOnlyCollection<FileCabinetRecord>(new List<FileCabinetRecord>());
         }
 
-        public FileCabinetRecord[] FindByBirthDate(DateTime date)
+        /// <summary>
+        /// Helps to find record by date of birth.
+        /// </summary>
+        /// <param name="date">Date of birth.</param>
+        /// <returns>FileCabinetRecord. </returns>
+        public ReadOnlyCollection<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
             if (this.bithdayDictionary.ContainsKey(date))
             {
-                return this.bithdayDictionary[date].ToArray();
+                return new ReadOnlyCollection<FileCabinetRecord>(this.bithdayDictionary[date]);
             }
 
-            return Array.Empty<FileCabinetRecord>();
+            return new ReadOnlyCollection<FileCabinetRecord>(new List<FileCabinetRecord>());
         }
 
-        public FileCabinetRecord[] GetRecords()
+        /// <summary>
+        /// Returns all FileCabinetRecords.
+        /// </summary>
+        /// <returns>Array of FileCabinetRecords.</returns>
+        public ReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            return this.list.ToArray();
+            return new ReadOnlyCollection<FileCabinetRecord>((IList<FileCabinetRecord>)this.list);
         }
 
+        /// <summary>
+        /// Returns count of records.
+        /// </summary>
+        /// <returns>Count of records.</returns>
         public int GetStat()
         {
             return this.list.Count;
         }
 
-        public FileCabinetRecordValidator GetValidator() => this.validator;
+        /// <summary>
+        /// Returns validator used in service.
+        /// </summary>
+        /// <returns>Validator.</returns>
+        public IRecordValidator GetValidator() => this.Validator;
 
-        private void MemberValidation(string firstName, string lastName, DateTime dateOfBirth, short digitKey, decimal account, char sex)
+        /// <summary>
+        /// Validation method.
+        /// </summary>
+        /// <param name="record">File cabinet record.</param>
+        protected virtual void ValidateParameters(FileCabinetRecord record)
         {
-            if (this.validator.IsNameEmpty(firstName))
-            {
-                throw new ArgumentNullException(nameof(firstName), "Firstname can't be null, emty or has only whitespaces");
-            }
-
-            if (this.validator.IsNameShort(firstName) && this.validator.IsNameLong(firstName))
-            {
-                throw new ArgumentException("Firstname can't be less 2 or bigger then 60 letters", nameof(firstName));
-            }
-
-            if (this.validator.IsNameEmpty(lastName))
-            {
-                throw new ArgumentNullException(nameof(lastName), "Lastname can't be null, emty or has only whitespaces");
-            }
-
-            if (this.validator.IsNameShort(lastName) || this.validator.IsNameLong(lastName))
-            {
-                throw new ArgumentException("Lastname can't be less 2 or bigger then 60 letters", nameof(lastName));
-            }
-
-            if (this.validator.IsDateOfBirthSmall(dateOfBirth) || this.validator.IsDateOfBirthBig(dateOfBirth))
-            {
-                throw new ArgumentException("Date of birth can't be earlier 1950-01-01 or later now", nameof(dateOfBirth));
-            }
-
-            if (!this.validator.IsDigitKeyInRange(digitKey))
-            {
-                throw new ArgumentException("Digit key contains 4 digits only", nameof(digitKey));
-            }
-
-            if (this.validator.IsAccountNegative(account))
-            {
-                throw new ArgumentException("Account can't be negative", nameof(account));
-            }
-
-            if (!this.validator.IsSexLetter(sex))
-            {
-                throw new ArgumentException("Sex parabeter has to contain a letter describing a sex", nameof(sex));
-            }
+            this.Validator.CheckAll(record);
         }
 
         private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
@@ -199,6 +184,16 @@ namespace FileCabinetApp
             }
 
             dictinary[key].Remove(record);
+        }
+
+        private void ChangeIndex<TDictionary, TKey>(TDictionary dictinary, TKey oldKey, TKey newKey, FileCabinetRecord record)
+            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
+        {
+            if (!oldKey.Equals(newKey))
+            {
+                this.RemoveIndex(dictinary, oldKey, record);
+                this.AddIndex(dictinary, newKey, record);
+            }
         }
     }
 }
