@@ -82,7 +82,7 @@
         </member>
         <member name="T:FileCabinetApp.FileCabinetService">
             <summary>
-            Abstract service for filecabinet data.
+            Service for filecabinet data.
             </summary>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
@@ -162,6 +162,70 @@
             Validation method.
             </summary>
             <param name="record">File cabinet record.</param>
+        </member>
+        <member name="T:FileCabinetApp.IFileCabinetService">
+            <summary>
+            Interface of service for filecabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Add new record.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <returns>Returns Id of new record.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Edit existing record found by Id.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindByBirthDate(System.DateTime)">
+            <summary>
+            Helps to find record by date of birth.
+            </summary>
+            <param name="date">Date of birth.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindByFirstName(System.String)">
+            <summary>
+            Helps to find record by first name.
+            </summary>
+            <param name="firstName">FirstName.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindByLastName(System.String)">
+            <summary>
+            Helps to find record by last name.
+            </summary>
+            <param name="lastName">FirstName.</param>
+            <returns>FileCabinetRecords. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.FindRecordById(System.Int32)">
+            <summary>
+            Helps to find record by Id.
+            </summary>
+            <param name="id">Id.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetRecords">
+            <summary>
+            Returns all FileCabinetRecords.
+            </summary>
+            <returns>Array of FileCabinetRecords.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetStat">
+            <summary>
+            Returns count of records.
+            </summary>
+            <returns>Count of records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetValidator">
+            <summary>
+            Returns validator used in service.
+            </summary>
+            <returns>Validator.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

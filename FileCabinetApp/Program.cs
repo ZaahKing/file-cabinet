@@ -16,7 +16,7 @@ namespace FileCabinetApp
 
         private static bool isRunning = true;
 
-        private static FileCabinetService fileCabinetService;
+        private static IFileCabinetService fileCabinetService;
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
@@ -263,7 +263,7 @@ namespace FileCabinetApp
         private static FileCabinetRecord GetFileCabinetRecordFromOutput()
         {
             var record = new FileCabinetRecord();
-            var validator = fileCabinetService.Validator;
+            var validator = fileCabinetService.GetValidator();
             record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
             record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
             record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);
