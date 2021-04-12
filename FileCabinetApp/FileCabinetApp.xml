@@ -80,6 +80,30 @@
             <returns> Sex of user.</returns>
             <value> Sex.</value>
         </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordCsvWriter">
+            <summary>
+            Write records to stream.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.#ctor(System.IO.TextWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordCsvWriter"/> class.
+            </summary>
+            <param name="writer">Text writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.WriteHeader">
+            <summary>
+            Write CSV header to text strem.
+            </summary>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Write(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Write record to text strem.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetService">
             <summary>
             Service for filecabinet data.
@@ -151,6 +175,12 @@
             </summary>
             <returns>Count of records.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetService.MakeSnapshot">
+            <summary>
+            Make file cabinet records snapshot.
+            </summary>
+            <returns>FileCabinetServiceSnapshot.</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetService.GetValidator">
             <summary>
             Returns validator used in service.
@@ -162,6 +192,23 @@
             Validation method.
             </summary>
             <param name="record">File cabinet record.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
+            <summary>
+            Keep file cabinrt records snapshot.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.#ctor(FileCabinetApp.FileCabinetRecord[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> class.
+            </summary>
+            <param name="data"> Get snapshot.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToCSV(FileCabinetApp.FileCabinetRecordCsvWriter)">
+            <summary>
+            Save snapshot to CSV file.
+            </summary>
+            <param name="writer"> Get writer.</param>
         </member>
         <member name="T:FileCabinetApp.IFileCabinetService">
             <summary>
@@ -226,6 +273,12 @@
             Returns validator used in service.
             </summary>
             <returns>Validator.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.MakeSnapshot">
+            <summary>
+            Make file cabinet records snapshot.
+            </summary>
+            <returns>FileCabinetServiceSnapshot.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

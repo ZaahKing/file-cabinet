@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace FileCabinetApp
 {
@@ -27,6 +28,7 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("edit", Edit),
             new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("find", Find),
+            new Tuple<string, Action<string>>("export", Export),
         };
 
         private static string[][] helpMessages = new string[][]
@@ -38,6 +40,7 @@ namespace FileCabinetApp
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
+            new string[] { "export", "export records", "The 'export' command save data to file." },
         };
 
         /// <summary>
@@ -197,16 +200,8 @@ namespace FileCabinetApp
 
         private static void Find(string parameters)
         {
-            string[] args = parameters.Split(' ', 2);
-            if (args.Length < 2 || string.IsNullOrWhiteSpace(parameters))
-            {
-                Console.WriteLine("Wrong parameters count. Format is find [field] \"[key]\"");
-                return;
-            }
-
+            (string fieldName, string findKey) = SplitParam(parameters);
             IReadOnlyCollection<FileCabinetRecord> list;
-            string fieldName = args[0].ToLower();
-            string findKey = args[1].Trim('"');
             switch (fieldName)
             {
                 case "firstname":
@@ -238,12 +233,65 @@ namespace FileCabinetApp
 
                 default:
                     {
-                        Console.WriteLine("Field is not exist.");
+                        Console.WriteLine("Wrong parameters. Format is find [field] \"[key]\"");
                         return;
                     }
             }
 
             PrintFileCabinetRecordsList(list);
+        }
+
+        private static void Export(string parameters)
+        {
+            (string format, string fileName) = SplitParam(parameters);
+            if (File.Exists(fileName))
+            {
+                Console.Write($"File is exist - rewrite {fileName}? [Y/n] ");
+                char output = char.ToUpper(Console.ReadLine()[0]);
+                if (output != 'Y')
+                {
+                    return;
+                }
+            }
+
+            FileCabinetServiceSnapshot snapshot = fileCabinetService.MakeSnapshot();
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(fileName))
+                {
+                    switch (format)
+                    {
+                        case "csv":
+                            snapshot.SaveToCSV(new FileCabinetRecordCsvWriter(writer));
+                            break;
+
+                        default:
+                            Console.WriteLine("Format is not supported.");
+                            break;
+                    }
+                }
+
+                Console.WriteLine($"All records are exported to file {fileName}.");
+            }
+            catch (IOException)
+            {
+                Console.WriteLine($"Export failed: can't open file {fileName}.");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        private static (string, string) SplitParam(string parameters)
+        {
+            string[] args = parameters.Split(' ', 2);
+            if (args.Length < 2 || string.IsNullOrWhiteSpace(parameters))
+            {
+                return (default, default);
+            }
+
+            return (args[0].ToLower(), args[1].Trim('"'));
         }
 
         private static void PrintFileCabinetRecordsList(IReadOnlyCollection<FileCabinetRecord> list)

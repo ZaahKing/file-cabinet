@@ -67,5 +67,11 @@ namespace FileCabinetApp
         /// </summary>
         /// <returns>Validator.</returns>
         IRecordValidator GetValidator();
+
+        /// <summary>
+        /// Make file cabinet records snapshot.
+        /// </summary>
+        /// <returns>FileCabinetServiceSnapshot.</returns>
+        FileCabinetServiceSnapshot MakeSnapshot();
     }
 }
