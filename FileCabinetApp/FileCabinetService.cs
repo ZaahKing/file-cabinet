@@ -9,12 +9,26 @@ namespace FileCabinetApp
     /// <summary>
     /// Abstract service for filecabinet data.
     /// </summary>
-    public abstract class FileCabinetService
+    public class FileCabinetService
     {
         private readonly ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileCabinetService"/> class.
+        /// </summary>
+        /// <param name="gateway">DAL.</param>
+        /// <param name="validator">Get validator.</param>
+        public FileCabinetService(IFileCabinetGateway gateway, IRecordValidator validator)
+        {
+            this.Validator = validator;
+            foreach (var item in gateway.GetFileCabinetRecords())
+            {
+                this.CreateRecord(item);
+            }
+        }
 
         /// <summary>
         /// Gets validator.
@@ -144,7 +158,10 @@ namespace FileCabinetApp
         /// Validation method.
         /// </summary>
         /// <param name="record">File cabinet record.</param>
-        protected abstract void ValidateParameters(FileCabinetRecord record);
+        protected virtual void ValidateParameters(FileCabinetRecord record)
+        {
+            this.Validator.CheckAll(record);
+        }
 
         private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
             where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>

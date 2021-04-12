@@ -46,7 +46,8 @@ namespace FileCabinetApp
         public static void Main(string[] args)
         {
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
-            string serviceName = BuilrFileCabinetServiceFromCommandLineParams(args);
+            (string serviceName, IRecordValidator validator) = GetFileCabinetValidatorFromCommandLineParams(args);
+            fileCabinetService = new FileCabinetService(new FileCabinetMemoryGateway(), validator);
             Console.WriteLine($"Using {serviceName} validation rules.");
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();
@@ -79,7 +80,7 @@ namespace FileCabinetApp
             while (isRunning);
         }
 
-        private static string BuilrFileCabinetServiceFromCommandLineParams(string[] args)
+        private static (string, IRecordValidator) GetFileCabinetValidatorFromCommandLineParams(string[] args)
         {
             string key = default;
             string value = default;
@@ -110,16 +111,11 @@ namespace FileCabinetApp
                 }
             }
 
-            value = value?.ToLower();
-            switch (value)
+            return value?.ToLower() switch
             {
-                case "custom":
-                    fileCabinetService = new FileCabinetCustomService(new FileCabinetMemoryGateway(), new CustomValidator());
-                    return value;
-                default:
-                    fileCabinetService = new FileCabinetDefaultService(new FileCabinetMemoryGateway(), new DefaultValidator());
-                    return "default";
-            }
+                "custom" => (value, new CustomValidator()),
+                _ => ("default", new DefaultValidator()),
+            };
         }
 
         private static void PrintMissedCommandInfo(string command)

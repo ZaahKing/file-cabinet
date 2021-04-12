@@ -26,42 +26,6 @@
             </summary>
             <returns>Collection of FileCabinrtRecors.</returns>
         </member>
-        <member name="T:FileCabinetApp.FileCabinetCustomService">
-            <summary>
-            Custom service for filecabinet data.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetCustomService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetCustomService"/> class.
-            </summary>
-            <param name="gateway">DAL.</param>
-            <param name="validator">Get validator.</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetCustomService.ValidateParameters(FileCabinetApp.FileCabinetRecord)">
-            <summary>
-            Validation method.
-            </summary>
-            <param name="record">File cabinet record.</param>
-        </member>
-        <member name="T:FileCabinetApp.FileCabinetDefaultService">
-            <summary>
-            Default service for filecabinet data.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetDefaultService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetDefaultService"/> class.
-            </summary>
-            <param name="gateway">DAL.</param>
-            <param name="validator">Get validator.</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetDefaultService.ValidateParameters(FileCabinetApp.FileCabinetRecord)">
-            <summary>
-            Validation method.
-            </summary>
-            <param name="record">File cabinet record.</param>
-        </member>
         <member name="T:FileCabinetApp.FileCabinetRecord">
             <summary>
             Describe personal data.
@@ -120,6 +84,13 @@
             <summary>
             Abstract service for filecabinet data.
             </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetService"/> class.
+            </summary>
+            <param name="gateway">DAL.</param>
+            <param name="validator">Get validator.</param>
         </member>
         <member name="P:FileCabinetApp.FileCabinetService.Validator">
             <summary>
