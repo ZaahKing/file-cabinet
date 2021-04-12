@@ -15,9 +15,10 @@ namespace FileCabinetApp
         /// Initializes a new instance of the <see cref="FileCabinetDefaultService"/> class.
         /// </summary>
         /// <param name="gateway">DAL.</param>
-        public FileCabinetDefaultService(IFileCabinetGateway gateway)
+        /// <param name="validator">Get validator.</param>
+        public FileCabinetDefaultService(IFileCabinetGateway gateway, IRecordValidator validator)
         {
-            this.Validator = new DefaultValidator();
+            this.Validator = validator;
             foreach (var item in gateway.GetFileCabinetRecords())
             {
                 this.CreateRecord(item);

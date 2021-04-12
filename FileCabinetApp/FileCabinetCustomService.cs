@@ -15,9 +15,10 @@ namespace FileCabinetApp
         /// Initializes a new instance of the <see cref="FileCabinetCustomService"/> class.
         /// </summary>
         /// <param name="gateway">DAL.</param>
-        public FileCabinetCustomService(IFileCabinetGateway gateway)
+        /// <param name="validator">Get validator.</param>
+        public FileCabinetCustomService(IFileCabinetGateway gateway, IRecordValidator validator)
         {
-            this.Validator = new CustomValidator();
+            this.Validator = validator;
             foreach (var item in gateway.GetFileCabinetRecords())
             {
                 this.CreateRecord(item);
@@ -30,10 +31,7 @@ namespace FileCabinetApp
         /// <param name="record">File cabinet record.</param>
         protected override void ValidateParameters(FileCabinetRecord record)
         {
-            this.Validator.CheckFirstName(record.FirstName);
-            this.Validator.CheckLastName(record.LastName);
-            this.Validator.CheckDateOfBirth(record.DateOfBirth);
-            this.Validator.CheckDigitKey(record.DigitKey);
+            this.Validator.CheckAll(record);
         }
     }
 }

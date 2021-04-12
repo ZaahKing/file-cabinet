@@ -15,7 +15,7 @@ namespace FileCabinetApp
 
         private static bool isRunning = true;
 
-        private static FileCabinetService fileCabinetService = new FileCabinetDefaultService(new FileCabinetMemoryGateway());
+        private static FileCabinetService fileCabinetService;
 
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
@@ -114,10 +114,10 @@ namespace FileCabinetApp
             switch (value)
             {
                 case "custom":
-                    fileCabinetService = new FileCabinetCustomService(new FileCabinetMemoryGateway());
+                    fileCabinetService = new FileCabinetCustomService(new FileCabinetMemoryGateway(), new CustomValidator());
                     return value;
                 default:
-                    fileCabinetService = new FileCabinetDefaultService(new FileCabinetMemoryGateway());
+                    fileCabinetService = new FileCabinetDefaultService(new FileCabinetMemoryGateway(), new DefaultValidator());
                     return "default";
             }
         }
