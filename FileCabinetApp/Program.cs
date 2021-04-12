@@ -46,6 +46,8 @@ namespace FileCabinetApp
         public static void Main(string[] args)
         {
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
+            string serviceName = BuilrFileCabinetServiceFromCommandLineParams(args);
+            Console.WriteLine($"Using {serviceName} validation rules.");
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();
 
@@ -75,6 +77,49 @@ namespace FileCabinetApp
                 }
             }
             while (isRunning);
+        }
+
+        private static string BuilrFileCabinetServiceFromCommandLineParams(string[] args)
+        {
+            string key = default;
+            string value = default;
+            for (int i = 0; i < args.Length; ++i)
+            {
+                if (args[i].StartsWith("-v"))
+                {
+                    key = "-v";
+                }
+                else if (args[i].StartsWith("--validation-rules"))
+                {
+                    key = "--validation-rules";
+                }
+
+                if (!string.IsNullOrEmpty(key))
+                {
+                    if (args[i] == key)
+                    {
+                        value = i + 1 < args.Length ? args[i + 1] : default;
+                    }
+                    else
+                    {
+                        var pair = args[i].Split("=", 2);
+                        value = pair?[1];
+                    }
+
+                    break;
+                }
+            }
+
+            value = value?.ToLower();
+            switch (value)
+            {
+                case "custom":
+                    fileCabinetService = new FileCabinetCustomService(new FileCabinetMemoryGateway());
+                    return value;
+                default:
+                    fileCabinetService = new FileCabinetDefaultService(new FileCabinetMemoryGateway());
+                    return "default";
+            }
         }
 
         private static void PrintMissedCommandInfo(string command)

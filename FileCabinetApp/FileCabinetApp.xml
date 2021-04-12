@@ -26,6 +26,23 @@
             </summary>
             <returns>Collection of FileCabinrtRecors.</returns>
         </member>
+        <member name="T:FileCabinetApp.FileCabinetCustomService">
+            <summary>
+            Custom service for filecabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetCustomService.#ctor(FileCabinetApp.IFileCabinetGateway)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetCustomService"/> class.
+            </summary>
+            <param name="gateway">DAL.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetCustomService.ValidateParameters(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Validation method.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetDefaultService">
             <summary>
             Default service for filecabinet data.
@@ -96,109 +113,6 @@
             </summary>
             <returns> Sex of user.</returns>
             <value> Sex.</value>
-        </member>
-        <member name="T:FileCabinetApp.FileCabinetRecordValidator">
-            <summary>
-            Describe validate methods for FileCabinetRecord fields.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsNameEmpty(System.String)">
-            <summary>
-            Check string is empty or whitespace.
-            </summary>
-            <param name="name">Name.</param>
-            <returns>True if correct.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsNameShort(System.String)">
-            <summary>
-            Check string length.
-            </summary>
-            <param name="name">Name.</param>
-            <returns>False if less 2.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsNameLong(System.String)">
-            <summary>
-            Check string length.
-            </summary>
-            <param name="name">Name.</param>
-            <returns>False if longer 60.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsNameCorrect(System.String)">
-            <summary>
-            Check name correct.
-            </summary>
-            <param name="name">Name.</param>
-            <returns>True if correct.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsDateOfBirthSmall(System.DateTime)">
-            <summary>
-            Check date of birth.
-            </summary>
-            <param name="date">Date of birth.</param>
-            <returns>False if early 01/01/1950.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsDateOfBirthBig(System.DateTime)">
-            <summary>
-            Check date of birth.
-            </summary>
-            <param name="date">Date of birth.</param>
-            <returns>False if later now.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsDateOfBirthCorrect(System.DateTime)">
-            <summary>
-            Check date of birth.
-            </summary>
-            <param name="date">Date of birth.</param>
-            <returns>True if correct.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsDigitKeyInRange(System.Int16)">
-            <summary>
-            Check id digital key is correct.
-            </summary>
-            <param name="key">Digital key.</param>
-            <returns>True if in range.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsDigitKeyCorrect(System.Int16)">
-            <summary>
-            Check if digital key is correct.
-            </summary>
-            <param name="key">Digital key.</param>
-            <returns>True if correct.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsAccountNegative(System.Decimal)">
-            <summary>
-            Check account possitivity.
-            </summary>
-            <param name="account">Account.</param>
-            <returns>False if negative.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsAccountCorrect(System.Decimal)">
-            <summary>
-            Check if account is correct.
-            </summary>
-            <param name="account">Digital key.</param>
-            <returns>True if correct.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsSexLetter(System.Char)">
-            <summary>
-            Must be a letter.
-            </summary>
-            <param name="sex">Letter.</param>
-            <returns>True if letter.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsSexCorrect(System.Char)">
-            <summary>
-            Must be a letter.
-            </summary>
-            <param name="sex">Letter.</param>
-            <returns>True if correct.</returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordValidator.IsCorrect(FileCabinetApp.FileCabinetRecord)">
-            <summary>
-            All checks for fields.
-            </summary>
-            <param name="record">FileCabinetRecord.</param>
-            <returns>True if correct.</returns>
         </member>
         <member name="T:FileCabinetApp.FileCabinetService">
             <summary>
