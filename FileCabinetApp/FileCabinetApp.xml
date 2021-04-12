@@ -201,6 +201,55 @@
             </summary>
             <param name="args"> Parameters from consol.</param>
         </member>
+        <member name="T:FileCabinetApp.CustomValidator">
+            <summary>
+            Custom file record validator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckAccount(System.Decimal)">
+            <summary>
+            Check is account correct.
+            </summary>
+            <param name="account">Account.</param>
+            <exception cref="T:System.ArgumentException">When account is negative.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckDateOfBirth(System.DateTime)">
+            <summary>
+            Check is date of birth correct.
+            </summary>
+            <param name="dateofBirth">Date of birth.</param>
+            <exception cref="T:System.ArgumentException">When date is out of range.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckDigitKey(System.Int16)">
+            <summary>
+            Check is digit key correct.
+            </summary>
+            <param name="digitKey">Digital key.</param>
+            <exception cref="T:System.ArgumentException">When key is not 4 digits.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckFirstName(System.String)">
+            <summary>
+            Check is firstname correct.
+            </summary>
+            <param name="firstName">Firstname.</param>
+            <exception cref="T:System.ArgumentNullException">When name is empty.</exception>
+            <exception cref="T:System.ArgumentException">When length less 2 or bigger then 60 letters.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckLastName(System.String)">
+            <summary>
+            Check is lastname correct.
+            </summary>
+            <param name="lastName">Lastname.</param>
+            <exception cref="T:System.ArgumentNullException">When name is empty.</exception>
+            <exception cref="T:System.ArgumentException">When length less 2 or bigger then 60 letters.</exception>
+        </member>
+        <member name="M:FileCabinetApp.CustomValidator.CheckSex(System.Char)">
+            <summary>
+            Check is sex correct.
+            </summary>
+            <param name="sex">Sex.</param>
+            <exception cref="T:System.ArgumentException">When is not 'F' or 'M'.</exception>
+        </member>
         <member name="T:FileCabinetApp.DefaultValidator">
             <summary>
             Default file record validator.

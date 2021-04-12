@@ -17,7 +17,7 @@ namespace FileCabinetApp
         /// <param name="gateway">DAL.</param>
         public FileCabinetCustomService(IFileCabinetGateway gateway)
         {
-            this.Validator = new DefaultValidator();
+            this.Validator = new CustomValidator();
             foreach (var item in gateway.GetFileCabinetRecords())
             {
                 this.CreateRecord(item);
