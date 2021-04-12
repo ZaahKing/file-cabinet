@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FileCabinetApp
 {
@@ -203,7 +204,7 @@ namespace FileCabinetApp
                 return;
             }
 
-            FileCabinetRecord[] list;
+            IReadOnlyCollection<FileCabinetRecord> list;
             string fieldName = args[0].ToLower();
             string findKey = args[1].Trim('"');
             switch (fieldName)
@@ -245,9 +246,9 @@ namespace FileCabinetApp
             PrintFileCabinetRecordsList(list);
         }
 
-        private static void PrintFileCabinetRecordsList(FileCabinetRecord[] list)
+        private static void PrintFileCabinetRecordsList(IReadOnlyCollection<FileCabinetRecord> list)
         {
-            if (list.Length == 0)
+            if (list.Count == 0)
             {
                 Console.WriteLine("Nothing to display.");
                 return;

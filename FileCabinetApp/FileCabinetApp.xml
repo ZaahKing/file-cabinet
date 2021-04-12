@@ -130,7 +130,7 @@
             Helps to find record by last name.
             </summary>
             <param name="lastName">FirstName.</param>
-            <returns>FileCabinetRecord. </returns>
+            <returns>FileCabinetRecords. </returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetService.FindByBirthDate(System.DateTime)">
             <summary>
