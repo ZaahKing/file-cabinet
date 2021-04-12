@@ -42,5 +42,27 @@ namespace FileCabinetApp
                 throw new IOException("Can't write snapshot.", e);
             }
         }
+
+        /// <summary>
+        /// Save snapshot to XML file.
+        /// </summary>
+        /// <param name="writer"> Get writer.</param>
+        public void SaveToXML(FileCabinetRecordXmlWriter writer)
+        {
+            try
+            {
+                writer.WriteHeader();
+                foreach (var record in this.records)
+                {
+                    writer.Write(record);
+                }
+
+                writer.WriteFooter();
+            }
+            catch (IOException e)
+            {
+                throw new IOException("Can't write snapshot.", e);
+            }
+        }
     }
 }

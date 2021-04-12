@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace FileCabinetApp
 {
@@ -257,13 +258,20 @@ namespace FileCabinetApp
             FileCabinetServiceSnapshot snapshot = fileCabinetService.MakeSnapshot();
             try
             {
-                using (StreamWriter writer = new StreamWriter(fileName))
+                using (StreamWriter writer = new (fileName))
                 {
                     switch (format)
                     {
                         case "csv":
                             snapshot.SaveToCSV(new FileCabinetRecordCsvWriter(writer));
                             break;
+
+                        case "xml":
+                            {
+                                using FileCabinetRecordXmlWriter fileCabinetRecordXmlWriter = new (writer);
+                                snapshot.SaveToXML(fileCabinetRecordXmlWriter);
+                                break;
+                            }
 
                         default:
                             Console.WriteLine("Format is not supported.");

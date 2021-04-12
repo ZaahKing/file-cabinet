@@ -104,6 +104,47 @@
             <param name="record">File cabinet record.</param>
             <exception cref="T:System.IO.IOException">When can not write the record.</exception>
         </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordXmlWriter">
+            <summary>
+            Write records to XML stream.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.#ctor(System.IO.StreamWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlWriter"/> class.
+            </summary>
+            <param name="writer">Stream writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteHeader">
+            <summary>
+            Write XML header to a strem.
+            </summary>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Write(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Write XML header to a strem.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteFooter">
+            <summary>
+            Write XML footer to a strem.
+            </summary>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose">
+            <summary>
+            Dispose mothod.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose(System.Boolean)">
+            <summary>
+            Dispose mothod.
+            </summary>
+            <param name="disposed">Disposing clue.</param>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetService">
             <summary>
             Service for filecabinet data.
@@ -207,6 +248,12 @@
         <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToCSV(FileCabinetApp.FileCabinetRecordCsvWriter)">
             <summary>
             Save snapshot to CSV file.
+            </summary>
+            <param name="writer"> Get writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToXML(FileCabinetApp.FileCabinetRecordXmlWriter)">
+            <summary>
+            Save snapshot to XML file.
             </summary>
             <param name="writer"> Get writer.</param>
         </member>
