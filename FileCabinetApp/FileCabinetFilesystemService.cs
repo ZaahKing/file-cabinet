@@ -63,16 +63,7 @@ namespace FileCabinetApp
             {
                 this.writer.Write((short)0);
                 this.writer.Write(record.Id);
-                char[] buffer = this.StringToChars(record.FirstName, 120);
-                this.writer.Write(buffer);
-                buffer = this.StringToChars(record.LastName, 120);
-                this.writer.Write(buffer);
-                this.writer.Write(record.DateOfBirth.Year);
-                this.writer.Write(record.DateOfBirth.Month);
-                this.writer.Write(record.DateOfBirth.Day);
-                this.writer.Write(record.DigitKey);
-                this.writer.Write(record.Account);
-                this.writer.Write(record.Sex);
+                this.WriteRecordWithoutIDInCurrentPosition(record);
                 this.writer.Flush();
             }
             catch (IOException e)
@@ -97,16 +88,7 @@ namespace FileCabinetApp
                 int id = this.reader.ReadInt32();
                 if (id == record.Id)
                 {
-                    char[] buffer = this.StringToChars(record.FirstName, 120);
-                    this.writer.Write(buffer);
-                    buffer = this.StringToChars(record.LastName, 120);
-                    this.writer.Write(buffer);
-                    this.writer.Write(record.DateOfBirth.Year);
-                    this.writer.Write(record.DateOfBirth.Month);
-                    this.writer.Write(record.DateOfBirth.Day);
-                    this.writer.Write(record.DigitKey);
-                    this.writer.Write(record.Account);
-                    this.writer.Write(record.Sex);
+                    this.WriteRecordWithoutIDInCurrentPosition(record);
                     this.writer.Flush();
                     this.fileStream.Seek(0, SeekOrigin.Begin);
                     this.fileStream.Flush();
@@ -126,7 +108,8 @@ namespace FileCabinetApp
         /// <returns>FileCabinetRecord. </returns>
         public ReadOnlyCollection<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
-            throw new NotImplementedException();
+            var list = this.GetRecordsYield().Where(x => x.DateOfBirth == date).ToList();
+            return new ReadOnlyCollection<FileCabinetRecord>(list);
         }
 
         /// <summary>
@@ -136,7 +119,8 @@ namespace FileCabinetApp
         /// <returns>FileCabinetRecord. </returns>
         public IReadOnlyCollection<FileCabinetRecord> FindByFirstName(string firstName)
         {
-            throw new NotImplementedException();
+            var list = this.GetRecordsYield().Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            return new ReadOnlyCollection<FileCabinetRecord>(list);
         }
 
         /// <summary>
@@ -146,7 +130,8 @@ namespace FileCabinetApp
         /// <returns>FileCabinetRecords. </returns>
         public ReadOnlyCollection<FileCabinetRecord> FindByLastName(string lastName)
         {
-            throw new NotImplementedException();
+            var list = this.GetRecordsYield().Where(x => x.LastName.Equals(lastName, StringComparison.CurrentCultureIgnoreCase)).ToList();
+            return new ReadOnlyCollection<FileCabinetRecord>(list);
         }
 
         /// <summary>
@@ -193,7 +178,8 @@ namespace FileCabinetApp
         /// <returns>FileCabinetServiceSnapshot.</returns>
         public FileCabinetServiceSnapshot MakeSnapshot()
         {
-            throw new NotImplementedException();
+            var list = this.GetRecordsYield().ToArray();
+            return new FileCabinetServiceSnapshot(list);
         }
 
         /// <summary>
@@ -245,6 +231,20 @@ namespace FileCabinetApp
 
             this.fileStream.Flush();
             this.fileStream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private void WriteRecordWithoutIDInCurrentPosition(FileCabinetRecord record)
+        {
+            char[] buffer = this.StringToChars(record.FirstName, 120);
+            this.writer.Write(buffer);
+            buffer = this.StringToChars(record.LastName, 120);
+            this.writer.Write(buffer);
+            this.writer.Write(record.DateOfBirth.Year);
+            this.writer.Write(record.DateOfBirth.Month);
+            this.writer.Write(record.DateOfBirth.Day);
+            this.writer.Write(record.DigitKey);
+            this.writer.Write(record.Account);
+            this.writer.Write(record.Sex);
         }
     }
 }
