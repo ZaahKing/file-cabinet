@@ -52,7 +52,7 @@ namespace FileCabinetApp
         {
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
             (string serviceName, IRecordValidator validator) = GetFileCabinetValidatorFromCommandLineParams(args);
-            fileCabinetService = new FileCabinetService(new FileCabinetMemoryGateway(), validator);
+            fileCabinetService = new FileCabinetMemoryService(new FileCabinetMemoryGateway(), validator);
             Console.WriteLine($"Using {serviceName} validation rules.");
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();

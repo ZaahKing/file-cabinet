@@ -10,7 +10,7 @@ namespace FileCabinetApp
     /// <summary>
     /// Service for filecabinet data.
     /// </summary>
-    public class FileCabinetService : IFileCabinetService
+    public class FileCabinetMemoryService : IFileCabinetService
     {
         private readonly ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
@@ -18,11 +18,11 @@ namespace FileCabinetApp
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileCabinetService"/> class.
+        /// Initializes a new instance of the <see cref="FileCabinetMemoryService"/> class.
         /// </summary>
         /// <param name="gateway">DAL.</param>
         /// <param name="validator">Get validator.</param>
-        public FileCabinetService(IFileCabinetGateway gateway, IRecordValidator validator)
+        public FileCabinetMemoryService(IFileCabinetGateway gateway, IRecordValidator validator)
         {
             this.Validator = validator;
             foreach (var item in gateway.GetFileCabinetRecords())
