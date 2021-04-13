@@ -69,7 +69,7 @@ namespace FileCabinetApp
 
         private static IFileCabinetService GetFileCabinetFilesystemService(IRecordValidator validator)
         {
-            return new FileCabinetFilesystemService(File.Open("cabinet-records.db", FileMode.Open), validator);
+            return new FileCabinetFilesystemService(File.Open("cabinet-records.db", FileMode.OpenOrCreate), validator);
         }
 
         private static IFileCabinetService GetFileCabinetMemoryService(IRecordValidator validator)

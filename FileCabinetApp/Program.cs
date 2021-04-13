@@ -53,7 +53,7 @@ namespace FileCabinetApp
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
             string validatorName = DependencyResolver.NormalizeValidatorName(GetComandLiniValueByKey(args, "--validation-rules", "-v"));
             string fileCabinetServicerName = DependencyResolver.NormalizeFileCabinetServiceName(GetComandLiniValueByKey(args, "--storage", "-s"));
-            fileCabinetService = DependencyResolver.GetFileCabinetService(validatorName, fileCabinetServicerName);
+            fileCabinetService = DependencyResolver.GetFileCabinetService(fileCabinetServicerName, validatorName);
             Console.WriteLine($"Using {validatorName} validation rules.");
             Console.WriteLine($"Using {fileCabinetServicerName} storage.");
             Console.WriteLine(Program.HintMessage);
