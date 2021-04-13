@@ -51,9 +51,11 @@ namespace FileCabinetApp
         public static void Main(string[] args)
         {
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
-            (string serviceName, IRecordValidator validator) = GetFileCabinetValidatorFromCommandLineParams(args);
-            fileCabinetService = new FileCabinetService(new FileCabinetMemoryGateway(), validator);
-            Console.WriteLine($"Using {serviceName} validation rules.");
+            string validatorName = DependencyResolver.NormalizeValidatorName(GetComandLiniValueByKey(args, "--validation-rules", "-v"));
+            string fileCabinetServicerName = DependencyResolver.NormalizeFileCabinetServiceName(GetComandLiniValueByKey(args, "--storage", "-s"));
+            fileCabinetService = DependencyResolver.GetFileCabinetService(fileCabinetServicerName, validatorName);
+            Console.WriteLine($"Using {validatorName} validation rules.");
+            Console.WriteLine($"Using {fileCabinetServicerName} storage.");
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();
 
@@ -85,42 +87,39 @@ namespace FileCabinetApp
             while (isRunning);
         }
 
-        private static (string, IRecordValidator) GetFileCabinetValidatorFromCommandLineParams(string[] args)
+        private static string GetComandLiniValueByKey(string[] args, string fullKey, string shortKey)
         {
             string key = default;
-            string value = default;
+            string value = string.Empty;
+
             for (int i = 0; i < args.Length; ++i)
             {
-                if (args[i].StartsWith("-v"))
+                if (args[i].StartsWith(shortKey))
                 {
-                    key = "-v";
+                    key = shortKey;
                 }
-                else if (args[i].StartsWith("--validation-rules"))
+                else if (args[i].StartsWith(fullKey))
                 {
-                    key = "--validation-rules";
+                    key = fullKey;
                 }
 
                 if (!string.IsNullOrEmpty(key))
                 {
                     if (args[i] == key)
                     {
-                        value = i + 1 < args.Length ? args[i + 1] : default;
+                        value = i + 1 < args.Length ? args[i + 1] : string.Empty;
                     }
                     else
                     {
                         var pair = args[i].Split("=", 2);
-                        value = pair?[1];
+                        value = pair.Length == 2 ? pair[1] : string.Empty;
                     }
 
                     break;
                 }
             }
 
-            return value?.ToLower() switch
-            {
-                "custom" => (value, new CustomValidator()),
-                _ => ("default", new DefaultValidator()),
-            };
+            return value;
         }
 
         private static void PrintMissedCommandInfo(string command)
