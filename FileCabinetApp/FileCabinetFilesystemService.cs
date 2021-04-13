@@ -89,7 +89,34 @@ namespace FileCabinetApp
         /// <param name="record">File cabinet record.</param>
         public void EditRecord(FileCabinetRecord record)
         {
-            throw new NotImplementedException();
+            this.fileStream.Seek(0, SeekOrigin.Begin);
+            this.fileStream.Seek(2, SeekOrigin.Current);
+            int offset = FileCabinetRecordSize - 4;
+            do
+            {
+                int id = this.reader.ReadInt32();
+                if (id == record.Id)
+                {
+                    char[] buffer = this.StringToChars(record.FirstName, 120);
+                    this.writer.Write(buffer);
+                    buffer = this.StringToChars(record.LastName, 120);
+                    this.writer.Write(buffer);
+                    this.writer.Write(record.DateOfBirth.Year);
+                    this.writer.Write(record.DateOfBirth.Month);
+                    this.writer.Write(record.DateOfBirth.Day);
+                    this.writer.Write(record.DigitKey);
+                    this.writer.Write(record.Account);
+                    this.writer.Write(record.Sex);
+                    this.writer.Flush();
+                    this.fileStream.Seek(0, SeekOrigin.Begin);
+                    this.fileStream.Flush();
+                    return;
+                }
+
+                this.fileStream.Seek(offset, SeekOrigin.Current);
+            }
+            while (this.fileStream.Position + offset < this.fileStream.Length);
+            this.fileStream.Seek(0, SeekOrigin.Begin);
         }
 
         /// <summary>
@@ -129,7 +156,7 @@ namespace FileCabinetApp
         /// <returns>FileCabinetRecord. </returns>
         public FileCabinetRecord FindRecordById(int id)
         {
-            throw new NotImplementedException();
+            return this.GetRecordsYield().FirstOrDefault(x => x.Id == id);
         }
 
         /// <summary>
