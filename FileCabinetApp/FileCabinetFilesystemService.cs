@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -11,11 +12,13 @@ namespace FileCabinetApp
     /// <summary>
     /// Service for filesytem filecabinet data.
     /// </summary>
-    public class FileCabinetFilesystemService : IFileCabinetService
+    public class FileCabinetFilesystemService : IFileCabinetService, IDisposable
     {
         private const int FileCabinetRecordSize = 277;
         private readonly FileStream fileStream;
         private readonly IRecordValidator validator;
+        private readonly BinaryReader reader;
+        private readonly BinaryWriter writer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileCabinetFilesystemService"/> class.
@@ -26,6 +29,8 @@ namespace FileCabinetApp
         {
             this.fileStream = stream;
             this.validator = validator;
+            this.reader = new BinaryReader(stream);
+            this.writer = new BinaryWriter(stream);
         }
 
         /// <summary>
@@ -45,8 +50,7 @@ namespace FileCabinetApp
                 try
                 {
                     this.fileStream.Seek(this.fileStream.Length - 275, SeekOrigin.Begin);
-                    var reader = new BinaryReader(this.fileStream);
-                    record.Id = reader.ReadInt32() + 1;
+                    record.Id = this.reader.ReadInt32() + 1;
                     this.fileStream.Seek(this.fileStream.Length, SeekOrigin.Begin);
                 }
                 catch (IOException e)
@@ -57,20 +61,19 @@ namespace FileCabinetApp
 
             try
             {
-                BinaryWriter writer = new BinaryWriter(this.fileStream);
-                writer.Write((short)0);
-                writer.Write(record.Id);
+                this.writer.Write((short)0);
+                this.writer.Write(record.Id);
                 char[] buffer = this.StringToChars(record.FirstName, 120);
-                writer.Write(buffer);
+                this.writer.Write(buffer);
                 buffer = this.StringToChars(record.LastName, 120);
-                writer.Write(buffer);
-                writer.Write(record.DateOfBirth.Year);
-                writer.Write(record.DateOfBirth.Month);
-                writer.Write(record.DateOfBirth.Day);
-                writer.Write(record.DigitKey);
-                writer.Write(record.Account);
-                writer.Write(record.Sex);
-                writer.Flush();
+                this.writer.Write(buffer);
+                this.writer.Write(record.DateOfBirth.Year);
+                this.writer.Write(record.DateOfBirth.Month);
+                this.writer.Write(record.DateOfBirth.Day);
+                this.writer.Write(record.DigitKey);
+                this.writer.Write(record.Account);
+                this.writer.Write(record.Sex);
+                this.writer.Flush();
             }
             catch (IOException e)
             {
@@ -135,25 +138,7 @@ namespace FileCabinetApp
         /// <returns>Array of FileCabinetRecords.</returns>
         public ReadOnlyCollection<FileCabinetRecord> GetRecords()
         {
-            List<FileCabinetRecord> list = new ();
-            this.fileStream.Seek(0, SeekOrigin.Begin);
-            var reader = new BinaryReader(this.fileStream);
-            while (this.fileStream.Position < this.fileStream.Length)
-            {
-                var record = new FileCabinetRecord();
-                this.fileStream.Seek(2, SeekOrigin.Current);
-                record.Id = reader.ReadInt32();
-                record.FirstName = new string(reader.ReadChars(120)).TrimEnd('\0');
-                record.LastName = new string(reader.ReadChars(120)).TrimEnd('\0');
-                record.DateOfBirth = new DateTime(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-                record.DigitKey = reader.ReadInt16();
-                record.Account = reader.ReadDecimal();
-                record.Sex = reader.ReadChar();
-                list.Add(record);
-            }
-
-            this.fileStream.Flush();
-            this.fileStream.Seek(0, SeekOrigin.Begin);
+            var list = this.GetRecordsYield().ToList();
             return new ReadOnlyCollection<FileCabinetRecord>(list);
         }
 
@@ -184,6 +169,25 @@ namespace FileCabinetApp
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Dispose object.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose pattern implementation.
+        /// </summary>
+        /// <param name="disposed">Disposed.</param>
+        protected virtual void Dispose(bool disposed)
+        {
+            this.reader?.Dispose();
+            this.writer?.Dispose();
+        }
+
         private char[] StringToChars(string data, int arrayLength)
         {
             char[] result = new char[arrayLength];
@@ -193,6 +197,27 @@ namespace FileCabinetApp
             }
 
             return result;
+        }
+
+        private IEnumerable<FileCabinetRecord> GetRecordsYield()
+        {
+            this.fileStream.Seek(0, SeekOrigin.Begin);
+            while (this.fileStream.Position < this.fileStream.Length)
+            {
+                var record = new FileCabinetRecord();
+                this.fileStream.Seek(2, SeekOrigin.Current);
+                record.Id = this.reader.ReadInt32();
+                record.FirstName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
+                record.LastName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
+                record.DateOfBirth = new DateTime(this.reader.ReadInt32(), this.reader.ReadInt32(), this.reader.ReadInt32());
+                record.DigitKey = this.reader.ReadInt16();
+                record.Account = this.reader.ReadDecimal();
+                record.Sex = this.reader.ReadChar();
+                yield return record;
+            }
+
+            this.fileStream.Flush();
+            this.fileStream.Seek(0, SeekOrigin.Begin);
         }
     }
 }

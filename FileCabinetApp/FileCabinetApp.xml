@@ -137,6 +137,17 @@
             </summary>
             <returns>FileCabinetServiceSnapshot.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Dispose">
+            <summary>
+            Dispose object.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Dispose(System.Boolean)">
+            <summary>
+            Dispose pattern implementation.
+            </summary>
+            <param name="disposed">Disposed.</param>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetMemoryService">
             <summary>
             Service for filecabinet data.
