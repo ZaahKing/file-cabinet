@@ -26,6 +26,117 @@
             </summary>
             <returns>Collection of FileCabinrtRecors.</returns>
         </member>
+        <member name="T:FileCabinetApp.DependencyResolver">
+            <summary>
+            Resolve dependency using names in strings.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.DependencyResolver.NormalizeValidatorName(System.String)">
+            <summary>
+            Return normalize known validator name.
+            </summary>
+            <param name="someName">Possible validator name.</param>
+            <returns>Actual validator name.</returns>
+        </member>
+        <member name="M:FileCabinetApp.DependencyResolver.NormalizeFileCabinetServiceName(System.String)">
+            <summary>
+            Return normalize known FileCabinetService name.
+            </summary>
+            <param name="someName">Possible FileCabinetService name.</param>
+            <returns>Actual FileCabinetService name.</returns>
+        </member>
+        <member name="M:FileCabinetApp.DependencyResolver.GetValidator(System.String)">
+            <summary>
+            Return validator.
+            </summary>
+            <param name="validatorName">Validator name.</param>
+            <returns>Validator.</returns>
+        </member>
+        <member name="M:FileCabinetApp.DependencyResolver.GetFileCabinetService(System.String,System.String)">
+            <summary>
+            Return file cabinet service.
+            </summary>
+            <param name="serviceName">File cabinet service name.</param>
+            <param name="validatorName">Validator name.</param>
+            <returns>File cabinet service.</returns>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetFilesystemService">
+            <summary>
+            Service for filesytem filecabinet data.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.#ctor(System.IO.FileStream,FileCabinetApp.IRecordValidator)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetFilesystemService"/> class.
+            </summary>
+            <param name="stream">File stream.</param>
+            <param name="validator">Validator.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Add new record.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <returns>Returns Id of new record.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Edit existing record found by Id.
+            </summary>
+            <param name="record">File cabinet record.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByBirthDate(System.DateTime)">
+            <summary>
+            Helps to find record by date of birth.
+            </summary>
+            <param name="date">Date of birth.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
+            <summary>
+            Helps to find record by first name.
+            </summary>
+            <param name="firstName">FirstName.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByLastName(System.String)">
+            <summary>
+            Helps to find record by last name.
+            </summary>
+            <param name="lastName">FirstName.</param>
+            <returns>FileCabinetRecords. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindRecordById(System.Int32)">
+            <summary>
+            Helps to find record by Id.
+            </summary>
+            <param name="id">Id.</param>
+            <returns>FileCabinetRecord. </returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetRecords">
+            <summary>
+            Returns all FileCabinetRecords.
+            </summary>
+            <returns>Array of FileCabinetRecords.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetStat">
+            <summary>
+            Returns count of records.
+            </summary>
+            <returns>Count of records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetValidator">
+            <summary>
+            Returns validator used in service.
+            </summary>
+            <returns>Validator.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.MakeSnapshot">
+            <summary>
+            Make file cabinet records snapshot.
+            </summary>
+            <returns>FileCabinetServiceSnapshot.</returns>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetMemoryService">
             <summary>
             Service for filecabinet data.

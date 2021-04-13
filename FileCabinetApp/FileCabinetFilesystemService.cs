@@ -9,19 +9,22 @@ using System.Threading.Tasks;
 namespace FileCabinetApp
 {
     /// <summary>
-    /// Service for in memory filecabinet data.
+    /// Service for filesytem filecabinet data.
     /// </summary>
     public class FileCabinetFilesystemService : IFileCabinetService
     {
         private readonly FileStream fileStream;
+        private readonly IRecordValidator validator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileCabinetFilesystemService"/> class.
         /// </summary>
         /// <param name="stream">File stream.</param>
-        public FileCabinetFilesystemService(FileStream stream)
+        /// <param name="validator">Validator.</param>
+        public FileCabinetFilesystemService(FileStream stream, IRecordValidator validator)
         {
             this.fileStream = stream;
+            this.validator = validator;
         }
 
         /// <summary>

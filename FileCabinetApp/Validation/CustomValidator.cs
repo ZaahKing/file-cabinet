@@ -95,9 +95,9 @@ namespace FileCabinetApp
         /// <exception cref="ArgumentException">When is not 'F' or 'M'.</exception>
         public void CheckSex(char sex)
         {
-            if (sex != 'F' || sex != 'M')
+            if (sex != 'f' && sex != 'm')
             {
-                throw new ArgumentException("Sex parabeter has to contain 'F' or 'M'.", nameof(sex));
+                throw new ArgumentException("Sex parabeter has to contain 'f' or 'm'.", nameof(sex));
             }
         }
     }
