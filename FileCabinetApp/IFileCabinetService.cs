@@ -73,5 +73,12 @@ namespace FileCabinetApp
         /// </summary>
         /// <returns>FileCabinetServiceSnapshot.</returns>
         FileCabinetServiceSnapshot MakeSnapshot();
+
+        /// <summary>
+        /// Restore file cabinet records from snapshot.
+        /// </summary>
+        /// <param name="snapshot">Snapshot object.</param>
+        /// <returns>Cout of added records.</returns>
+        int Restore(FileCabinetServiceSnapshot snapshot);
     }
 }

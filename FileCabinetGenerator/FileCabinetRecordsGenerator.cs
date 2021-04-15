@@ -11,7 +11,7 @@ namespace FileCabinetGenerator
         private readonly string[] firstNames = new string[]
         {
             "James", "Mary", "John", "Patricia ", "Robert", "Jennifer", "Michael", "Linda", "William", "Elizabeth",
-            "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah   993,847", "Charles", "Karen",
+            "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah", "Charles", "Karen",
             "Christopher", "Nancy", "Daniel", "Lisa", "Matthew", "Margaret", "Anthony", "Betty", "Donald", "Sandra",
             "Mark", "Ashley", "Paul", "Dorothy", "Steven", "Kimberly", "Andrew", "Emily", "Kenneth", "Donna",
             "Joshua", "Michelle", "Kevin", "Carol", "Brian", "Amanda", "George", "Melissa", "Edward", "Deborah",

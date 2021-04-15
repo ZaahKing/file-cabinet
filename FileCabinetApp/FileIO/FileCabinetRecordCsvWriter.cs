@@ -46,7 +46,7 @@ namespace FileCabinetApp
         {
             try
             {
-                this.writer.WriteLine($"{record.Id},{record.FirstName},{record.LastName},{record.DigitKey},{record.Account},{record.Sex}");
+                this.writer.WriteLine($"{record.Id},{record.FirstName},{record.LastName},{record.DateOfBirth},{record.DigitKey},{record.Account},{record.Sex}");
             }
             catch (Exception e)
             {

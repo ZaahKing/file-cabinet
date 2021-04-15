@@ -300,9 +300,25 @@ namespace FileCabinetApp
                 return;
             }
 
+            FileStream fileStream;
+            try
+            {
+                fileStream = File.OpenRead(fileName);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Can't open file");
+                return;
+            }
+
+            int count = 0;
+            var snapshot = new FileCabinetServiceSnapshot();
             switch (format)
             {
                 case "csv":
+                    snapshot.LoadFromCSV(fileStream);
+                    count = fileCabinetService.Restore(snapshot);
+                    break;
                 case "xml":
                     Console.WriteLine(format);
                     break;
@@ -310,6 +326,8 @@ namespace FileCabinetApp
                     Console.WriteLine("Format is not supported.");
                     break;
             }
+
+            Console.WriteLine($"{count} records were imported from {fileName}.");
         }
 
         private static (string, string) SplitParam(string parameters)
