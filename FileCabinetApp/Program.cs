@@ -30,6 +30,7 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("find", Find),
             new Tuple<string, Action<string>>("export", Export),
+            new Tuple<string, Action<string>>("import", Import),
         };
 
         private static string[][] helpMessages = new string[][]
@@ -41,7 +42,8 @@ namespace FileCabinetApp
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
-            new string[] { "export", "export records", "The 'export' command save data to file." },
+            new string[] { "export", "export records to file", "The 'export' command save data to file." },
+            new string[] { "import", "import records from file", "The 'import' command load data from file." },
         };
 
         /// <summary>
@@ -287,6 +289,27 @@ namespace FileCabinetApp
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        private static void Import(string parameters)
+        {
+            (string format, string fileName) = SplitParam(parameters);
+            if (!File.Exists(fileName))
+            {
+                Console.WriteLine($"File \"{fileName}\"is not exist.");
+                return;
+            }
+
+            switch (format)
+            {
+                case "csv":
+                case "xml":
+                    Console.WriteLine(format);
+                    break;
+                default:
+                    Console.WriteLine("Format is not supported.");
+                    break;
             }
         }
 
