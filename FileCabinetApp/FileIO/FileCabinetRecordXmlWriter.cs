@@ -50,7 +50,7 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="record">File cabinet record.</param>
         /// <exception cref="IOException">When can not write the record.</exception>
-        public void Write(FileCabinetRecord record)
+        public void WriteRecord(FileCabinetRecord record)
         {
             try
             {
@@ -100,6 +100,28 @@ namespace FileCabinetApp
             catch (Exception e)
             {
                 throw new IOException("Can't write header.", e);
+            }
+        }
+
+        /// <summary>
+        /// Write collection.
+        /// </summary>
+        /// <param name="list">Read-only collection of file cabinet records.</param>
+        public void Write(IEnumerable<FileCabinetRecord> list)
+        {
+            try
+            {
+                this.WriteHeader();
+                foreach (var record in list)
+                {
+                    this.WriteRecord(record);
+                }
+
+                this.WriteFooter();
+            }
+            catch (IOException e)
+            {
+                throw new IOException("Can't write the list.", e);
             }
         }
 

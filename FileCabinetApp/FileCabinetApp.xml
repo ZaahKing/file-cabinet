@@ -290,71 +290,6 @@
             <returns> Sex of user.</returns>
             <value> Sex.</value>
         </member>
-        <member name="T:FileCabinetApp.FileCabinetRecordCsvWriter">
-            <summary>
-            Write records to stream.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.#ctor(System.IO.TextWriter)">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordCsvWriter"/> class.
-            </summary>
-            <param name="writer">Text writer.</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.WriteHeader">
-            <summary>
-            Write CSV header to text strem.
-            </summary>
-            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Write(FileCabinetApp.FileCabinetRecord)">
-            <summary>
-            Write record to text strem.
-            </summary>
-            <param name="record">File cabinet record.</param>
-            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
-        </member>
-        <member name="T:FileCabinetApp.FileCabinetRecordXmlWriter">
-            <summary>
-            Write records to XML stream.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.#ctor(System.IO.StreamWriter)">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlWriter"/> class.
-            </summary>
-            <param name="writer">Stream writer.</param>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteHeader">
-            <summary>
-            Write XML header to a strem.
-            </summary>
-            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Write(FileCabinetApp.FileCabinetRecord)">
-            <summary>
-            Write XML header to a strem.
-            </summary>
-            <param name="record">File cabinet record.</param>
-            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteFooter">
-            <summary>
-            Write XML footer to a strem.
-            </summary>
-            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose">
-            <summary>
-            Dispose mothod.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose(System.Boolean)">
-            <summary>
-            Dispose mothod.
-            </summary>
-            <param name="disposed">Disposing clue.</param>
-        </member>
         <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
             <summary>
             Keep file cabinrt records snapshot.
@@ -377,6 +312,139 @@
             Save snapshot to XML file.
             </summary>
             <param name="writer"> Get writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.Save(FileCabinetApp.IFileCabinetRecordWriter)">
+            <summary>
+            Save snapshot file using writer.
+            </summary>
+            <param name="writer"> Get writer.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordCsvWriter">
+            <summary>
+            Write records to stream.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.#ctor(System.IO.TextWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordCsvWriter"/> class.
+            </summary>
+            <param name="writer">Text writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.WriteHeader">
+            <summary>
+            Write CSV header to text strem.
+            </summary>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.WriteRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Write record to text strem.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing"> Disposing clue.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordXmlSerializerWriter">
+            <summary>
+            Write records to XML stream.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.#ctor(System.IO.StreamWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlSerializerWriter"/> class.
+            </summary>
+            <param name="writer">Stream writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.Dispose">
+            <summary>
+            Dispose mothod.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.Dispose(System.Boolean)">
+            <summary>
+            Dispose mothod.
+            </summary>
+            <param name="disposed">Disposing clue.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordXmlWriter">
+            <summary>
+            Write records to XML stream.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.#ctor(System.IO.StreamWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlWriter"/> class.
+            </summary>
+            <param name="writer">Stream writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteHeader">
+            <summary>
+            Write XML header to a strem.
+            </summary>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Write XML header to a strem.
+            </summary>
+            <param name="record">File cabinet record.</param>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteFooter">
+            <summary>
+            Write XML footer to a strem.
+            </summary>
+            <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose">
+            <summary>
+            Dispose mothod.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose(System.Boolean)">
+            <summary>
+            Dispose mothod.
+            </summary>
+            <param name="disposed">Disposing clue.</param>
+        </member>
+        <member name="T:FileCabinetApp.IFileCabinetRecordWriter">
+            <summary>
+            Describe file cabinet writer interface.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetRecordWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
         </member>
         <member name="T:FileCabinetApp.IFileCabinetService">
             <summary>

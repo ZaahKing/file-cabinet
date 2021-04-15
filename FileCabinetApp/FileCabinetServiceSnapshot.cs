@@ -29,18 +29,7 @@ namespace FileCabinetApp
         /// <param name="writer"> Get writer.</param>
         public void SaveToCSV(FileCabinetRecordCsvWriter writer)
         {
-            try
-            {
-                writer.WriteHeader();
-                foreach (var record in this.records)
-                {
-                    writer.Write(record);
-                }
-            }
-            catch (IOException e)
-            {
-                throw new IOException("Can't write snapshot.", e);
-            }
+            writer.Write(this.records);
         }
 
         /// <summary>
@@ -49,20 +38,16 @@ namespace FileCabinetApp
         /// <param name="writer"> Get writer.</param>
         public void SaveToXML(FileCabinetRecordXmlWriter writer)
         {
-            try
-            {
-                writer.WriteHeader();
-                foreach (var record in this.records)
-                {
-                    writer.Write(record);
-                }
+            writer.Write(this.records);
+        }
 
-                writer.WriteFooter();
-            }
-            catch (IOException e)
-            {
-                throw new IOException("Can't write snapshot.", e);
-            }
+        /// <summary>
+        /// Save snapshot file using writer.
+        /// </summary>
+        /// <param name="writer"> Get writer.</param>
+        public void Save(IFileCabinetRecordWriter writer)
+        {
+            writer.Write(this.records);
         }
     }
 }

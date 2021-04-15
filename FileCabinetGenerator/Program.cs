@@ -52,14 +52,20 @@ namespace FileCabinetGenerator
 
             var recordGenerator = new FileCabinetRecordsGenerator();
             var list = recordGenerator.Generate(recordAmount, startId);
+            FileCabinetServiceSnapshot snapshot = new (list);
+            using StreamWriter writer = new StreamWriter(File.OpenWrite(fileName));
 
             switch (fileType.ToLower())
             {
                 case "csv":
                     {
-                        FileCabinetServiceSnapshot snapshot = new (list);
-                        using TextWriter writer = new StreamWriter(File.OpenWrite(fileName));
                         snapshot.SaveToCSV(new FileCabinetRecordCsvWriter(writer));
+                        break;
+                    }
+
+                case "xml":
+                    {
+                        snapshot.Save(new FileCabinetRecordXmlSerializerWriter(writer));
                         break;
                     }
             }
