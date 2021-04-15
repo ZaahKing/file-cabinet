@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
@@ -14,13 +11,13 @@ namespace FileCabinetApp
     {
         private const string DefaultValidatorName = "default";
         private const string DefaultServiceName = "memory";
-        private static Dictionary<string, Func<IRecordValidator, IFileCabinetService>> fileCabinetServices = new ()
+        private static readonly Dictionary<string, Func<IRecordValidator, IFileCabinetService>> FileCabinetServices = new ()
         {
             { "memory", GetFileCabinetMemoryService },
             { "file", GetFileCabinetFilesystemService },
         };
 
-        private static Dictionary<string, Func<IRecordValidator>> recordValidators = new ()
+        private static readonly Dictionary<string, Func<IRecordValidator>> RecordValidators = new ()
         {
             { "default", () => new DefaultValidator() },
             { "custom", () => new CustomValidator() },
@@ -33,7 +30,7 @@ namespace FileCabinetApp
         /// <returns>Actual validator name.</returns>
         public static string NormalizeValidatorName(string someName)
         {
-            return NormalizeName(recordValidators, someName, DefaultValidatorName);
+            return NormalizeName(RecordValidators, someName, DefaultValidatorName);
         }
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace FileCabinetApp
         /// <returns>Actual FileCabinetService name.</returns>
         public static string NormalizeFileCabinetServiceName(string someName)
         {
-            return NormalizeName(fileCabinetServices, someName, DefaultServiceName);
+            return NormalizeName(FileCabinetServices, someName, DefaultServiceName);
         }
 
         /// <summary>
@@ -53,7 +50,7 @@ namespace FileCabinetApp
         /// <returns>Validator.</returns>
         public static IRecordValidator GetValidator(string validatorName)
         {
-            return recordValidators[NormalizeValidatorName(validatorName)]();
+            return RecordValidators[NormalizeValidatorName(validatorName)]();
         }
 
         /// <summary>
@@ -64,7 +61,7 @@ namespace FileCabinetApp
         /// <returns>File cabinet service.</returns>
         public static IFileCabinetService GetFileCabinetService(string serviceName, string validatorName)
         {
-            return fileCabinetServices[NormalizeFileCabinetServiceName(serviceName)](GetValidator(validatorName));
+            return FileCabinetServices[NormalizeFileCabinetServiceName(serviceName)](GetValidator(validatorName));
         }
 
         private static IFileCabinetService GetFileCabinetFilesystemService(IRecordValidator validator)

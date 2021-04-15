@@ -53,7 +53,7 @@ namespace FileCabinetGenerator
             var recordGenerator = new FileCabinetRecordsGenerator();
             var list = recordGenerator.Generate(recordAmount, startId);
             FileCabinetServiceSnapshot snapshot = new (list);
-            using StreamWriter writer = new StreamWriter(File.OpenWrite(fileName));
+            using StreamWriter writer = new (File.OpenWrite(fileName));
 
             switch (fileType.ToLower())
             {
@@ -68,6 +68,10 @@ namespace FileCabinetGenerator
                         snapshot.Save(new FileCabinetRecordXmlSerializerWriter(writer));
                         break;
                     }
+
+                default:
+                    Console.WriteLine("Format is not supported.");
+                    return;
             }
 
             Console.WriteLine($"{recordAmount} records is generated to the {fileName}.");
