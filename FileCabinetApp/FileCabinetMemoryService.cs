@@ -20,15 +20,10 @@ namespace FileCabinetApp
         /// <summary>
         /// Initializes a new instance of the <see cref="FileCabinetMemoryService"/> class.
         /// </summary>
-        /// <param name="gateway">DAL.</param>
         /// <param name="validator">Get validator.</param>
-        public FileCabinetMemoryService(IFileCabinetGateway gateway, IRecordValidator validator)
+        public FileCabinetMemoryService(IRecordValidator validator)
         {
             this.Validator = validator;
-            foreach (var item in gateway.GetFileCabinetRecords())
-            {
-                this.CreateRecord(item);
-            }
         }
 
         /// <summary>

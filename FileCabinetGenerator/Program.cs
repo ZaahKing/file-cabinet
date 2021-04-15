@@ -1,12 +1,21 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using FileCabinetApp;
+using Microsoft.Extensions.Configuration;
 
 namespace FileCabinetGenerator
 {
-    static class Program
+    /// <summary>
+    /// Enter point class.
+    /// </summary>
+    public static class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Programm enter point.
+        /// </summary>
+        /// <param name="args"> Parameters from consol.</param>
+        public static void Main(string[] args)
         {
             var switchMappings = new Dictionary<string, string>()
             {
@@ -41,10 +50,21 @@ namespace FileCabinetGenerator
                 return;
             }
 
-            Console.WriteLine($"output-type = {fileType}");
-            Console.WriteLine($"output = {fileName}");
-            Console.WriteLine($"records-amount = {recordAmount}");
-            Console.WriteLine($"start-id = {startId}");
+            var recordGenerator = new FileCabinetRecordsGenerator();
+            var list = recordGenerator.Generate(recordAmount, startId);
+
+            switch (fileType.ToLower())
+            {
+                case "csv":
+                    {
+                        FileCabinetServiceSnapshot snapshot = new (list);
+                        using TextWriter writer = new StreamWriter(File.OpenWrite(fileName));
+                        snapshot.SaveToCSV(new FileCabinetRecordCsvWriter(writer));
+                        break;
+                    }
+            }
+
+            Console.WriteLine($"{recordAmount} records is generated to the {fileName}.");
         }
     }
 }

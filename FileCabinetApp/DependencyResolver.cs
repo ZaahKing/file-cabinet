@@ -74,7 +74,7 @@ namespace FileCabinetApp
 
         private static IFileCabinetService GetFileCabinetMemoryService(IRecordValidator validator)
         {
-            return new FileCabinetMemoryService(new FileCabinetMemoryGateway(), validator);
+            return new FileCabinetMemoryService(validator);
         }
 
         private static string NormalizeName<T>(Dictionary<string, T> dictionary, string someName, string defaultName)

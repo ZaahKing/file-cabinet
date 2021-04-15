@@ -153,11 +153,10 @@
             Service for filecabinet data.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.#ctor(FileCabinetApp.IRecordValidator)">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetMemoryService"/> class.
             </summary>
-            <param name="gateway">DAL.</param>
             <param name="validator">Get validator.</param>
         </member>
         <member name="P:FileCabinetApp.FileCabinetMemoryService.Validator">
