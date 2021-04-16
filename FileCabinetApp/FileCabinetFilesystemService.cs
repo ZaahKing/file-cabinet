@@ -186,7 +186,24 @@ namespace FileCabinetApp
         /// <returns>Cout of added records.</returns>
         public int Restore(FileCabinetServiceSnapshot snapshot)
         {
-            throw new NotImplementedException();
+            int errorsCount = 0;
+            this.fileStream.SetLength(0);
+            this.fileStream.Flush();
+            var list = snapshot.GetRecords();
+            foreach (var record in list)
+            {
+                try
+                {
+                    this.CreateRecord(record);
+                }
+                catch (Exception e)
+                {
+                    errorsCount++;
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return list.Count - errorsCount;
         }
 
         /// <summary>
