@@ -38,7 +38,7 @@ namespace FileCabinetApp
         public int CreateRecord(FileCabinetRecord record)
         {
             this.ValidateParameters(record);
-            record.Id = this.list.Count + 1;
+            record.Id = (this.list.Count == 0 ? 0 : this.list.Max(x => x.Id)) + 1;
             this.list.Add(record);
             this.AddIndex(this.firstNameDictionary, record.FirstName, record);
             this.AddIndex(this.lastNameDictionary, record.LastName, record);
@@ -140,6 +140,24 @@ namespace FileCabinetApp
         public int GetStat()
         {
             return this.list.Count;
+        }
+
+        /// <summary>
+        /// Remove record.
+        /// </summary>
+        /// <param name="id">Id for delation.</param>
+        public void RemoveRecord(int id)
+        {
+            var record = this.FindRecordById(id);
+            if (record is null)
+            {
+                return;
+            }
+
+            this.RemoveIndex(this.firstNameDictionary, record.FirstName, record);
+            this.RemoveIndex(this.lastNameDictionary, record.LastName, record);
+            this.RemoveIndex(this.bithdayDictionary, record.DateOfBirth, record);
+            this.list.Remove(record);
         }
 
         /// <summary>

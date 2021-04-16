@@ -80,5 +80,11 @@ namespace FileCabinetApp
         /// <param name="snapshot">Snapshot object.</param>
         /// <returns>Cout of added records.</returns>
         int Restore(FileCabinetServiceSnapshot snapshot);
+
+        /// <summary>
+        /// Remove record.
+        /// </summary>
+        /// <param name="id">Id for delation.</param>
+        void RemoveRecord(int id);
     }
 }

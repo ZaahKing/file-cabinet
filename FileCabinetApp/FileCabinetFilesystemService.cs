@@ -207,6 +207,15 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Remove record.
+        /// </summary>
+        /// <param name="id">Id for delation.</param>
+        public void RemoveRecord(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Dispose object.
         /// </summary>
         public void Dispose()

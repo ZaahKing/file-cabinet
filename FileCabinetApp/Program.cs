@@ -24,6 +24,7 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("edit", Edit),
             new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("find", Find),
+            new Tuple<string, Action<string>>("remove", Remove),
             new Tuple<string, Action<string>>("export", Export),
             new Tuple<string, Action<string>>("import", Import),
         };
@@ -37,6 +38,7 @@ namespace FileCabinetApp
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
+            new string[] { "remove", "remove records", "The 'remove' command remove record by id." },
             new string[] { "export", "export records to file", "The 'export' command save data to file." },
             new string[] { "import", "import records from file", "The 'import' command load data from file." },
         };
@@ -240,6 +242,24 @@ namespace FileCabinetApp
             }
 
             PrintFileCabinetRecordsList(list);
+        }
+
+        private static void Remove(string parameters)
+        {
+            if (!int.TryParse(parameters, out var id))
+            {
+                Console.WriteLine("Need a numeric parameter.");
+                return;
+            }
+
+            if (fileCabinetService.FindRecordById(id) is null)
+            {
+                Console.WriteLine($"Record #{id} is not exist.");
+                return;
+            }
+
+            fileCabinetService.RemoveRecord(id);
+            Console.WriteLine($"Record #{id} is removed.");
         }
 
         private static void Export(string parameters)
