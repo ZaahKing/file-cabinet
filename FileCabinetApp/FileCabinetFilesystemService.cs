@@ -12,6 +12,7 @@ namespace FileCabinetApp
     public class FileCabinetFilesystemService : IFileCabinetService, IDisposable
     {
         private const int FileCabinetRecordSize = 277;
+        private const short DeleteFlagMask = 4;
         private readonly FileStream fileStream;
         private readonly IRecordValidator validator;
         private readonly BinaryReader reader;
@@ -212,7 +213,16 @@ namespace FileCabinetApp
         /// <param name="id">Id for delation.</param>
         public void RemoveRecord(int id)
         {
-            throw new NotImplementedException();
+            FileElement? nullableItem = this.GetFileElementsYeld().FirstOrDefault(x => x.Record.Id == id);
+            if (nullableItem is null)
+            {
+                return;
+            }
+
+            var item = nullableItem.Value;
+            this.fileStream.Seek(item.Position, SeekOrigin.Begin);
+            this.writer.Write(item.Header | DeleteFlagMask);
+            this.fileStream.Flush();
         }
 
         /// <summary>
@@ -245,13 +255,15 @@ namespace FileCabinetApp
             return result;
         }
 
-        private IEnumerable<FileCabinetRecord> GetRecordsYield()
+        private IEnumerable<FileElement> GetFileElementsYeld()
         {
             this.fileStream.Seek(0, SeekOrigin.Begin);
             while (this.fileStream.Position < this.fileStream.Length)
             {
+                FileElement element;
                 var record = new FileCabinetRecord();
-                this.fileStream.Seek(2, SeekOrigin.Current);
+                element.Position = this.fileStream.Position;
+                element.Header = this.reader.ReadInt16();
                 record.Id = this.reader.ReadInt32();
                 record.FirstName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
                 record.LastName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
@@ -259,11 +271,40 @@ namespace FileCabinetApp
                 record.DigitKey = this.reader.ReadInt16();
                 record.Account = this.reader.ReadDecimal();
                 record.Sex = this.reader.ReadChar();
-                yield return record;
+                element.Record = record;
+                yield return element;
             }
 
             this.fileStream.Flush();
             this.fileStream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private IEnumerable<FileCabinetRecord> GetRecordsYield()
+        {
+            foreach (var fileElement in this.GetFileElementsYeld())
+            {
+                if (!fileElement.IsDeleted)
+                {
+                    yield return fileElement.Record;
+                }
+            }
+            //this.fileStream.Seek(0, SeekOrigin.Begin);
+            //while (this.fileStream.Position < this.fileStream.Length)
+            //{
+            //    var record = new FileCabinetRecord();
+            //    this.fileStream.Seek(2, SeekOrigin.Current);
+            //    record.Id = this.reader.ReadInt32();
+            //    record.FirstName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
+            //    record.LastName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
+            //    record.DateOfBirth = new DateTime(this.reader.ReadInt32(), this.reader.ReadInt32(), this.reader.ReadInt32());
+            //    record.DigitKey = this.reader.ReadInt16();
+            //    record.Account = this.reader.ReadDecimal();
+            //    record.Sex = this.reader.ReadChar();
+            //    yield return record;
+            //}
+
+            //this.fileStream.Flush();
+            //this.fileStream.Seek(0, SeekOrigin.Begin);
         }
 
         private void WriteRecordWithoutIDInCurrentPosition(FileCabinetRecord record)
@@ -278,6 +319,18 @@ namespace FileCabinetApp
             this.writer.Write(record.DigitKey);
             this.writer.Write(record.Account);
             this.writer.Write(record.Sex);
+        }
+
+        private struct FileElement
+        {
+            public short Header;
+            public long Position;
+            public FileCabinetRecord Record;
+
+            public bool IsDeleted
+            {
+                get { return (this.Header & 4) != 0; }
+            }
         }
     }
 }
