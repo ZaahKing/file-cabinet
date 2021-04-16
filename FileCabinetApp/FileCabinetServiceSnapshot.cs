@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
@@ -12,7 +11,7 @@ namespace FileCabinetApp
     /// </summary>
     public class FileCabinetServiceSnapshot
     {
-        private readonly FileCabinetRecord[] records;
+        private FileCabinetRecord[] records;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileCabinetServiceSnapshot"/> class.
@@ -24,23 +23,47 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileCabinetServiceSnapshot"/> class.
+        /// </summary>
+        public FileCabinetServiceSnapshot()
+        {
+            this.records = Array.Empty<FileCabinetRecord>();
+        }
+
+        /// <summary>
+        /// Records.
+        /// </summary>
+        /// <returns>Read-only collection.</returns>
+        public IReadOnlyCollection<FileCabinetRecord> GetRecords()
+        {
+            return new ReadOnlyCollection<FileCabinetRecord>(this.records);
+        }
+
+        /// <summary>
+        /// Load snapshot from CSV file.
+        /// </summary>
+        /// <param name="reader"> Get reader.</param>
+        public void LoadFromCSV(FileStream reader)
+        {
+            this.Load(new FileCabinetRecordCsvReader(reader));
+        }
+
+        /// <summary>
         /// Save snapshot to CSV file.
         /// </summary>
         /// <param name="writer"> Get writer.</param>
         public void SaveToCSV(FileCabinetRecordCsvWriter writer)
         {
-            try
-            {
-                writer.WriteHeader();
-                foreach (var record in this.records)
-                {
-                    writer.Write(record);
-                }
-            }
-            catch (IOException e)
-            {
-                throw new IOException("Can't write snapshot.", e);
-            }
+            writer.Write(this.records);
+        }
+
+        /// <summary>
+        /// Load snapshot from XML file.
+        /// </summary>
+        /// <param name="reader"> Get reader.</param>
+        public void LoadFromXml(FileStream reader)
+        {
+            this.Load(new FileCabinetRecordXmlSerializerReader(reader));
         }
 
         /// <summary>
@@ -49,20 +72,25 @@ namespace FileCabinetApp
         /// <param name="writer"> Get writer.</param>
         public void SaveToXML(FileCabinetRecordXmlWriter writer)
         {
-            try
-            {
-                writer.WriteHeader();
-                foreach (var record in this.records)
-                {
-                    writer.Write(record);
-                }
+            writer.Write(this.records);
+        }
 
-                writer.WriteFooter();
-            }
-            catch (IOException e)
-            {
-                throw new IOException("Can't write snapshot.", e);
-            }
+        /// <summary>
+        /// Load snapshot file using reader.
+        /// </summary>
+        /// <param name="writer"> Get writer.</param>
+        public void Load(IFileCabinetRecordReader writer)
+        {
+            this.records = writer.Load().ToArray();
+        }
+
+        /// <summary>
+        /// Save snapshot file using writer.
+        /// </summary>
+        /// <param name="writer"> Get writer.</param>
+        public void Save(IFileCabinetRecordWriter writer)
+        {
+            writer.Write(this.records);
         }
     }
 }

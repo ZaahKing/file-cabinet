@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 
 namespace FileCabinetApp
 {
@@ -16,11 +15,7 @@ namespace FileCabinetApp
         private const int DescriptionHelpIndex = 1;
         private const int ExplanationHelpIndex = 2;
 
-        private static bool isRunning = true;
-
-        private static IFileCabinetService fileCabinetService;
-
-        private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
+        private static readonly Tuple<string, Action<string>>[] Commands = new Tuple<string, Action<string>>[]
         {
             new Tuple<string, Action<string>>("help", PrintHelp),
             new Tuple<string, Action<string>>("exit", Exit),
@@ -30,9 +25,10 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("find", Find),
             new Tuple<string, Action<string>>("export", Export),
+            new Tuple<string, Action<string>>("import", Import),
         };
 
-        private static string[][] helpMessages = new string[][]
+        private static readonly string[][] HelpMessages = new string[][]
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
@@ -41,8 +37,13 @@ namespace FileCabinetApp
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
-            new string[] { "export", "export records", "The 'export' command save data to file." },
+            new string[] { "export", "export records to file", "The 'export' command save data to file." },
+            new string[] { "import", "import records from file", "The 'import' command load data from file." },
         };
+
+        private static bool isRunning = true;
+
+        private static IFileCabinetService fileCabinetService;
 
         /// <summary>
         /// Programm enter point.
@@ -72,12 +73,12 @@ namespace FileCabinetApp
                     continue;
                 }
 
-                var index = Array.FindIndex(commands, 0, commands.Length, i => i.Item1.Equals(command, StringComparison.InvariantCultureIgnoreCase));
+                var index = Array.FindIndex(Commands, 0, Commands.Length, i => i.Item1.Equals(command, StringComparison.InvariantCultureIgnoreCase));
                 if (index >= 0)
                 {
                     const int parametersIndex = 1;
                     var parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty;
-                    commands[index].Item2(parameters);
+                    Commands[index].Item2(parameters);
                 }
                 else
                 {
@@ -132,10 +133,10 @@ namespace FileCabinetApp
         {
             if (!string.IsNullOrEmpty(parameters))
             {
-                var index = Array.FindIndex(helpMessages, 0, helpMessages.Length, i => string.Equals(i[Program.CommandHelpIndex], parameters, StringComparison.InvariantCultureIgnoreCase));
+                var index = Array.FindIndex(HelpMessages, 0, HelpMessages.Length, i => string.Equals(i[Program.CommandHelpIndex], parameters, StringComparison.InvariantCultureIgnoreCase));
                 if (index >= 0)
                 {
-                    Console.WriteLine(helpMessages[index][Program.ExplanationHelpIndex]);
+                    Console.WriteLine(HelpMessages[index][Program.ExplanationHelpIndex]);
                 }
                 else
                 {
@@ -146,7 +147,7 @@ namespace FileCabinetApp
             {
                 Console.WriteLine("Available commands:");
 
-                foreach (var helpMessage in helpMessages)
+                foreach (var helpMessage in HelpMessages)
                 {
                     Console.WriteLine("\t{0}\t- {1}", helpMessage[Program.CommandHelpIndex], helpMessage[Program.DescriptionHelpIndex]);
                 }
@@ -288,6 +289,46 @@ namespace FileCabinetApp
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private static void Import(string parameters)
+        {
+            (string format, string fileName) = SplitParam(parameters);
+            if (!File.Exists(fileName))
+            {
+                Console.WriteLine($"File \"{fileName}\"is not exist.");
+                return;
+            }
+
+            FileStream fileStream;
+            try
+            {
+                fileStream = File.OpenRead(fileName);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Can't open file");
+                return;
+            }
+
+            int count = 0;
+            var snapshot = new FileCabinetServiceSnapshot();
+            switch (format)
+            {
+                case "csv":
+                    snapshot.LoadFromCSV(fileStream);
+                    count = fileCabinetService.Restore(snapshot);
+                    break;
+                case "xml":
+                    snapshot.LoadFromXml(fileStream);
+                    count = fileCabinetService.Restore(snapshot);
+                    break;
+                default:
+                    Console.WriteLine("Format is not supported.");
+                    break;
+            }
+
+            Console.WriteLine($"{count} records were imported from {fileName}.");
         }
 
         private static (string, string) SplitParam(string parameters)

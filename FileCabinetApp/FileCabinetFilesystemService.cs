@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
@@ -180,6 +177,33 @@ namespace FileCabinetApp
         {
             var list = this.GetRecordsYield().ToArray();
             return new FileCabinetServiceSnapshot(list);
+        }
+
+        /// <summary>
+        /// Restore file cabinet records from snapshot.
+        /// </summary>
+        /// <param name="snapshot">Snapshot object.</param>
+        /// <returns>Cout of added records.</returns>
+        public int Restore(FileCabinetServiceSnapshot snapshot)
+        {
+            int errorsCount = 0;
+            this.fileStream.SetLength(0);
+            this.fileStream.Flush();
+            var list = snapshot.GetRecords();
+            foreach (var record in list)
+            {
+                try
+                {
+                    this.CreateRecord(record);
+                }
+                catch (Exception e)
+                {
+                    errorsCount++;
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return list.Count - errorsCount;
         }
 
         /// <summary>

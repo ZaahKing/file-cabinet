@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace FileCabinetApp
 {
     /// <summary>
     /// Describe personal data.
     /// </summary>
+    [Serializable]
     public class FileCabinetRecord
     {
         /// <summary>
@@ -16,6 +14,7 @@ namespace FileCabinetApp
         /// </summary>
         /// <returns> Identification number of user.</returns>
         /// <value>Idetification number.</value>
+        [XmlAttribute("id")]
         public int Id { get; set; }
 
         /// <summary>

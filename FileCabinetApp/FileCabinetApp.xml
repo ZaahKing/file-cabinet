@@ -137,6 +137,13 @@
             </summary>
             <returns>FileCabinetServiceSnapshot.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.Restore(FileCabinetApp.FileCabinetServiceSnapshot)">
+            <summary>
+            Restore file cabinet records from snapshot.
+            </summary>
+            <param name="snapshot">Snapshot object.</param>
+            <returns>Cout of added records.</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.Dispose">
             <summary>
             Dispose object.
@@ -153,11 +160,10 @@
             Service for filecabinet data.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.#ctor(FileCabinetApp.IFileCabinetGateway,FileCabinetApp.IRecordValidator)">
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.#ctor(FileCabinetApp.IRecordValidator)">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetMemoryService"/> class.
             </summary>
-            <param name="gateway">DAL.</param>
             <param name="validator">Get validator.</param>
         </member>
         <member name="P:FileCabinetApp.FileCabinetMemoryService.Validator">
@@ -225,6 +231,13 @@
             </summary>
             <returns>FileCabinetServiceSnapshot.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.Restore(FileCabinetApp.FileCabinetServiceSnapshot)">
+            <summary>
+            Restore file cabinet records from snapshot.
+            </summary>
+            <param name="snapshot">Snapshot object.</param>
+            <returns>Cout of added records.</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.GetValidator">
             <summary>
             Returns validator used in service.
@@ -291,6 +304,92 @@
             <returns> Sex of user.</returns>
             <value> Sex.</value>
         </member>
+        <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
+            <summary>
+            Keep file cabinrt records snapshot.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.#ctor(FileCabinetApp.FileCabinetRecord[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> class.
+            </summary>
+            <param name="data"> Get snapshot.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> class.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.GetRecords">
+            <summary>
+            Records.
+            </summary>
+            <returns>Read-only collection.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.LoadFromCSV(System.IO.FileStream)">
+            <summary>
+            Load snapshot from CSV file.
+            </summary>
+            <param name="reader"> Get reader.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToCSV(FileCabinetApp.FileCabinetRecordCsvWriter)">
+            <summary>
+            Save snapshot to CSV file.
+            </summary>
+            <param name="writer"> Get writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.LoadFromXml(System.IO.FileStream)">
+            <summary>
+            Load snapshot from XML file.
+            </summary>
+            <param name="reader"> Get reader.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToXML(FileCabinetApp.FileCabinetRecordXmlWriter)">
+            <summary>
+            Save snapshot to XML file.
+            </summary>
+            <param name="writer"> Get writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.Load(FileCabinetApp.IFileCabinetRecordReader)">
+            <summary>
+            Load snapshot file using reader.
+            </summary>
+            <param name="writer"> Get writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.Save(FileCabinetApp.IFileCabinetRecordWriter)">
+            <summary>
+            Save snapshot file using writer.
+            </summary>
+            <param name="writer"> Get writer.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordCsvReader">
+            <summary>
+            Read file cabinet records from csv file.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvReader.#ctor(System.IO.FileStream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordCsvReader"/> class.
+            </summary>
+            <param name="fileStream">Stream.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvReader.Load">
+            <summary>
+            Get records.
+            </summary>
+            <returns>File Cabinet Records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvReader.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvReader.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Вisposing.</param>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetRecordCsvWriter">
             <summary>
             Write records to stream.
@@ -308,12 +407,85 @@
             </summary>
             <exception cref="T:System.IO.IOException">When can not write the record.</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.WriteRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Write record to text strem.
             </summary>
             <param name="record">File cabinet record.</param>
             <exception cref="T:System.IO.IOException">When can not write the record.</exception>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCsvWriter.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing"> Disposing clue.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordXmlSerializerReader">
+            <summary>
+            Read file cabinet records from XML file.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.#ctor(System.IO.FileStream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlSerializerReader"/> class.
+            </summary>
+            <param name="fileStream">Stream.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.Load">
+            <summary>
+            Get records.
+            </summary>
+            <returns>File Cabinet Records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Вisposing.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordXmlSerializerWriter">
+            <summary>
+            Write records to XML stream.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.#ctor(System.IO.StreamWriter)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlSerializerWriter"/> class.
+            </summary>
+            <param name="writer">Stream writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.Dispose">
+            <summary>
+            Dispose mothod.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerWriter.Dispose(System.Boolean)">
+            <summary>
+            Dispose mothod.
+            </summary>
+            <param name="disposed">Disposing clue.</param>
         </member>
         <member name="T:FileCabinetApp.FileCabinetRecordXmlWriter">
             <summary>
@@ -332,7 +504,7 @@
             </summary>
             <exception cref="T:System.IO.IOException">When can not write the record.</exception>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Write(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.WriteRecord(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Write XML header to a strem.
             </summary>
@@ -345,6 +517,12 @@
             </summary>
             <exception cref="T:System.IO.IOException">When can not write the record.</exception>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Write collection.
+            </summary>
+            <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetRecordXmlWriter.Dispose">
             <summary>
             Dispose mothod.
@@ -356,28 +534,27 @@
             </summary>
             <param name="disposed">Disposing clue.</param>
         </member>
-        <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
+        <member name="T:FileCabinetApp.IFileCabinetRecordReader">
             <summary>
-            Keep file cabinrt records snapshot.
+            Describe file cabinet reader interface.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.#ctor(FileCabinetApp.FileCabinetRecord[])">
+        <member name="M:FileCabinetApp.IFileCabinetRecordReader.Load">
             <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetServiceSnapshot"/> class.
+            Load file cabinet records.
             </summary>
-            <param name="data"> Get snapshot.</param>
+            <returns>File cabinet records collection.</returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToCSV(FileCabinetApp.FileCabinetRecordCsvWriter)">
+        <member name="T:FileCabinetApp.IFileCabinetRecordWriter">
             <summary>
-            Save snapshot to CSV file.
+            Describe file cabinet writer interface.
             </summary>
-            <param name="writer"> Get writer.</param>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToXML(FileCabinetApp.FileCabinetRecordXmlWriter)">
+        <member name="M:FileCabinetApp.IFileCabinetRecordWriter.Write(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
             <summary>
-            Save snapshot to XML file.
+            Write collection.
             </summary>
-            <param name="writer"> Get writer.</param>
+            <param name="list">Read-only collection of file cabinet records.</param>
         </member>
         <member name="T:FileCabinetApp.IFileCabinetService">
             <summary>
@@ -448,6 +625,13 @@
             Make file cabinet records snapshot.
             </summary>
             <returns>FileCabinetServiceSnapshot.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.Restore(FileCabinetApp.FileCabinetServiceSnapshot)">
+            <summary>
+            Restore file cabinet records from snapshot.
+            </summary>
+            <param name="snapshot">Snapshot object.</param>
+            <returns>Cout of added records.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

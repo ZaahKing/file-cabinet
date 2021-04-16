@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCabinetApp", "FileCabinetApp\FileCabinetApp.csproj", "{084F2602-BDA0-4A93-A70B-B76D8BDCACC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCabinetGenerator", "FileCabinetGenerator\FileCabinetGenerator.csproj", "{D82E502D-8A68-46AC-9BE9-4F0003D20E22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{084F2602-BDA0-4A93-A70B-B76D8BDCACC0}.Release|x64.Build.0 = Release|Any CPU
 		{084F2602-BDA0-4A93-A70B-B76D8BDCACC0}.Release|x86.ActiveCfg = Release|Any CPU
 		{084F2602-BDA0-4A93-A70B-B76D8BDCACC0}.Release|x86.Build.0 = Release|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Debug|x64.Build.0 = Debug|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Debug|x86.Build.0 = Debug|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Release|x64.ActiveCfg = Release|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Release|x64.Build.0 = Release|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Release|x86.ActiveCfg = Release|Any CPU
+		{D82E502D-8A68-46AC-9BE9-4F0003D20E22}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

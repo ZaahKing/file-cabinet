@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
@@ -12,23 +10,18 @@ namespace FileCabinetApp
     /// </summary>
     public class FileCabinetMemoryService : IFileCabinetService
     {
-        private readonly ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
         private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
         private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
+        private ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileCabinetMemoryService"/> class.
         /// </summary>
-        /// <param name="gateway">DAL.</param>
         /// <param name="validator">Get validator.</param>
-        public FileCabinetMemoryService(IFileCabinetGateway gateway, IRecordValidator validator)
+        public FileCabinetMemoryService(IRecordValidator validator)
         {
             this.Validator = validator;
-            foreach (var item in gateway.GetFileCabinetRecords())
-            {
-                this.CreateRecord(item);
-            }
         }
 
         /// <summary>
@@ -156,6 +149,35 @@ namespace FileCabinetApp
         public FileCabinetServiceSnapshot MakeSnapshot()
         {
             return new FileCabinetServiceSnapshot(this.list.ToArray());
+        }
+
+        /// <summary>
+        /// Restore file cabinet records from snapshot.
+        /// </summary>
+        /// <param name="snapshot">Snapshot object.</param>
+        /// <returns>Cout of added records.</returns>
+        public int Restore(FileCabinetServiceSnapshot snapshot)
+        {
+            this.list = new List<FileCabinetRecord>();
+            int successCounter = 0;
+            foreach (var record in snapshot.GetRecords())
+            {
+                try
+                {
+                    this.Validator.CheckAll(record);
+                    this.list.Add(record);
+                    this.AddIndex(this.firstNameDictionary, record.FirstName, record);
+                    this.AddIndex(this.lastNameDictionary, record.LastName, record);
+                    this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
+                    successCounter++;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+
+            return successCounter;
         }
 
         /// <summary>

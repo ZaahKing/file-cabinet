@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FileCabinetGenerator</name>
+    </assembly>
+    <members>
+        <member name="T:FileCabinetGenerator.FileCabinetRecordsGenerator">
+            <summary>
+            Generate file cabinet records using in-memory service.
+            </summary>
+        </member>
+        <member name="M:FileCabinetGenerator.FileCabinetRecordsGenerator.Generate(System.Int32,System.Int32)">
+            <summary>
+            Add generated record using service.
+            </summary>
+            <param name="recordAmount">Genereted record amount.</param>
+            <param name="startId">Start with id.</param>
+            <returns>Array of records.</returns>
+        </member>
+        <member name="T:FileCabinetGenerator.Program">
+            <summary>
+            Enter point class.
+            </summary>
+        </member>
+        <member name="M:FileCabinetGenerator.Program.Main(System.String[])">
+            <summary>
+            Programm enter point.
+            </summary>
+            <param name="args"> Parameters from consol.</param>
+        </member>
+    </members>
+</doc>
