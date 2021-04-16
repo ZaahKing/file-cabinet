@@ -328,7 +328,7 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.LoadFromCSV(System.IO.FileStream)">
             <summary>
-            Save snapshot to CSV file.
+            Load snapshot from CSV file.
             </summary>
             <param name="reader"> Get reader.</param>
         </member>
@@ -337,6 +337,12 @@
             Save snapshot to CSV file.
             </summary>
             <param name="writer"> Get writer.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.LoadFromXml(System.IO.FileStream)">
+            <summary>
+            Load snapshot from XML file.
+            </summary>
+            <param name="reader"> Get reader.</param>
         </member>
         <member name="M:FileCabinetApp.FileCabinetServiceSnapshot.SaveToXML(FileCabinetApp.FileCabinetRecordXmlWriter)">
             <summary>
@@ -424,6 +430,34 @@
             Dispose.
             </summary>
             <param name="disposing"> Disposing clue.</param>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordXmlSerializerReader">
+            <summary>
+            Read file cabinet records from XML file.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.#ctor(System.IO.FileStream)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.FileCabinetRecordXmlSerializerReader"/> class.
+            </summary>
+            <param name="fileStream">Stream.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.Load">
+            <summary>
+            Get records.
+            </summary>
+            <returns>File Cabinet Records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordXmlSerializerReader.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Вisposing.</param>
         </member>
         <member name="T:FileCabinetApp.FileCabinetRecordXmlSerializerWriter">
             <summary>

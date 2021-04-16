@@ -40,7 +40,7 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Save snapshot to CSV file.
+        /// Load snapshot from CSV file.
         /// </summary>
         /// <param name="reader"> Get reader.</param>
         public void LoadFromCSV(FileStream reader)
@@ -55,6 +55,15 @@ namespace FileCabinetApp
         public void SaveToCSV(FileCabinetRecordCsvWriter writer)
         {
             writer.Write(this.records);
+        }
+
+        /// <summary>
+        /// Load snapshot from XML file.
+        /// </summary>
+        /// <param name="reader"> Get reader.</param>
+        public void LoadFromXml(FileStream reader)
+        {
+            this.Load(new FileCabinetRecordXmlSerializerReader(reader));
         }
 
         /// <summary>

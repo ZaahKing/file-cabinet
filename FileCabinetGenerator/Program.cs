@@ -53,7 +53,8 @@ namespace FileCabinetGenerator
             var recordGenerator = new FileCabinetRecordsGenerator();
             var list = recordGenerator.Generate(recordAmount, startId);
             FileCabinetServiceSnapshot snapshot = new (list);
-            using StreamWriter writer = new (File.OpenWrite(fileName));
+            using FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            using StreamWriter writer = new (fileStream);
 
             switch (fileType.ToLower())
             {

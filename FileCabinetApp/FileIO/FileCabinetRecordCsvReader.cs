@@ -85,19 +85,5 @@ namespace FileCabinetApp
             this.fileStream.Seek(0, SeekOrigin.Begin);
             return this.reader.ReadLine();
         }
-
-        private FileCabinetRecord ReadRecord(string[] fields)
-        {
-            return new FileCabinetRecord
-            {
-                Id = int.Parse(fields[0]),
-                FirstName = fields[1],
-                LastName = fields[2],
-                DateOfBirth = DateTime.Parse(fields[3]),
-                DigitKey = short.Parse(fields[4]),
-                Account = decimal.Parse(fields[5]),
-                Sex = fields[5][0],
-            };
-        }
     }
 }

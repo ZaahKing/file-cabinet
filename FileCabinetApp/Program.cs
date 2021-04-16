@@ -320,7 +320,8 @@ namespace FileCabinetApp
                     count = fileCabinetService.Restore(snapshot);
                     break;
                 case "xml":
-                    Console.WriteLine(format);
+                    snapshot.LoadFromXml(fileStream);
+                    count = fileCabinetService.Restore(snapshot);
                     break;
                 default:
                     Console.WriteLine("Format is not supported.");
