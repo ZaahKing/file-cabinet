@@ -288,23 +288,6 @@ namespace FileCabinetApp
                     yield return fileElement.Record;
                 }
             }
-            //this.fileStream.Seek(0, SeekOrigin.Begin);
-            //while (this.fileStream.Position < this.fileStream.Length)
-            //{
-            //    var record = new FileCabinetRecord();
-            //    this.fileStream.Seek(2, SeekOrigin.Current);
-            //    record.Id = this.reader.ReadInt32();
-            //    record.FirstName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
-            //    record.LastName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
-            //    record.DateOfBirth = new DateTime(this.reader.ReadInt32(), this.reader.ReadInt32(), this.reader.ReadInt32());
-            //    record.DigitKey = this.reader.ReadInt16();
-            //    record.Account = this.reader.ReadDecimal();
-            //    record.Sex = this.reader.ReadChar();
-            //    yield return record;
-            //}
-
-            //this.fileStream.Flush();
-            //this.fileStream.Seek(0, SeekOrigin.Begin);
         }
 
         private void WriteRecordWithoutIDInCurrentPosition(FileCabinetRecord record)
