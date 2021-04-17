@@ -70,11 +70,12 @@
             Create record comand.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Func{FileCabinetApp.FileCabinetRecord})">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.CreateCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+            <param name="getOutput">Get output action.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -87,11 +88,12 @@
             Edit command.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Func{FileCabinetApp.FileCabinetRecord})">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.EditCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+            <param name="getOutput">Get output action.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -143,11 +145,12 @@
             Find command.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Action{System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord}})">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.FindCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+            <param name="printer">Printer.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -202,11 +205,12 @@
             List command.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Action{System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord}})">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ListCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+            <param name="printer">Printer.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -1025,18 +1029,6 @@
             Programm enter point.
             </summary>
             <param name="args"> Parameters from consol.</param>
-        </member>
-        <member name="M:FileCabinetApp.Program.PrintFileCabinetRecordsList(System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.FileCabinetRecord})">
-            <summary>
-            Print list of records.
-            </summary>
-            <param name="list">List.</param>
-        </member>
-        <member name="M:FileCabinetApp.Program.GetFileCabinetRecordFromOutput">
-            <summary>
-            Get output from consol.
-            </summary>
-            <returns>Record.</returns>
         </member>
         <member name="T:FileCabinetApp.CustomValidator">
             <summary>

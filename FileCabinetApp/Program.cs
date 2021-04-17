@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FileCabinetApp.CommandHendlers;
 
 namespace FileCabinetApp
@@ -47,41 +48,6 @@ namespace FileCabinetApp
             while (isRunning);
         }
 
-        /// <summary>
-        /// Print list of records.
-        /// </summary>
-        /// <param name="list">List.</param>
-        public static void PrintFileCabinetRecordsList(IReadOnlyCollection<FileCabinetRecord> list)
-        {
-            if (list.Count == 0)
-            {
-                Console.WriteLine("Nothing to display.");
-                return;
-            }
-
-            foreach (var record in list)
-            {
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
-            }
-        }
-
-        /// <summary>
-        /// Get output from consol.
-        /// </summary>
-        /// <returns>Record.</returns>
-        public static FileCabinetRecord GetFileCabinetRecordFromOutput()
-        {
-            var record = new FileCabinetRecord();
-            var validator = fileCabinetService.GetValidator();
-            record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
-            record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
-            record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);
-            record.DigitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.CheckDigitKey);
-            record.Account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.CheckAccount);
-            record.Sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.CheckSex);
-            return record;
-        }
-
         private static ICommandHandler CreateCommandsHandlers()
         {
             var empty = new EmptyCommandHandler();
@@ -89,10 +55,10 @@ namespace FileCabinetApp
             var exit = new ExitCommandHelper(x => isRunning = x);
             var help = new HelpCommandHandler();
             var stat = new StatCommandHandler(fileCabinetService);
-            var create = new CreateCommandHandler(fileCabinetService);
-            var edit = new EditCommandHandler(fileCabinetService);
-            var list = new ListCommandHandler(fileCabinetService);
-            var find = new FindCommandHandler(fileCabinetService);
+            var create = new CreateCommandHandler(fileCabinetService, GetFileCabinetRecordFromOutput);
+            var edit = new EditCommandHandler(fileCabinetService, GetFileCabinetRecordFromOutput);
+            var list = new ListCommandHandler(fileCabinetService, DefaultRecordPrint);
+            var find = new FindCommandHandler(fileCabinetService, DefaultRecordPrint);
             var remove = new RemoveCommandHandler(fileCabinetService);
             var export = new ExportCommandHandler(fileCabinetService);
             var import = new ImportCommandHandler(fileCabinetService);
@@ -111,6 +77,34 @@ namespace FileCabinetApp
             exit.SetNext(unknown);
             empty.SetNext(exit);
             return empty;
+        }
+
+        private static FileCabinetRecord GetFileCabinetRecordFromOutput()
+        {
+            var record = new FileCabinetRecord();
+            var validator = fileCabinetService.GetValidator();
+            record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
+            record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
+            record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);
+            record.DigitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.CheckDigitKey);
+            record.Account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.CheckAccount);
+            record.Sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.CheckSex);
+            return record;
+        }
+
+        private static void DefaultRecordPrint(IEnumerable<FileCabinetRecord> list)
+        {
+            int counter = 0;
+            foreach (var record in list)
+            {
+                counter++;
+                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
+            }
+
+            if (counter == 0)
+            {
+                Console.WriteLine("Nothing to display.");
+            }
         }
 
         private static T GetOutput<T>(string message, Func<T> convert, Action<T> validation)

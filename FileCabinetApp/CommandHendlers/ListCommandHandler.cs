@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FileCabinetApp.CommandHendlers
 {
@@ -7,13 +8,17 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class ListCommandHandler : ServiceCommandHandlerBase
     {
+        private readonly Action<IEnumerable<FileCabinetRecord>> printer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListCommandHandler"/> class.
         /// </summary>
         /// <param name="service">File cabinet service.</param>
-        public ListCommandHandler(IFileCabinetService service)
+        /// <param name="printer">Printer.</param>
+        public ListCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> printer)
             : base(service)
         {
+            this.printer = printer;
         }
 
         /// <inheritdoc/>
@@ -22,7 +27,7 @@ namespace FileCabinetApp.CommandHendlers
         /// <inheritdoc/>
         protected override void Make(AppCommandRequest commandRequest)
         {
-            Program.PrintFileCabinetRecordsList(this.Service.GetRecords());
+            this.printer(this.Service.GetRecords());
         }
     }
 }

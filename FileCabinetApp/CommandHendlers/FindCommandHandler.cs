@@ -8,13 +8,17 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class FindCommandHandler : ServiceCommandHandlerBase
     {
+        private readonly Action<IEnumerable<FileCabinetRecord>> printer;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FindCommandHandler"/> class.
         /// </summary>
         /// <param name="service">File cabinet service.</param>
-        public FindCommandHandler(IFileCabinetService service)
+        /// <param name="printer">Printer.</param>
+        public FindCommandHandler(IFileCabinetService service, Action<IEnumerable<FileCabinetRecord>> printer)
             : base(service)
         {
+            this.printer = printer;
         }
 
         /// <inheritdoc/>
@@ -61,7 +65,7 @@ namespace FileCabinetApp.CommandHendlers
                     }
             }
 
-            Program.PrintFileCabinetRecordsList(list);
+            this.printer(list);
         }
     }
 }

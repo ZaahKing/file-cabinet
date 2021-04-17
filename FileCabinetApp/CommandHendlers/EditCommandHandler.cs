@@ -7,13 +7,17 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class EditCommandHandler : ServiceCommandHandlerBase
     {
+        private readonly Func<FileCabinetRecord> getOutput;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EditCommandHandler"/> class.
         /// </summary>
         /// <param name="service">File cabinet service.</param>
-        public EditCommandHandler(IFileCabinetService service)
+        /// <param name="getOutput">Get output action.</param>
+        public EditCommandHandler(IFileCabinetService service, Func<FileCabinetRecord> getOutput)
             : base(service)
         {
+            this.getOutput = getOutput;
         }
 
         /// <inheritdoc/>
@@ -34,7 +38,7 @@ namespace FileCabinetApp.CommandHendlers
                 return;
             }
 
-            var record = Program.GetFileCabinetRecordFromOutput();
+            var record = this.getOutput();
             record.Id = id;
             this.Service.EditRecord(record);
             Console.WriteLine($"Record #{id} is updated.");
