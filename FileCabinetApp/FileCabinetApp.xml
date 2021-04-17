@@ -50,6 +50,13 @@
             </summary>
             <param name="handler">Handler.</param>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandHandleBase.SplitParam(System.String)">
+            <summary>
+            Split param string.
+            </summary>
+            <param name="parameters">String.</param>
+            <returns>Two strings.</returns>
+        </member>
         <member name="T:FileCabinetApp.CommandHendlers.CommandHandler">
             <summary>
             Default command.
@@ -69,7 +76,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.EditCommandHandler">
@@ -83,7 +93,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.EmptyCommandHandler">
@@ -99,6 +112,12 @@
             Exit command.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ExitCommandHelper.#ctor(System.Action{System.Boolean})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ExitCommandHelper"/> class.
+            </summary>
+            <param name="running">Action for exit.</param>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.ExitCommandHelper.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
@@ -113,7 +132,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.FindCommandHandler">
@@ -127,7 +149,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.HelpCommandHandler">
@@ -166,7 +191,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.ListCommandHandler">
@@ -180,7 +208,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.PurgeCommandHandler">
@@ -194,7 +225,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.RemoveCommandHandler">
@@ -208,8 +242,45 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.GetCommandClue">
             <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase">
+            <summary>
+            Base command with service.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="P:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase.Service">
+            <summary>
+            Gets ets service.
+            </summary>
+            <value>
+            Get or set service.
+            </value>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase.GetCommandClue">
+            <summary>
+            Get clue.
+            </summary>
+            <returns>Clue.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <summary>
+            Meake overrided job.
+            </summary>
+            <param name="commandRequest">Params.</param>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.StatCommandHandler">
             <summary>
@@ -222,7 +293,10 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.StatCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.StatCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.StatCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.UnknownCommandHandler">
@@ -946,19 +1020,23 @@
             Enter point class.
             </summary>
         </member>
-        <member name="P:FileCabinetApp.Program.IsRunning">
-            <summary>
-            Gets or sets a value indicating whether an exit flag.
-            </summary>
-            <value>
-            False to exit.
-            </value>
-        </member>
         <member name="M:FileCabinetApp.Program.Main(System.String[])">
             <summary>
             Programm enter point.
             </summary>
             <param name="args"> Parameters from consol.</param>
+        </member>
+        <member name="M:FileCabinetApp.Program.PrintFileCabinetRecordsList(System.Collections.Generic.IReadOnlyCollection{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Print list of records.
+            </summary>
+            <param name="list">List.</param>
+        </member>
+        <member name="M:FileCabinetApp.Program.GetFileCabinetRecordFromOutput">
+            <summary>
+            Get output from consol.
+            </summary>
+            <returns>Record.</returns>
         </member>
         <member name="T:FileCabinetApp.CustomValidator">
             <summary>

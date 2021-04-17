@@ -6,68 +6,62 @@ namespace FileCabinetApp.CommandHendlers
     /// <summary>
     /// Find command.
     /// </summary>
-    internal class FindCommandHandler : CommandHandleBase
+    internal class FindCommandHandler : ServiceCommandHandlerBase
     {
-        private readonly IFileCabinetService service;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FindCommandHandler"/> class.
         /// </summary>
         /// <param name="service">File cabinet service.</param>
         public FindCommandHandler(IFileCabinetService service)
+            : base(service)
         {
-            this.service = service;
         }
 
         /// <inheritdoc/>
-        public override void Handle(AppCommandRequest commandRequest)
+        protected override string GetCommandClue() => "find";
+
+        /// <inheritdoc/>
+        protected override void Make(AppCommandRequest commandRequest)
         {
-            if (commandRequest.Command.Equals("find", StringComparison.CurrentCultureIgnoreCase))
+            (string fieldName, string findKey) = CommandHandleBase.SplitParam(commandRequest.Parameters);
+            IReadOnlyCollection<FileCabinetRecord> list;
+            switch (fieldName)
             {
-                (string fieldName, string findKey) = CommandHandleBase.SplitParam(commandRequest.Parameters);
-                IReadOnlyCollection<FileCabinetRecord> list;
-                switch (fieldName)
-                {
-                    case "firstname":
+                case "firstname":
+                    {
+                        list = this.Service.FindByFirstName(findKey);
+                        break;
+                    }
+
+                case "lastname":
+                    {
+                        list = this.Service.FindByLastName(findKey);
+                        break;
+                    }
+
+                case "dateofbirth":
+                    {
+                        if (DateTime.TryParse(findKey, out var date))
                         {
-                            list = this.service.FindByFirstName(findKey);
-                            break;
+                            list = this.Service.FindByBirthDate(date);
                         }
-
-                    case "lastname":
+                        else
                         {
-                            list = this.service.FindByLastName(findKey);
-                            break;
-                        }
-
-                    case "dateofbirth":
-                        {
-                            if (DateTime.TryParse(findKey, out var date))
-                            {
-                                list = this.service.FindByBirthDate(date);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Date is not correct.");
-                                return;
-                            }
-
-                            break;
-                        }
-
-                    default:
-                        {
-                            Console.WriteLine("Wrong parameters. Format is find [field] \"[key]\"");
+                            Console.WriteLine("Date is not correct.");
                             return;
                         }
-                }
 
-                Program.PrintFileCabinetRecordsList(list);
+                        break;
+                    }
+
+                default:
+                    {
+                        Console.WriteLine("Wrong parameters. Format is find [field] \"[key]\"");
+                        return;
+                    }
             }
-            else
-            {
-                this.NextHandler?.Handle(commandRequest);
-            }
+
+            Program.PrintFileCabinetRecordsList(list);
         }
     }
 }

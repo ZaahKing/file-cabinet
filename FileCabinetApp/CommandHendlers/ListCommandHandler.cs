@@ -5,30 +5,24 @@ namespace FileCabinetApp.CommandHendlers
     /// <summary>
     /// List command.
     /// </summary>
-    internal class ListCommandHandler : CommandHandleBase
+    internal class ListCommandHandler : ServiceCommandHandlerBase
     {
-        private readonly IFileCabinetService service;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ListCommandHandler"/> class.
         /// </summary>
         /// <param name="service">File cabinet service.</param>
         public ListCommandHandler(IFileCabinetService service)
+            : base(service)
         {
-            this.service = service;
         }
 
         /// <inheritdoc/>
-        public override void Handle(AppCommandRequest commandRequest)
+        protected override string GetCommandClue() => "list";
+
+        /// <inheritdoc/>
+        protected override void Make(AppCommandRequest commandRequest)
         {
-            if (commandRequest.Command.Equals("list", StringComparison.CurrentCultureIgnoreCase))
-            {
-                Program.PrintFileCabinetRecordsList(this.service.GetRecords());
-            }
-            else
-            {
-                this.NextHandler?.Handle(commandRequest);
-            }
+            Program.PrintFileCabinetRecordsList(this.Service.GetRecords());
         }
     }
 }

@@ -11,15 +11,8 @@ namespace FileCabinetApp
     {
         private const string DeveloperName = "Alexander Belyakoff";
         private const string HintMessage = "Enter your command, or enter 'help' to get help.";
+        private static bool isRunning = true;
         private static IFileCabinetService fileCabinetService;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether an exit flag.
-        /// </summary>
-        /// <value>
-        /// False to exit.
-        /// </value>
-        public static bool IsRunning { get; set; } = true;
 
         /// <summary>
         /// Programm enter point.
@@ -51,7 +44,7 @@ namespace FileCabinetApp
 
                 hendler.Handle(request);
             }
-            while (IsRunning);
+            while (isRunning);
         }
 
         /// <summary>
@@ -93,7 +86,7 @@ namespace FileCabinetApp
         {
             var empty = new EmptyCommandHandler();
             var unknown = new UnknownCommandHandler();
-            var exit = new ExitCommandHelper();
+            var exit = new ExitCommandHelper(x => isRunning = x);
             var help = new HelpCommandHandler();
             var stat = new StatCommandHandler(fileCabinetService);
             var create = new CreateCommandHandler(fileCabinetService);
