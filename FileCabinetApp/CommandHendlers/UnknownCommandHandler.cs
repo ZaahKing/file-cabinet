@@ -11,7 +11,7 @@ namespace FileCabinetApp.CommandHendlers
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
-            if (Program.HelpMessages.Any(x => commandRequest.Command.Equals(x[Program.CommandHelpIndex], StringComparison.CurrentCultureIgnoreCase)))
+            if (HelpData.HelpMessages.Any(x => commandRequest.Command.Equals(x[HelpData.CommandHelpIndex], StringComparison.CurrentCultureIgnoreCase)))
             {
                 this.NextHandler?.Handle(commandRequest);
             }

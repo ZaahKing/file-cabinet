@@ -7,6 +7,17 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class RemoveCommandHandler : CommandHandleBase
     {
+        private readonly IFileCabinetService service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RemoveCommandHandler"/> class.
+        /// </summary>
+        /// <param name="service">File cabinet service.</param>
+        public RemoveCommandHandler(IFileCabinetService service)
+        {
+            this.service = service;
+        }
+
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
@@ -18,13 +29,13 @@ namespace FileCabinetApp.CommandHendlers
                     return;
                 }
 
-                if (Program.FileCabinetService.FindRecordById(id) is null)
+                if (this.service.FindRecordById(id) is null)
                 {
                     Console.WriteLine($"Record #{id} is not exist.");
                     return;
                 }
 
-                Program.FileCabinetService.RemoveRecord(id);
+                this.service.RemoveRecord(id);
                 Console.WriteLine($"Record #{id} is removed.");
             }
             else

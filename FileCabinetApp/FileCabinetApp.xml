@@ -63,6 +63,12 @@
             Create record comand.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.CreateCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
@@ -70,6 +76,12 @@
             <summary>
             Edit command.
             </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.EditCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
@@ -95,6 +107,12 @@
             Export command.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ExportCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
@@ -102,6 +120,12 @@
             <summary>
             Find command.
             </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.FindCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
@@ -136,6 +160,12 @@
             Import command.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ImportCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
@@ -143,6 +173,12 @@
             <summary>
             List command.
             </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ListCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
@@ -152,6 +188,12 @@
             Purge command.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.PurgeCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
@@ -160,6 +202,12 @@
             Remove record command.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.RemoveCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
@@ -167,6 +215,12 @@
             <summary>
             Stat command.
             </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.StatCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.StatCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.StatCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
@@ -767,6 +821,31 @@
             </summary>
             <param name="list">Read-only collection of file cabinet records.</param>
         </member>
+        <member name="T:FileCabinetApp.HelpData">
+            <summary>
+            Contain help data.
+            </summary>
+        </member>
+        <member name="F:FileCabinetApp.HelpData.CommandHelpIndex">
+            <summary>
+            Command help index.
+            </summary>
+        </member>
+        <member name="F:FileCabinetApp.HelpData.DescriptionHelpIndex">
+            <summary>
+            Description index.
+            </summary>
+        </member>
+        <member name="F:FileCabinetApp.HelpData.ExplanationHelpIndex">
+            <summary>
+            Explanation index.
+            </summary>
+        </member>
+        <member name="F:FileCabinetApp.HelpData.HelpMessages">
+            <summary>
+            Help data.
+            </summary>
+        </member>
         <member name="T:FileCabinetApp.IFileCabinetService">
             <summary>
             Interface of service for filecabinet data.
@@ -866,19 +945,6 @@
             <summary>
             Enter point class.
             </summary>
-        </member>
-        <member name="F:FileCabinetApp.Program.HelpMessages">
-            <summary>
-            Help data.
-            </summary>
-        </member>
-        <member name="P:FileCabinetApp.Program.FileCabinetService">
-            <summary>
-            Gets or sets file cabinet service.
-            </summary>
-            <value>
-            Service.
-            </value>
         </member>
         <member name="P:FileCabinetApp.Program.IsRunning">
             <summary>

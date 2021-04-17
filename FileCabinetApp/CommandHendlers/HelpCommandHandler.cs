@@ -14,10 +14,10 @@ namespace FileCabinetApp.CommandHendlers
             {
                 if (!string.IsNullOrEmpty(commandRequest.Parameters))
                 {
-                    var index = Array.FindIndex(Program.HelpMessages, 0, Program.HelpMessages.Length, i => string.Equals(i[Program.CommandHelpIndex], commandRequest.Parameters, StringComparison.InvariantCultureIgnoreCase));
+                    var index = Array.FindIndex(HelpData.HelpMessages, 0, HelpData.HelpMessages.Length, i => string.Equals(i[HelpData.CommandHelpIndex], commandRequest.Parameters, StringComparison.InvariantCultureIgnoreCase));
                     if (index >= 0)
                     {
-                        Console.WriteLine(Program.HelpMessages[index][Program.ExplanationHelpIndex]);
+                        Console.WriteLine(HelpData.HelpMessages[index][HelpData.ExplanationHelpIndex]);
                     }
                     else
                     {
@@ -28,9 +28,9 @@ namespace FileCabinetApp.CommandHendlers
                 {
                     Console.WriteLine("Available commands:");
 
-                    foreach (var helpMessage in Program.HelpMessages)
+                    foreach (var helpMessage in HelpData.HelpMessages)
                     {
-                        Console.WriteLine("\t{0}\t- {1}", helpMessage[Program.CommandHelpIndex], helpMessage[Program.DescriptionHelpIndex]);
+                        Console.WriteLine("\t{0}\t- {1}", helpMessage[HelpData.CommandHelpIndex], helpMessage[HelpData.DescriptionHelpIndex]);
                     }
                 }
 

@@ -8,12 +8,23 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class ImportCommandHandler : CommandHandleBase
     {
+        private readonly IFileCabinetService service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImportCommandHandler"/> class.
+        /// </summary>
+        /// <param name="service">File cabinet service.</param>
+        public ImportCommandHandler(IFileCabinetService service)
+        {
+            this.service = service;
+        }
+
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
             if (commandRequest.Command.Equals("import", StringComparison.CurrentCultureIgnoreCase))
             {
-                (string format, string fileName) = Program.SplitParam(commandRequest.Parameters);
+                (string format, string fileName) = CommandHandleBase.SplitParam(commandRequest.Parameters);
                 if (!File.Exists(fileName))
                 {
                     Console.WriteLine($"File \"{fileName}\"is not exist.");
@@ -37,11 +48,11 @@ namespace FileCabinetApp.CommandHendlers
                 {
                     case "csv":
                         snapshot.LoadFromCSV(fileStream);
-                        count = Program.FileCabinetService.Restore(snapshot);
+                        count = this.service.Restore(snapshot);
                         break;
                     case "xml":
                         snapshot.LoadFromXml(fileStream);
-                        count = Program.FileCabinetService.Restore(snapshot);
+                        count = this.service.Restore(snapshot);
                         break;
                     default:
                         Console.WriteLine("Format is not supported.");

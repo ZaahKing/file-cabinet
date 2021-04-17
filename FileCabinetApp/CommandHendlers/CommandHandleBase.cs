@@ -27,5 +27,21 @@
         {
             this.NextHandler = handler;
         }
+
+        /// <summary>
+        /// Split param string.
+        /// </summary>
+        /// <param name="parameters">String.</param>
+        /// <returns>Two strings.</returns>
+        protected static (string, string) SplitParam(string parameters)
+        {
+            string[] args = parameters.Split(' ', 2);
+            if (args.Length < 2 || string.IsNullOrWhiteSpace(parameters))
+            {
+                return (default, default);
+            }
+
+            return (args[0].ToLower(), args[1].Trim('"'));
+        }
     }
 }

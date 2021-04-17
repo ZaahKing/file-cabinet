@@ -8,24 +8,35 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class FindCommandHandler : CommandHandleBase
     {
+        private readonly IFileCabinetService service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FindCommandHandler"/> class.
+        /// </summary>
+        /// <param name="service">File cabinet service.</param>
+        public FindCommandHandler(IFileCabinetService service)
+        {
+            this.service = service;
+        }
+
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
             if (commandRequest.Command.Equals("find", StringComparison.CurrentCultureIgnoreCase))
             {
-                (string fieldName, string findKey) = Program.SplitParam(commandRequest.Parameters);
+                (string fieldName, string findKey) = CommandHandleBase.SplitParam(commandRequest.Parameters);
                 IReadOnlyCollection<FileCabinetRecord> list;
                 switch (fieldName)
                 {
                     case "firstname":
                         {
-                            list = Program.FileCabinetService.FindByFirstName(findKey);
+                            list = this.service.FindByFirstName(findKey);
                             break;
                         }
 
                     case "lastname":
                         {
-                            list = Program.FileCabinetService.FindByLastName(findKey);
+                            list = this.service.FindByLastName(findKey);
                             break;
                         }
 
@@ -33,7 +44,7 @@ namespace FileCabinetApp.CommandHendlers
                         {
                             if (DateTime.TryParse(findKey, out var date))
                             {
-                                list = Program.FileCabinetService.FindByBirthDate(date);
+                                list = this.service.FindByBirthDate(date);
                             }
                             else
                             {

@@ -7,6 +7,17 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class EditCommandHandler : CommandHandleBase
     {
+        private readonly IFileCabinetService service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditCommandHandler"/> class.
+        /// </summary>
+        /// <param name="service">File cabinet service.</param>
+        public EditCommandHandler(IFileCabinetService service)
+        {
+            this.service = service;
+        }
+
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
@@ -18,7 +29,7 @@ namespace FileCabinetApp.CommandHendlers
                     return;
                 }
 
-                if (Program.FileCabinetService.FindRecordById(id) is null)
+                if (this.service.FindRecordById(id) is null)
                 {
                     Console.WriteLine($"Record #{id} is not exist.");
                     return;
@@ -26,7 +37,7 @@ namespace FileCabinetApp.CommandHendlers
 
                 var record = Program.GetFileCabinetRecordFromOutput();
                 record.Id = id;
-                Program.FileCabinetService.EditRecord(record);
+                this.service.EditRecord(record);
                 Console.WriteLine($"Record #{id} is updated.");
             }
             else

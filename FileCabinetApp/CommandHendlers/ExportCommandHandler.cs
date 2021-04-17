@@ -8,12 +8,23 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal class ExportCommandHandler : CommandHandleBase
     {
+        private readonly IFileCabinetService service;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExportCommandHandler"/> class.
+        /// </summary>
+        /// <param name="service">File cabinet service.</param>
+        public ExportCommandHandler(IFileCabinetService service)
+        {
+            this.service = service;
+        }
+
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
             if (commandRequest.Command.Equals("export", StringComparison.CurrentCultureIgnoreCase))
             {
-                (string format, string fileName) = Program.SplitParam(commandRequest.Parameters);
+                (string format, string fileName) = CommandHandleBase.SplitParam(commandRequest.Parameters);
                 if (File.Exists(fileName))
                 {
                     Console.Write($"File is exist - rewrite {fileName}? [Y/n] ");
@@ -24,7 +35,7 @@ namespace FileCabinetApp.CommandHendlers
                     }
                 }
 
-                FileCabinetServiceSnapshot snapshot = Program.FileCabinetService.MakeSnapshot();
+                FileCabinetServiceSnapshot snapshot = this.service.MakeSnapshot();
                 try
                 {
                     using (StreamWriter writer = new (fileName))
