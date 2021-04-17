@@ -125,6 +125,12 @@
             </summary>
             <returns>Count of records.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetStatDeleted">
+            <summary>
+            Returns count records for purging.
+            </summary>
+            <returns>Count of deleted records.</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetValidator">
             <summary>
             Returns validator used in service.
@@ -236,6 +242,12 @@
             Returns count of records.
             </summary>
             <returns>Count of records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.GetStatDeleted">
+            <summary>
+            Returns count records for purging.
+            </summary>
+            <returns>Count of deleted records.</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.RemoveRecord(System.Int32)">
             <summary>
@@ -637,6 +649,12 @@
             Returns count of records.
             </summary>
             <returns>Count of records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetStatDeleted">
+            <summary>
+            Returns count records for purging.
+            </summary>
+            <returns>Count of deleted records.</returns>
         </member>
         <member name="M:FileCabinetApp.IFileCabinetService.GetValidator">
             <summary>

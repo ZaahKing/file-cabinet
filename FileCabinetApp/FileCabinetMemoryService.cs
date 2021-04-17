@@ -143,6 +143,12 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Returns count records for purging.
+        /// </summary>
+        /// <returns>Count of deleted records.</returns>
+        public int GetStatDeleted() => 0;
+
+        /// <summary>
         /// Remove record.
         /// </summary>
         /// <param name="id">Id for delation.</param>
@@ -202,10 +208,7 @@ namespace FileCabinetApp
         /// Purge storage.
         /// </summary>
         /// <returns>Zero becauce inmemroty storage do not need of purging.</returns>
-        public int PurgeStorage()
-        {
-            return 0;
-        }
+        public int PurgeStorage() => 0;
 
         /// <summary>
         /// Returns validator used in service.

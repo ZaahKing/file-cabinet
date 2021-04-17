@@ -162,6 +162,15 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Returns count records for purging.
+        /// </summary>
+        /// <returns>Count of deleted records.</returns>
+        public int GetStatDeleted()
+        {
+            return this.GetFileElementsYeld().Where(x => x.IsDeleted).Count();
+        }
+
+        /// <summary>
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>

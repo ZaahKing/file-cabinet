@@ -63,6 +63,12 @@ namespace FileCabinetApp
         int GetStat();
 
         /// <summary>
+        /// Returns count records for purging.
+        /// </summary>
+        /// <returns>Count of deleted records.</returns>
+        int GetStatDeleted();
+
+        /// <summary>
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>
