@@ -231,8 +231,34 @@ namespace FileCabinetApp
         /// <returns>Zero becauce inmemroty storage do not need of purging.</returns>
         public int PurgeStorage()
         {
-            throw new NotImplementedException();
-            return 0;
+            long[] deletetBlocksPositions = this.GetFileElementsYeld().Where(x => x.IsDeleted).Select(record => record.Position).ToArray();
+            if (deletetBlocksPositions.Length == 0)
+            {
+                return 0;
+            }
+
+            long positionToWrite = deletetBlocksPositions[0];
+            long blockForMoveLength = 0;
+            for (int i = 1; i < deletetBlocksPositions.Length; ++i)
+            {
+                blockForMoveLength = deletetBlocksPositions[i] - deletetBlocksPositions[i - 1] - FileCabinetRecordSize;
+                if (blockForMoveLength > 0)
+                {
+                    this.MoveBlocks(deletetBlocksPositions[i - 1] + FileCabinetRecordSize, positionToWrite, blockForMoveLength);
+                    positionToWrite += blockForMoveLength;
+                }
+            }
+
+            blockForMoveLength = 0;
+            if (deletetBlocksPositions[^1] + FileCabinetRecordSize < this.fileStream.Length - 1)
+            {
+                blockForMoveLength = this.fileStream.Length - deletetBlocksPositions[^1] - FileCabinetRecordSize;
+                this.MoveBlocks(deletetBlocksPositions[^1] + FileCabinetRecordSize, positionToWrite, blockForMoveLength);
+            }
+
+            this.fileStream.SetLength(positionToWrite + blockForMoveLength);
+
+            return deletetBlocksPositions.Length;
         }
 
         /// <summary>
@@ -298,6 +324,15 @@ namespace FileCabinetApp
                     yield return fileElement.Record;
                 }
             }
+        }
+
+        private void MoveBlocks(long positionFrom, long positionTo, long size)
+        {
+            this.fileStream.Seek(positionFrom, SeekOrigin.Begin);
+            var buffer = this.reader.ReadBytes((int)size);
+            this.fileStream.Seek(positionTo, SeekOrigin.Begin);
+            this.writer.Write(buffer);
+            this.fileStream.Flush();
         }
 
         private void WriteRecordWithoutIDInCurrentPosition(FileCabinetRecord record)
