@@ -86,5 +86,11 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="id">Id for delation.</param>
         void RemoveRecord(int id);
+
+        /// <summary>
+        /// Init storage purge proccess.
+        /// </summary>
+        /// <returns>Count of purged records.</returns>
+        int PurgeStorage();
     }
 }

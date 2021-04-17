@@ -27,6 +27,7 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("remove", Remove),
             new Tuple<string, Action<string>>("export", Export),
             new Tuple<string, Action<string>>("import", Import),
+            new Tuple<string, Action<string>>("purge", Purge),
         };
 
         private static readonly string[][] HelpMessages = new string[][]
@@ -41,6 +42,7 @@ namespace FileCabinetApp
             new string[] { "remove", "remove records", "The 'remove' command remove record by id." },
             new string[] { "export", "export records to file", "The 'export' command save data to file." },
             new string[] { "import", "import records from file", "The 'import' command load data from file." },
+            new string[] { "purge", "purge storage", "The 'purge' command clear storege from unused data." },
         };
 
         private static bool isRunning = true;
@@ -349,6 +351,11 @@ namespace FileCabinetApp
             }
 
             Console.WriteLine($"{count} records were imported from {fileName}.");
+        }
+
+        private static void Purge(string parameters)
+        {
+            Console.WriteLine($"Data storage processing is completed: {fileCabinetService.PurgeStorage()} of {fileCabinetService.GetStat()} records were purged.");
         }
 
         private static (string, string) SplitParam(string parameters)

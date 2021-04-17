@@ -150,6 +150,12 @@
             </summary>
             <param name="id">Id for delation.</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.PurgeStorage">
+            <summary>
+            Purge storage.
+            </summary>
+            <returns>Zero becauce inmemroty storage do not need of purging.</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.Dispose">
             <summary>
             Dispose object.
@@ -249,6 +255,12 @@
             </summary>
             <param name="snapshot">Snapshot object.</param>
             <returns>Cout of added records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.PurgeStorage">
+            <summary>
+            Purge storage.
+            </summary>
+            <returns>Zero becauce inmemroty storage do not need of purging.</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.GetValidator">
             <summary>
@@ -650,6 +662,12 @@
             Remove record.
             </summary>
             <param name="id">Id for delation.</param>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.PurgeStorage">
+            <summary>
+            Init storage purge proccess.
+            </summary>
+            <returns>Count of purged records.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

@@ -199,6 +199,15 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Purge storage.
+        /// </summary>
+        /// <returns>Zero becauce inmemroty storage do not need of purging.</returns>
+        public int PurgeStorage()
+        {
+            return 0;
+        }
+
+        /// <summary>
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>

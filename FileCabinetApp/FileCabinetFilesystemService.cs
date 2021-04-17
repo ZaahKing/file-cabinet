@@ -226,6 +226,16 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Purge storage.
+        /// </summary>
+        /// <returns>Zero becauce inmemroty storage do not need of purging.</returns>
+        public int PurgeStorage()
+        {
+            throw new NotImplementedException();
+            return 0;
+        }
+
+        /// <summary>
         /// Dispose object.
         /// </summary>
         public void Dispose()
