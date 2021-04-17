@@ -4,6 +4,109 @@
         <name>FileCabinetApp</name>
     </assembly>
     <members>
+        <member name="T:FileCabinetApp.CommandHendlers.AppCommandRequest">
+            <summary>
+            Keep comand request data.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.CommandHendlers.AppCommandRequest.Command">
+            <summary>
+            Gets or sets command name.
+            </summary>
+            <value>
+            Command name.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.CommandHendlers.AppCommandRequest.Parameters">
+            <summary>
+            Gets or sets command parameters.
+            </summary>
+            <value>
+            Parameters in string.
+            </value>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.CommandHandleBase">
+            <summary>
+            Base command handler.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.CommandHendlers.CommandHandleBase.NextHandler">
+            <summary>
+            Gets or sets Keep hendler.
+            </summary>
+            <value>
+            Keep hendler.
+            </value>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandHandleBase.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <summary>
+            Meke job here and handle next.
+            </summary>
+            <param name="commandRequest">Command request.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandHandleBase.SetNext(FileCabinetApp.CommandHendlers.ICommandHandler)">
+            <summary>
+            Set next command hendler.
+            </summary>
+            <param name="handler">Handler.</param>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.CommandHandler">
+            <summary>
+            Default command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.EmptyCommandHandler">
+            <summary>
+            Empty command handler.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.EmptyCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.ExitCommandHelper">
+            <summary>
+            Exit command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ExitCommandHelper.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.HelpCommandHandler">
+            <summary>
+            Help.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.HelpCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.ICommandHandler">
+            <summary>
+            Command handler interface.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ICommandHandler.SetNext(FileCabinetApp.CommandHendlers.ICommandHandler)">
+            <summary>
+            Set next command hendler.
+            </summary>
+            <param name="handler">Handler.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ICommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <summary>
+            Meke job here and handle next.
+            </summary>
+            <param name="commandRequest">Command request.</param>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.UnknownCommandHandler">
+            <summary>
+            Unknown.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UnknownCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetMemoryGateway">
             <summary>
             This class helps to init FileCabinet data.
@@ -691,6 +794,19 @@
             <summary>
             Enter point class.
             </summary>
+        </member>
+        <member name="F:FileCabinetApp.Program.HelpMessages">
+            <summary>
+            Help data.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.Program.IsRunning">
+            <summary>
+            Gets or sets a value indicating whether an exit flag.
+            </summary>
+            <value>
+            False to exit.
+            </value>
         </member>
         <member name="M:FileCabinetApp.Program.Main(System.String[])">
             <summary>

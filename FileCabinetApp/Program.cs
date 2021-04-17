@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using FileCabinetApp.CommandHendlers;
 
 namespace FileCabinetApp
 {
@@ -9,28 +10,14 @@ namespace FileCabinetApp
     /// </summary>
     public static class Program
     {
-        private const string DeveloperName = "Alexander Belyakoff";
-        private const string HintMessage = "Enter your command, or enter 'help' to get help.";
-        private const int CommandHelpIndex = 0;
-        private const int DescriptionHelpIndex = 1;
-        private const int ExplanationHelpIndex = 2;
+        public const int CommandHelpIndex = 0;
+        public const int DescriptionHelpIndex = 1;
+        public const int ExplanationHelpIndex = 2;
 
-        private static readonly Tuple<string, Action<string>>[] Commands = new Tuple<string, Action<string>>[]
-        {
-            new Tuple<string, Action<string>>("help", PrintHelp),
-            new Tuple<string, Action<string>>("exit", Exit),
-            new Tuple<string, Action<string>>("stat", Stat),
-            new Tuple<string, Action<string>>("create", Create),
-            new Tuple<string, Action<string>>("edit", Edit),
-            new Tuple<string, Action<string>>("list", List),
-            new Tuple<string, Action<string>>("find", Find),
-            new Tuple<string, Action<string>>("remove", Remove),
-            new Tuple<string, Action<string>>("export", Export),
-            new Tuple<string, Action<string>>("import", Import),
-            new Tuple<string, Action<string>>("purge", Purge),
-        };
-
-        private static readonly string[][] HelpMessages = new string[][]
+        /// <summary>
+        /// Help data.
+        /// </summary>
+        public static readonly string[][] HelpMessages = new string[][]
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
@@ -45,9 +32,18 @@ namespace FileCabinetApp
             new string[] { "purge", "purge storage", "The 'purge' command clear storege from unused data." },
         };
 
-        private static bool isRunning = true;
+        public static IFileCabinetService fileCabinetService;
 
-        private static IFileCabinetService fileCabinetService;
+        private const string DeveloperName = "Alexander Belyakoff";
+        private const string HintMessage = "Enter your command, or enter 'help' to get help.";
+
+        /// <summary>
+        /// Gets or sets a value indicating whether an exit flag.
+        /// </summary>
+        /// <value>
+        /// False to exit.
+        /// </value>
+        public static bool IsRunning { get; set; } = true;
 
         /// <summary>
         /// Programm enter point.
@@ -69,27 +65,48 @@ namespace FileCabinetApp
                 Console.Write("> ");
                 var inputs = Console.ReadLine().Split(' ', 2);
                 const int commandIndex = 0;
-                var command = inputs[commandIndex];
+                const int parametersIndex = 1;
+                AppCommandRequest request = new ()
+                {
+                    Command = inputs[commandIndex],
+                    Parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty,
+                };
 
-                if (string.IsNullOrEmpty(command))
-                {
-                    Console.WriteLine(Program.HintMessage);
-                    continue;
-                }
-
-                var index = Array.FindIndex(Commands, 0, Commands.Length, i => i.Item1.Equals(command, StringComparison.InvariantCultureIgnoreCase));
-                if (index >= 0)
-                {
-                    const int parametersIndex = 1;
-                    var parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty;
-                    Commands[index].Item2(parameters);
-                }
-                else
-                {
-                    PrintMissedCommandInfo(command);
-                }
+                var hendler = CreateCommandsHandlers();
+                hendler.Handle(request);
             }
-            while (isRunning);
+            while (IsRunning);
+        }
+
+        private static ICommandHandler CreateCommandsHandlers()
+        {
+            var empty = new EmptyCommandHandler();
+            var unknown = new UnknownCommandHandler();
+            var exit = new ExitCommandHelper();
+            var help = new HelpCommandHandler();
+            var stat = new CommandHandler();
+            var create = new CommandHandler();
+            var edit = new CommandHandler();
+            var list = new CommandHandler();
+            var find = new CommandHandler();
+            var remove = new CommandHandler();
+            var export = new CommandHandler();
+            var import = new CommandHandler();
+            var purge = new CommandHandler();
+            purge.SetNext(import);
+            import.SetNext(export);
+            export.SetNext(remove);
+            remove.SetNext(find);
+            find.SetNext(list);
+            list.SetNext(edit);
+            edit.SetNext(create);
+            create.SetNext(stat);
+            stat.SetNext(help);
+            help.SetNext(stat);
+            unknown.SetNext(help);
+            exit.SetNext(unknown);
+            empty.SetNext(exit);
+            return empty;
         }
 
         private static string GetComandLiniValueByKey(string[] args, string fullKey, string shortKey)
@@ -127,12 +144,6 @@ namespace FileCabinetApp
             return value;
         }
 
-        private static void PrintMissedCommandInfo(string command)
-        {
-            Console.WriteLine($"There is no '{command}' command.");
-            Console.WriteLine();
-        }
-
         private static void PrintHelp(string parameters)
         {
             if (!string.IsNullOrEmpty(parameters))
@@ -163,7 +174,7 @@ namespace FileCabinetApp
         private static void Exit(string parameters)
         {
             Console.WriteLine("Exiting an application...");
-            isRunning = false;
+            IsRunning = false;
         }
 
         private static void Stat(string parameters)

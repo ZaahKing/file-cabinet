@@ -167,7 +167,7 @@ namespace FileCabinetApp
         /// <returns>Count of deleted records.</returns>
         public int GetStatDeleted()
         {
-            return this.GetFileElementsYeld().Where(x => x.IsDeleted).Count();
+            return this.GetFileElementsYeld().Count(x => x.IsDeleted);
         }
 
         /// <summary>
