@@ -32,10 +32,16 @@ namespace FileCabinetApp
             new string[] { "purge", "purge storage", "The 'purge' command clear storege from unused data." },
         };
 
-        public static IFileCabinetService fileCabinetService;
-
         private const string DeveloperName = "Alexander Belyakoff";
         private const string HintMessage = "Enter your command, or enter 'help' to get help.";
+
+        /// <summary>
+        /// Gets or sets file cabinet service.
+        /// </summary>
+        /// <value>
+        /// Service.
+        /// </value>
+        public static IFileCabinetService FileCabinetService { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether an exit flag.
@@ -54,11 +60,12 @@ namespace FileCabinetApp
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
             string validatorName = DependencyResolver.NormalizeValidatorName(GetComandLiniValueByKey(args, "--validation-rules", "-v"));
             string fileCabinetServicerName = DependencyResolver.NormalizeFileCabinetServiceName(GetComandLiniValueByKey(args, "--storage", "-s"));
-            fileCabinetService = DependencyResolver.GetFileCabinetService(fileCabinetServicerName, validatorName);
+            FileCabinetService = DependencyResolver.GetFileCabinetService(fileCabinetServicerName, validatorName);
             Console.WriteLine($"Using {validatorName} validation rules.");
             Console.WriteLine($"Using {fileCabinetServicerName} storage.");
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();
+            var hendler = CreateCommandsHandlers();
 
             do
             {
@@ -72,7 +79,6 @@ namespace FileCabinetApp
                     Parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty,
                 };
 
-                var hendler = CreateCommandsHandlers();
                 hendler.Handle(request);
             }
             while (IsRunning);
@@ -84,24 +90,24 @@ namespace FileCabinetApp
             var unknown = new UnknownCommandHandler();
             var exit = new ExitCommandHelper();
             var help = new HelpCommandHandler();
-            var stat = new CommandHandler();
-            var create = new CommandHandler();
-            var edit = new CommandHandler();
-            var list = new CommandHandler();
-            var find = new CommandHandler();
-            var remove = new CommandHandler();
-            var export = new CommandHandler();
-            var import = new CommandHandler();
-            var purge = new CommandHandler();
-            purge.SetNext(import);
-            import.SetNext(export);
-            export.SetNext(remove);
-            remove.SetNext(find);
-            find.SetNext(list);
-            list.SetNext(edit);
-            edit.SetNext(create);
-            create.SetNext(stat);
-            stat.SetNext(help);
+            var stat = new StatCommandHandler();
+            var create = new CreateCommandHandler();
+            var edit = new EditCommandHandler();
+            var list = new ListCommandHandler();
+            var find = new FindCommandHandler();
+            var remove = new RemoveCommandHandler();
+            var export = new ExportCommandHandler();
+            var import = new ImportCommandHandler();
+            var purge = new PurgeCommandHandler();
+            purge.SetNext(null);
+            import.SetNext(purge);
+            export.SetNext(import);
+            remove.SetNext(export);
+            find.SetNext(remove);
+            list.SetNext(find);
+            edit.SetNext(list);
+            create.SetNext(edit);
+            stat.SetNext(create);
             help.SetNext(stat);
             unknown.SetNext(help);
             exit.SetNext(unknown);
@@ -144,186 +150,6 @@ namespace FileCabinetApp
             return value;
         }
 
-        private static void PrintHelp(string parameters)
-        {
-            if (!string.IsNullOrEmpty(parameters))
-            {
-                var index = Array.FindIndex(HelpMessages, 0, HelpMessages.Length, i => string.Equals(i[Program.CommandHelpIndex], parameters, StringComparison.InvariantCultureIgnoreCase));
-                if (index >= 0)
-                {
-                    Console.WriteLine(HelpMessages[index][Program.ExplanationHelpIndex]);
-                }
-                else
-                {
-                    Console.WriteLine($"There is no explanation for '{parameters}' command.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Available commands:");
-
-                foreach (var helpMessage in HelpMessages)
-                {
-                    Console.WriteLine("\t{0}\t- {1}", helpMessage[Program.CommandHelpIndex], helpMessage[Program.DescriptionHelpIndex]);
-                }
-            }
-
-            Console.WriteLine();
-        }
-
-        private static void Exit(string parameters)
-        {
-            Console.WriteLine("Exiting an application...");
-            IsRunning = false;
-        }
-
-        private static void Stat(string parameters)
-        {
-            var recordsCount = Program.fileCabinetService.GetStat();
-            Console.WriteLine($"{recordsCount} record(s). Including {fileCabinetService.GetStatDeleted()} is ready to purging.");
-        }
-
-        private static void Create(string parameters)
-        {
-            int id = fileCabinetService.CreateRecord(GetFileCabinetRecordFromOutput());
-            Console.WriteLine($"Record #{id} is created.");
-        }
-
-        private static void Edit(string parameters)
-        {
-            if (!int.TryParse(parameters, out var id))
-            {
-                Console.WriteLine("Need a numeric parameter.");
-                return;
-            }
-
-            if (fileCabinetService.FindRecordById(id) is null)
-            {
-                Console.WriteLine($"Record #{id} is not exist.");
-                return;
-            }
-
-            var record = GetFileCabinetRecordFromOutput();
-            record.Id = id;
-            fileCabinetService.EditRecord(record);
-            Console.WriteLine($"Record #{id} is updated.");
-        }
-
-        private static void List(string parameters)
-        {
-            PrintFileCabinetRecordsList(fileCabinetService.GetRecords());
-        }
-
-        private static void Find(string parameters)
-        {
-            (string fieldName, string findKey) = SplitParam(parameters);
-            IReadOnlyCollection<FileCabinetRecord> list;
-            switch (fieldName)
-            {
-                case "firstname":
-                    {
-                        list = fileCabinetService.FindByFirstName(findKey);
-                        break;
-                    }
-
-                case "lastname":
-                    {
-                        list = fileCabinetService.FindByLastName(findKey);
-                        break;
-                    }
-
-                case "dateofbirth":
-                    {
-                        if (DateTime.TryParse(findKey, out var date))
-                        {
-                            list = fileCabinetService.FindByBirthDate(date);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Date is not correct.");
-                            return;
-                        }
-
-                        break;
-                    }
-
-                default:
-                    {
-                        Console.WriteLine("Wrong parameters. Format is find [field] \"[key]\"");
-                        return;
-                    }
-            }
-
-            PrintFileCabinetRecordsList(list);
-        }
-
-        private static void Remove(string parameters)
-        {
-            if (!int.TryParse(parameters, out var id))
-            {
-                Console.WriteLine("Need a numeric parameter.");
-                return;
-            }
-
-            if (fileCabinetService.FindRecordById(id) is null)
-            {
-                Console.WriteLine($"Record #{id} is not exist.");
-                return;
-            }
-
-            fileCabinetService.RemoveRecord(id);
-            Console.WriteLine($"Record #{id} is removed.");
-        }
-
-        private static void Export(string parameters)
-        {
-            (string format, string fileName) = SplitParam(parameters);
-            if (File.Exists(fileName))
-            {
-                Console.Write($"File is exist - rewrite {fileName}? [Y/n] ");
-                char output = char.ToUpper(Console.ReadLine()[0]);
-                if (output != 'Y')
-                {
-                    return;
-                }
-            }
-
-            FileCabinetServiceSnapshot snapshot = fileCabinetService.MakeSnapshot();
-            try
-            {
-                using (StreamWriter writer = new (fileName))
-                {
-                    switch (format)
-                    {
-                        case "csv":
-                            snapshot.SaveToCSV(new FileCabinetRecordCsvWriter(writer));
-                            break;
-
-                        case "xml":
-                            {
-                                using FileCabinetRecordXmlWriter fileCabinetRecordXmlWriter = new (writer);
-                                snapshot.SaveToXML(fileCabinetRecordXmlWriter);
-                                break;
-                            }
-
-                        default:
-                            Console.WriteLine("Format is not supported.");
-                            break;
-                    }
-                }
-
-                Console.WriteLine($"All records are exported to file {fileName}.");
-            }
-            catch (IOException)
-            {
-                Console.WriteLine($"Export failed: can't open file {fileName}.");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
         private static void Import(string parameters)
         {
             (string format, string fileName) = SplitParam(parameters);
@@ -350,11 +176,11 @@ namespace FileCabinetApp
             {
                 case "csv":
                     snapshot.LoadFromCSV(fileStream);
-                    count = fileCabinetService.Restore(snapshot);
+                    count = FileCabinetService.Restore(snapshot);
                     break;
                 case "xml":
                     snapshot.LoadFromXml(fileStream);
-                    count = fileCabinetService.Restore(snapshot);
+                    count = FileCabinetService.Restore(snapshot);
                     break;
                 default:
                     Console.WriteLine("Format is not supported.");
@@ -364,13 +190,7 @@ namespace FileCabinetApp
             Console.WriteLine($"{count} records were imported from {fileName}.");
         }
 
-        private static void Purge(string parameters)
-        {
-            int recordCount = fileCabinetService.GetStat();
-            Console.WriteLine($"Data storage processing is completed: {fileCabinetService.PurgeStorage()} of {recordCount} records were purged.");
-        }
-
-        private static (string, string) SplitParam(string parameters)
+        public static (string, string) SplitParam(string parameters)
         {
             string[] args = parameters.Split(' ', 2);
             if (args.Length < 2 || string.IsNullOrWhiteSpace(parameters))
@@ -381,7 +201,7 @@ namespace FileCabinetApp
             return (args[0].ToLower(), args[1].Trim('"'));
         }
 
-        private static void PrintFileCabinetRecordsList(IReadOnlyCollection<FileCabinetRecord> list)
+        public static void PrintFileCabinetRecordsList(IReadOnlyCollection<FileCabinetRecord> list)
         {
             if (list.Count == 0)
             {
@@ -395,10 +215,10 @@ namespace FileCabinetApp
             }
         }
 
-        private static FileCabinetRecord GetFileCabinetRecordFromOutput()
+        public static FileCabinetRecord GetFileCabinetRecordFromOutput()
         {
             var record = new FileCabinetRecord();
-            var validator = fileCabinetService.GetValidator();
+            var validator = FileCabinetService.GetValidator();
             record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
             record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
             record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);

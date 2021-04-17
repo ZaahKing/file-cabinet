@@ -3,16 +3,16 @@
 namespace FileCabinetApp.CommandHendlers
 {
     /// <summary>
-    /// Exit command.
+    /// List command.
     /// </summary>
-    internal class ExitCommandHelper : CommandHandleBase
+    internal class ListCommandHandler : CommandHandleBase
     {
         /// <inheritdoc/>
         public override void Handle(AppCommandRequest commandRequest)
         {
-            if (commandRequest.Command.Equals("exit", StringComparison.CurrentCultureIgnoreCase))
+            if (commandRequest.Command.Equals("list", StringComparison.CurrentCultureIgnoreCase))
             {
-                Program.IsRunning = false;
+                Program.PrintFileCabinetRecordsList(Program.FileCabinetService.GetRecords());
             }
             else
             {

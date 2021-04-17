@@ -58,6 +58,22 @@
         <member name="M:FileCabinetApp.CommandHendlers.CommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
+        <member name="T:FileCabinetApp.CommandHendlers.CreateCommandHandler">
+            <summary>
+            Create record comand.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.EditCommandHandler">
+            <summary>
+            Edit command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
         <member name="T:FileCabinetApp.CommandHendlers.EmptyCommandHandler">
             <summary>
             Empty command handler.
@@ -72,6 +88,22 @@
             </summary>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.ExitCommandHelper.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.ExportCommandHandler">
+            <summary>
+            Export command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.FindCommandHandler">
+            <summary>
+            Find command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.HelpCommandHandler">
@@ -98,6 +130,46 @@
             Meke job here and handle next.
             </summary>
             <param name="commandRequest">Command request.</param>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.ImportCommandHandler">
+            <summary>
+            Import command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.ListCommandHandler">
+            <summary>
+            List command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.PurgeCommandHandler">
+            <summary>
+            Purge command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.RemoveCommandHandler">
+            <summary>
+            Remove record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.StatCommandHandler">
+            <summary>
+            Stat command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.StatCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.UnknownCommandHandler">
             <summary>
@@ -799,6 +871,14 @@
             <summary>
             Help data.
             </summary>
+        </member>
+        <member name="P:FileCabinetApp.Program.FileCabinetService">
+            <summary>
+            Gets or sets file cabinet service.
+            </summary>
+            <value>
+            Service.
+            </value>
         </member>
         <member name="P:FileCabinetApp.Program.IsRunning">
             <summary>
