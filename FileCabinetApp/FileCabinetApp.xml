@@ -125,6 +125,12 @@
             </summary>
             <returns>Count of records.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetStatDeleted">
+            <summary>
+            Returns count records for purging.
+            </summary>
+            <returns>Count of deleted records.</returns>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.GetValidator">
             <summary>
             Returns validator used in service.
@@ -143,6 +149,18 @@
             </summary>
             <param name="snapshot">Snapshot object.</param>
             <returns>Cout of added records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.RemoveRecord(System.Int32)">
+            <summary>
+            Remove record.
+            </summary>
+            <param name="id">Id for delation.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.PurgeStorage">
+            <summary>
+            Purge storage.
+            </summary>
+            <returns>Zero becauce inmemroty storage do not need of purging.</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.Dispose">
             <summary>
@@ -225,6 +243,18 @@
             </summary>
             <returns>Count of records.</returns>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.GetStatDeleted">
+            <summary>
+            Returns count records for purging.
+            </summary>
+            <returns>Count of deleted records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.RemoveRecord(System.Int32)">
+            <summary>
+            Remove record.
+            </summary>
+            <param name="id">Id for delation.</param>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.MakeSnapshot">
             <summary>
             Make file cabinet records snapshot.
@@ -237,6 +267,12 @@
             </summary>
             <param name="snapshot">Snapshot object.</param>
             <returns>Cout of added records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.PurgeStorage">
+            <summary>
+            Purge storage.
+            </summary>
+            <returns>Zero becauce inmemroty storage do not need of purging.</returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.GetValidator">
             <summary>
@@ -614,6 +650,12 @@
             </summary>
             <returns>Count of records.</returns>
         </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.GetStatDeleted">
+            <summary>
+            Returns count records for purging.
+            </summary>
+            <returns>Count of deleted records.</returns>
+        </member>
         <member name="M:FileCabinetApp.IFileCabinetService.GetValidator">
             <summary>
             Returns validator used in service.
@@ -632,6 +674,18 @@
             </summary>
             <param name="snapshot">Snapshot object.</param>
             <returns>Cout of added records.</returns>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.RemoveRecord(System.Int32)">
+            <summary>
+            Remove record.
+            </summary>
+            <param name="id">Id for delation.</param>
+        </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.PurgeStorage">
+            <summary>
+            Init storage purge proccess.
+            </summary>
+            <returns>Count of purged records.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

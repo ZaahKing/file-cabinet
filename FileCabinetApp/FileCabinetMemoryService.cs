@@ -38,7 +38,7 @@ namespace FileCabinetApp
         public int CreateRecord(FileCabinetRecord record)
         {
             this.ValidateParameters(record);
-            record.Id = this.list.Count + 1;
+            record.Id = (this.list.Count == 0 ? 0 : this.list.Max(x => x.Id)) + 1;
             this.list.Add(record);
             this.AddIndex(this.firstNameDictionary, record.FirstName, record);
             this.AddIndex(this.lastNameDictionary, record.LastName, record);
@@ -143,6 +143,30 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Returns count records for purging.
+        /// </summary>
+        /// <returns>Count of deleted records.</returns>
+        public int GetStatDeleted() => 0;
+
+        /// <summary>
+        /// Remove record.
+        /// </summary>
+        /// <param name="id">Id for delation.</param>
+        public void RemoveRecord(int id)
+        {
+            var record = this.FindRecordById(id);
+            if (record is null)
+            {
+                return;
+            }
+
+            this.RemoveIndex(this.firstNameDictionary, record.FirstName, record);
+            this.RemoveIndex(this.lastNameDictionary, record.LastName, record);
+            this.RemoveIndex(this.bithdayDictionary, record.DateOfBirth, record);
+            this.list.Remove(record);
+        }
+
+        /// <summary>
         /// Make file cabinet records snapshot.
         /// </summary>
         /// <returns>FileCabinetServiceSnapshot.</returns>
@@ -179,6 +203,12 @@ namespace FileCabinetApp
 
             return successCounter;
         }
+
+        /// <summary>
+        /// Purge storage.
+        /// </summary>
+        /// <returns>Zero becauce inmemroty storage do not need of purging.</returns>
+        public int PurgeStorage() => 0;
 
         /// <summary>
         /// Returns validator used in service.

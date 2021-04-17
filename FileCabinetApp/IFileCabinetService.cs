@@ -63,6 +63,12 @@ namespace FileCabinetApp
         int GetStat();
 
         /// <summary>
+        /// Returns count records for purging.
+        /// </summary>
+        /// <returns>Count of deleted records.</returns>
+        int GetStatDeleted();
+
+        /// <summary>
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>
@@ -80,5 +86,17 @@ namespace FileCabinetApp
         /// <param name="snapshot">Snapshot object.</param>
         /// <returns>Cout of added records.</returns>
         int Restore(FileCabinetServiceSnapshot snapshot);
+
+        /// <summary>
+        /// Remove record.
+        /// </summary>
+        /// <param name="id">Id for delation.</param>
+        void RemoveRecord(int id);
+
+        /// <summary>
+        /// Init storage purge proccess.
+        /// </summary>
+        /// <returns>Count of purged records.</returns>
+        int PurgeStorage();
     }
 }

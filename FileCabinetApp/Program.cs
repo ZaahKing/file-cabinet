@@ -24,8 +24,10 @@ namespace FileCabinetApp
             new Tuple<string, Action<string>>("edit", Edit),
             new Tuple<string, Action<string>>("list", List),
             new Tuple<string, Action<string>>("find", Find),
+            new Tuple<string, Action<string>>("remove", Remove),
             new Tuple<string, Action<string>>("export", Export),
             new Tuple<string, Action<string>>("import", Import),
+            new Tuple<string, Action<string>>("purge", Purge),
         };
 
         private static readonly string[][] HelpMessages = new string[][]
@@ -37,8 +39,10 @@ namespace FileCabinetApp
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
+            new string[] { "remove", "remove records", "The 'remove' command remove record by id." },
             new string[] { "export", "export records to file", "The 'export' command save data to file." },
             new string[] { "import", "import records from file", "The 'import' command load data from file." },
+            new string[] { "purge", "purge storage", "The 'purge' command clear storege from unused data." },
         };
 
         private static bool isRunning = true;
@@ -165,7 +169,7 @@ namespace FileCabinetApp
         private static void Stat(string parameters)
         {
             var recordsCount = Program.fileCabinetService.GetStat();
-            Console.WriteLine($"{recordsCount} record(s).");
+            Console.WriteLine($"{recordsCount} record(s). Including {fileCabinetService.GetStatDeleted()} is ready to purging.");
         }
 
         private static void Create(string parameters)
@@ -240,6 +244,24 @@ namespace FileCabinetApp
             }
 
             PrintFileCabinetRecordsList(list);
+        }
+
+        private static void Remove(string parameters)
+        {
+            if (!int.TryParse(parameters, out var id))
+            {
+                Console.WriteLine("Need a numeric parameter.");
+                return;
+            }
+
+            if (fileCabinetService.FindRecordById(id) is null)
+            {
+                Console.WriteLine($"Record #{id} is not exist.");
+                return;
+            }
+
+            fileCabinetService.RemoveRecord(id);
+            Console.WriteLine($"Record #{id} is removed.");
         }
 
         private static void Export(string parameters)
@@ -329,6 +351,12 @@ namespace FileCabinetApp
             }
 
             Console.WriteLine($"{count} records were imported from {fileName}.");
+        }
+
+        private static void Purge(string parameters)
+        {
+            int recordCount = fileCabinetService.GetStat();
+            Console.WriteLine($"Data storage processing is completed: {fileCabinetService.PurgeStorage()} of {recordCount} records were purged.");
         }
 
         private static (string, string) SplitParam(string parameters)

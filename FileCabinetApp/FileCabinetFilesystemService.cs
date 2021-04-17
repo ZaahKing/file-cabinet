@@ -12,6 +12,7 @@ namespace FileCabinetApp
     public class FileCabinetFilesystemService : IFileCabinetService, IDisposable
     {
         private const int FileCabinetRecordSize = 277;
+        private const short DeleteFlagMask = 4;
         private readonly FileStream fileStream;
         private readonly IRecordValidator validator;
         private readonly BinaryReader reader;
@@ -161,6 +162,15 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Returns count records for purging.
+        /// </summary>
+        /// <returns>Count of deleted records.</returns>
+        public int GetStatDeleted()
+        {
+            return this.GetFileElementsYeld().Where(x => x.IsDeleted).Count();
+        }
+
+        /// <summary>
         /// Returns validator used in service.
         /// </summary>
         /// <returns>Validator.</returns>
@@ -207,6 +217,60 @@ namespace FileCabinetApp
         }
 
         /// <summary>
+        /// Remove record.
+        /// </summary>
+        /// <param name="id">Id for delation.</param>
+        public void RemoveRecord(int id)
+        {
+            FileElement? nullableItem = this.GetFileElementsYeld().FirstOrDefault(x => x.Record.Id == id);
+            if (nullableItem is null)
+            {
+                return;
+            }
+
+            var item = nullableItem.Value;
+            this.fileStream.Seek(item.Position, SeekOrigin.Begin);
+            this.writer.Write(item.Header | DeleteFlagMask);
+            this.fileStream.Flush();
+        }
+
+        /// <summary>
+        /// Purge storage.
+        /// </summary>
+        /// <returns>Zero becauce inmemroty storage do not need of purging.</returns>
+        public int PurgeStorage()
+        {
+            long[] deletetBlocksPositions = this.GetFileElementsYeld().Where(x => x.IsDeleted).Select(record => record.Position).ToArray();
+            if (deletetBlocksPositions.Length == 0)
+            {
+                return 0;
+            }
+
+            long positionToWrite = deletetBlocksPositions[0];
+            long blockForMoveLength = 0;
+            for (int i = 1; i < deletetBlocksPositions.Length; ++i)
+            {
+                blockForMoveLength = deletetBlocksPositions[i] - deletetBlocksPositions[i - 1] - FileCabinetRecordSize;
+                if (blockForMoveLength > 0)
+                {
+                    this.MoveBlocks(deletetBlocksPositions[i - 1] + FileCabinetRecordSize, positionToWrite, blockForMoveLength);
+                    positionToWrite += blockForMoveLength;
+                }
+            }
+
+            blockForMoveLength = 0;
+            if (deletetBlocksPositions[^1] + FileCabinetRecordSize < this.fileStream.Length - 1)
+            {
+                blockForMoveLength = this.fileStream.Length - deletetBlocksPositions[^1] - FileCabinetRecordSize;
+                this.MoveBlocks(deletetBlocksPositions[^1] + FileCabinetRecordSize, positionToWrite, blockForMoveLength);
+            }
+
+            this.fileStream.SetLength(positionToWrite + blockForMoveLength);
+
+            return deletetBlocksPositions.Length;
+        }
+
+        /// <summary>
         /// Dispose object.
         /// </summary>
         public void Dispose()
@@ -236,13 +300,15 @@ namespace FileCabinetApp
             return result;
         }
 
-        private IEnumerable<FileCabinetRecord> GetRecordsYield()
+        private IEnumerable<FileElement> GetFileElementsYeld()
         {
             this.fileStream.Seek(0, SeekOrigin.Begin);
             while (this.fileStream.Position < this.fileStream.Length)
             {
+                FileElement element;
                 var record = new FileCabinetRecord();
-                this.fileStream.Seek(2, SeekOrigin.Current);
+                element.Position = this.fileStream.Position;
+                element.Header = this.reader.ReadInt16();
                 record.Id = this.reader.ReadInt32();
                 record.FirstName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
                 record.LastName = new string(this.reader.ReadChars(120)).TrimEnd('\0');
@@ -250,11 +316,32 @@ namespace FileCabinetApp
                 record.DigitKey = this.reader.ReadInt16();
                 record.Account = this.reader.ReadDecimal();
                 record.Sex = this.reader.ReadChar();
-                yield return record;
+                element.Record = record;
+                yield return element;
             }
 
             this.fileStream.Flush();
             this.fileStream.Seek(0, SeekOrigin.Begin);
+        }
+
+        private IEnumerable<FileCabinetRecord> GetRecordsYield()
+        {
+            foreach (var fileElement in this.GetFileElementsYeld())
+            {
+                if (!fileElement.IsDeleted)
+                {
+                    yield return fileElement.Record;
+                }
+            }
+        }
+
+        private void MoveBlocks(long positionFrom, long positionTo, long size)
+        {
+            this.fileStream.Seek(positionFrom, SeekOrigin.Begin);
+            var buffer = this.reader.ReadBytes((int)size);
+            this.fileStream.Seek(positionTo, SeekOrigin.Begin);
+            this.writer.Write(buffer);
+            this.fileStream.Flush();
         }
 
         private void WriteRecordWithoutIDInCurrentPosition(FileCabinetRecord record)
@@ -269,6 +356,18 @@ namespace FileCabinetApp
             this.writer.Write(record.DigitKey);
             this.writer.Write(record.Account);
             this.writer.Write(record.Sex);
+        }
+
+        private struct FileElement
+        {
+            public short Header;
+            public long Position;
+            public FileCabinetRecord Record;
+
+            public bool IsDeleted
+            {
+                get { return (this.Header & 4) != 0; }
+            }
         }
     }
 }
