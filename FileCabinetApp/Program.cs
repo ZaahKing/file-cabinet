@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FileCabinetApp.CommandHendlers;
+using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
 {
@@ -81,14 +82,45 @@ namespace FileCabinetApp
 
         private static FileCabinetRecord GetFileCabinetRecordFromOutput()
         {
-            var record = new FileCabinetRecord();
-            var validator = fileCabinetService.GetValidator();
-            record.FirstName = GetOutput("Firstname: ", () => Console.ReadLine(), validator.CheckFirstName);
-            record.LastName = GetOutput("Lasttname: ", () => Console.ReadLine(), validator.CheckLastName);
-            record.DateOfBirth = GetOutput("Day of birth: ", () => DateTime.Parse(Console.ReadLine()), validator.CheckDateOfBirth);
-            record.DigitKey = GetOutput("Digit key: ", () => short.Parse(Console.ReadLine()), validator.CheckDigitKey);
-            record.Account = GetOutput("Account value: ", () => decimal.Parse(Console.ReadLine()), validator.CheckAccount);
-            record.Sex = GetOutput("Sex: ", () => char.Parse(Console.ReadLine()), validator.CheckSex);
+            // var validator = fileCabinetService.GetValidator(); // !Impotand
+            var record = new FileCabinetRecord
+            {
+                FirstName = GetOutput(
+                    "Firstname: ",
+                    () => Console.ReadLine(),
+                    x => new FileCabinetRecord { FirstName = x },
+                    new FirstNameValidator(2, 60)),
+
+                LastName = GetOutput(
+                    "Lasttname: ",
+                    () => Console.ReadLine(),
+                    x => new FileCabinetRecord { LastName = x },
+                    new LastNameValidator(2, 60)),
+
+                DateOfBirth = GetOutput(
+                    "Day of birth: ",
+                    () => DateTime.Parse(Console.ReadLine()),
+                    x => new FileCabinetRecord { DateOfBirth = x },
+                    new LastNameValidator(2, 60)),
+
+                DigitKey = GetOutput(
+                    "Digit key: ",
+                    () => short.Parse(Console.ReadLine()),
+                    x => new FileCabinetRecord { DigitKey = x },
+                    null),
+
+                Account = GetOutput(
+                    "Account value: ",
+                    () => decimal.Parse(Console.ReadLine()),
+                    x => new FileCabinetRecord { Account = x },
+                    null),
+
+                Sex = GetOutput(
+                    "Sex: ",
+                    () => char.Parse(Console.ReadLine()),
+                    x => new FileCabinetRecord { Sex = x },
+                    null),
+            };
             return record;
         }
 
@@ -107,7 +139,7 @@ namespace FileCabinetApp
             }
         }
 
-        private static T GetOutput<T>(string message, Func<T> convert, Action<T> validation)
+        private static T GetOutput<T>(string message, Func<T> convert, Func<T, FileCabinetRecord> getRecord, IRecordValidator validator)
         {
             bool hasErrors;
             T outputValue = default(T);
@@ -118,7 +150,7 @@ namespace FileCabinetApp
                     hasErrors = false;
                     Console.Write(message);
                     outputValue = convert();
-                    validation(outputValue);
+                    validator?.ValidateParameters(getRecord(outputValue));
                 }
                 catch (Exception e)
                 {

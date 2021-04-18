@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
 {
@@ -38,7 +39,7 @@ namespace FileCabinetApp
         /// <returns>Returns Id of new record.</returns>
         public int CreateRecord(FileCabinetRecord record)
         {
-            this.validator.CheckAll(record);
+            this.validator.ValidateParameters(record);
             if (this.fileStream.Length == 0)
             {
                 record.Id = 1;

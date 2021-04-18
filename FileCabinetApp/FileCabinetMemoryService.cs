@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
 {
@@ -188,7 +189,7 @@ namespace FileCabinetApp
             {
                 try
                 {
-                    this.Validator.CheckAll(record);
+                    this.Validator.ValidateParameters(record);
                     this.list.Add(record);
                     this.AddIndex(this.firstNameDictionary, record.FirstName, record);
                     this.AddIndex(this.lastNameDictionary, record.LastName, record);
@@ -222,7 +223,7 @@ namespace FileCabinetApp
         /// <param name="record">File cabinet record.</param>
         protected virtual void ValidateParameters(FileCabinetRecord record)
         {
-            this.Validator.CheckAll(record);
+            this.Validator.ValidateParameters(record);
         }
 
         private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
 {
@@ -19,8 +20,18 @@ namespace FileCabinetApp
 
         private static readonly Dictionary<string, Func<IRecordValidator>> RecordValidators = new ()
         {
-            { "default", () => new DefaultValidator() },
-            { "custom", () => new CustomValidator() },
+            {
+                "default",
+                () => new ValidatorBuilder()
+                    .AddDefaultValidator()
+                    .Create()
+            },
+            {
+                "custom",
+                () => new ValidatorBuilder()
+                    .AddCustomValidator()
+                    .Create()
+            },
         };
 
         /// <summary>
