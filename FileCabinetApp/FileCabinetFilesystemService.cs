@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
 {
@@ -38,7 +39,7 @@ namespace FileCabinetApp
         /// <returns>Returns Id of new record.</returns>
         public int CreateRecord(FileCabinetRecord record)
         {
-            this.validator.CheckAll(record);
+            this.validator.ValidateParameters(record);
             if (this.fileStream.Length == 0)
             {
                 record.Id = 1;
@@ -167,7 +168,7 @@ namespace FileCabinetApp
         /// <returns>Count of deleted records.</returns>
         public int GetStatDeleted()
         {
-            return this.GetFileElementsYeld().Where(x => x.IsDeleted).Count();
+            return this.GetFileElementsYeld().Count(x => x.IsDeleted);
         }
 
         /// <summary>
