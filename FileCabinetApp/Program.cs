@@ -14,7 +14,7 @@ namespace FileCabinetApp
     {
         private const string DeveloperName = "Alexander Belyakoff";
         private const string HintMessage = "Enter your command, or enter 'help' to get help.";
-        private static readonly Dictionary<string, string> SwitchMappings = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> SwitchMappings = new ()
             {
                 { "-v", "validation" },
                 { "--validation-rules", "validation" },
@@ -22,6 +22,8 @@ namespace FileCabinetApp
                 { "--storage", "storage" },
                 { "-u", "stopwatch" },
                 { "--use-stopwatch", "stopwatch" },
+                { "-l", "logger" },
+                { "--use-logger", "logger" },
             };
 
         private static bool isRunning = true;
@@ -48,8 +50,14 @@ namespace FileCabinetApp
             // I deside to add true/false value to commandline for --use-stopwatch.
             if (appConfig.GetSection("stopwatch").Get<bool>())
             {
-                fileCabinetService = new ServiceMeter(fileCabinetService);
+                fileCabinetService = DependencyResolver.MeterDecorate(fileCabinetService);
                 Console.WriteLine("Stopwatch is switched on.");
+            }
+
+            if (appConfig.GetSection("logger").Get<bool>())
+            {
+                fileCabinetService = DependencyResolver.LoggingDecorate(fileCabinetService);
+                Console.WriteLine("Logging is switched on.");
             }
 
             Console.WriteLine(Program.HintMessage);
@@ -185,41 +193,6 @@ namespace FileCabinetApp
             }
             while (hasErrors);
             return outputValue;
-        }
-
-        private static string GetComandLiniValueByKey(string[] args, string fullKey, string shortKey)
-        {
-            string key = default;
-            string value = string.Empty;
-
-            for (int i = 0; i < args.Length; ++i)
-            {
-                if (args[i].StartsWith(shortKey))
-                {
-                    key = shortKey;
-                }
-                else if (args[i].StartsWith(fullKey))
-                {
-                    key = fullKey;
-                }
-
-                if (!string.IsNullOrEmpty(key))
-                {
-                    if (args[i] == key)
-                    {
-                        value = i + 1 < args.Length ? args[i + 1] : string.Empty;
-                    }
-                    else
-                    {
-                        var pair = args[i].Split("=", 2);
-                        value = pair.Length == 2 ? pair[1] : string.Empty;
-                    }
-
-                    break;
-                }
-            }
-
-            return value;
         }
     }
 }

@@ -367,6 +367,20 @@
             <param name="validatorName">Validator name.</param>
             <returns>File cabinet service.</returns>
         </member>
+        <member name="M:FileCabinetApp.DependencyResolver.MeterDecorate(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            MeterDecorate.
+            </summary>
+            <param name="service">Any service.</param>
+            <returns>Meter service.</returns>
+        </member>
+        <member name="M:FileCabinetApp.DependencyResolver.LoggingDecorate(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Loging Decorate.
+            </summary>
+            <param name="service">Any service.</param>
+            <returns>Meter service.</returns>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetRecord">
             <summary>
             Describe personal data.
@@ -799,6 +813,71 @@
             Init storage purge proccess.
             </summary>
             <returns>Count of purged records.</returns>
+        </member>
+        <member name="T:FileCabinetApp.ServiceLogger">
+            <summary>
+            Decorator for IFileCabinetService to log in file.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.#ctor(FileCabinetApp.IFileCabinetService,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.ServiceLogger"/> class.
+            </summary>
+            <param name="service">Service.</param>
+            <param name="logFileName">File name.</param>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.CreateRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.FindByBirthDate(System.DateTime)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.FindByFirstName(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.FindByLastName(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.FindRecordById(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.GetRecords">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.GetStat">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.GetStatDeleted">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.GetValidator">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.MakeSnapshot">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.Restore(FileCabinetApp.FileCabinetServiceSnapshot)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.RemoveRecord(System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.PurgeStorage">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Disposing flag.</param>
         </member>
         <member name="T:FileCabinetApp.ServiceMeter">
             <summary>

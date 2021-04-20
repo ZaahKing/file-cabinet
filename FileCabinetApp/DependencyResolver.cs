@@ -15,6 +15,7 @@ namespace FileCabinetApp
         private const string DefaultServiceName = "memory";
         private const string StorageFilename = "cabinet-records.db";
         private const string ValidatorConfigFilename = "validation-rules.json";
+        private const string LogFileName = "ServiceLogging.txt";
 
         private static readonly Dictionary<string, Func<IRecordValidator, IFileCabinetService>> FileCabinetServices = new ()
         {
@@ -81,6 +82,26 @@ namespace FileCabinetApp
         public static IFileCabinetService GetFileCabinetService(string serviceName, string validatorName)
         {
             return FileCabinetServices[NormalizeFileCabinetServiceName(serviceName)](GetValidator(validatorName));
+        }
+
+        /// <summary>
+        /// MeterDecorate.
+        /// </summary>
+        /// <param name="service">Any service.</param>
+        /// <returns>Meter service.</returns>
+        public static IFileCabinetService MeterDecorate(IFileCabinetService service)
+        {
+            return new ServiceMeter(service);
+        }
+
+        /// <summary>
+        /// Loging Decorate.
+        /// </summary>
+        /// <param name="service">Any service.</param>
+        /// <returns>Meter service.</returns>
+        public static IFileCabinetService LoggingDecorate(IFileCabinetService service)
+        {
+            return new ServiceLogger(service, LogFileName);
         }
 
         private static IFileCabinetService GetFileCabinetFilesystemService(IRecordValidator validator)
