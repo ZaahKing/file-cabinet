@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using FileCabinetApp.Validation;
 
@@ -42,7 +41,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public ReadOnlyCollection<FileCabinetRecord> FindByBirthDate(DateTime date)
+        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
             return this.Measure(
                 "FindByBirthDate method execution duration is {0} ticks.",
@@ -50,7 +49,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public IReadOnlyCollection<FileCabinetRecord> FindByFirstName(string firstName)
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
         {
             return this.Measure(
                 "FindByFirstName method execution duration is {0} ticks.",
@@ -58,7 +57,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public ReadOnlyCollection<FileCabinetRecord> FindByLastName(string lastName)
+        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
         {
             return this.Measure(
                 "FindByLastName method execution duration is {0} ticks.",
@@ -74,7 +73,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public ReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public IEnumerable<FileCabinetRecord> GetRecords()
         {
             return this.Measure(
                 "GetRecords method execution duration is {0} ticks.",

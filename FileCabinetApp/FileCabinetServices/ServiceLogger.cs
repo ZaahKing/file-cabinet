@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
@@ -45,7 +45,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public ReadOnlyCollection<FileCabinetRecord> FindByBirthDate(DateTime date)
+        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
             return this.CallMethodWithCollection(
             $"Calling FindByBirthDate() with date = '{date:yyyy-mm-dd}.",
@@ -54,7 +54,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public IReadOnlyCollection<FileCabinetRecord> FindByFirstName(string firstName)
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
         {
             return this.CallMethodWithCollection(
             $"Calling FindByFirstName() with firstname = '{firstName}.",
@@ -63,7 +63,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public ReadOnlyCollection<FileCabinetRecord> FindByLastName(string lastName)
+        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
         {
             return this.CallMethodWithCollection(
             $"Calling FindByLastName() with lastname = '{lastName}.",
@@ -81,7 +81,7 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public ReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public IEnumerable<FileCabinetRecord> GetRecords()
         {
             return this.CallMethod(
             $"Calling GetRecords().",
@@ -201,11 +201,11 @@ namespace FileCabinetApp
         }
 
         private TOutput CallMethodWithCollection<TOutput>(string inMessage, string outMessage, Func<TOutput> loggededAction)
-            where TOutput : IReadOnlyCollection<FileCabinetRecord>
+            where TOutput : IEnumerable<FileCabinetRecord>
         {
             this.LogMessage(inMessage);
             TOutput result = loggededAction();
-            this.LogMessage(string.Format(outMessage, result.Count));
+            this.LogMessage(string.Format(outMessage, result.Count()));
             return result;
         }
     }
