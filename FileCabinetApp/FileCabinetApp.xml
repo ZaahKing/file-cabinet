@@ -1065,8 +1065,41 @@
             Date of birth validator.
             </summary>
         </member>
+        <member name="M:FileCabinetApp.Validation.DateOfBirthValidator.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Validation.DateOfBirthValidator"/> class.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Validation.DateOfBirthValidator.#ctor(System.DateTime,System.DateTime)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Validation.DateOfBirthValidator"/> class.
+            </summary>
+            <param name="from">From date.</param>
+            <param name="to">To date.</param>
+        </member>
         <member name="M:FileCabinetApp.Validation.DateOfBirthValidator.ValidateParameters(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Validation.DateRange">
+            <summary>
+            Range.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.Validation.DateRange.From">
+            <summary>
+            Gets or sets start date.
+            </summary>
+            <value>
+            Start date.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Validation.DateRange.To">
+            <summary>
+            Gets or sets end date.
+            </summary>
+            <value>
+            End date.
+            </value>
         </member>
         <member name="T:FileCabinetApp.Validation.FirstNameValidator">
             <summary>
@@ -1124,6 +1157,27 @@
         </member>
         <member name="M:FileCabinetApp.Validation.PinValidator.ValidateParameters(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Validation.Range">
+            <summary>
+            Range.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.Validation.Range.Max">
+            <summary>
+            Gets or sets max value.
+            </summary>
+            <value>
+            MAx.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Validation.Range.Min">
+            <summary>
+            Gets or sets min value.
+            </summary>
+            <value>
+            Min.
+            </value>
         </member>
         <member name="T:FileCabinetApp.Validation.Validation">
             <summary>
@@ -1221,6 +1275,43 @@
             </summary>
             <param name="builder">Builder object.</param>
             <returns>Custom validator.</returns>
+        </member>
+        <member name="M:FileCabinetApp.Validation.ValidatorBuilderExtention.AddFromConfiguration(FileCabinetApp.Validation.ValidatorBuilder,FileCabinetApp.Validation.ValidatorConfiguration)">
+            <summary>
+            AddFromConfiguration.
+            </summary>
+            <param name="builder">Builder object.</param>
+            <param name="config">Configuration data.</param>
+            <returns>Custom validator.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Validation.ValidatorConfiguration">
+            <summary>
+            ValidatorConfiguration.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.Validation.ValidatorConfiguration.Firstname">
+            <summary>
+            Gets or sets firstname length range.
+            </summary>
+            <value>
+            Firstname length range.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Validation.ValidatorConfiguration.Lastname">
+            <summary>
+            Gets or sets lastname length range.
+            </summary>
+            <value>
+            Lastname length range.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Validation.ValidatorConfiguration.Dateofbirth">
+            <summary>
+            Gets or sets date of birth range.
+            </summary>
+            <value>
+            Dateofbirth length range.
+            </value>
         </member>
     </members>
 </doc>
