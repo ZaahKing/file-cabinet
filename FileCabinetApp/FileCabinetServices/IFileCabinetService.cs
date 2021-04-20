@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using FileCabinetApp.Validation;
 
 namespace FileCabinetApp
@@ -28,21 +27,21 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="date">Date of birth.</param>
         /// <returns>FileCabinetRecord. </returns>
-        ReadOnlyCollection<FileCabinetRecord> FindByBirthDate(DateTime date);
+        IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date);
 
         /// <summary>
         /// Helps to find record by first name.
         /// </summary>
         /// <param name="firstName">FirstName.</param>
         /// <returns>FileCabinetRecord. </returns>
-        IReadOnlyCollection<FileCabinetRecord> FindByFirstName(string firstName);
+        IEnumerable<FileCabinetRecord> FindByFirstName(string firstName);
 
         /// <summary>
         /// Helps to find record by last name.
         /// </summary>
         /// <param name="lastName">FirstName.</param>
         /// <returns>FileCabinetRecords. </returns>
-        ReadOnlyCollection<FileCabinetRecord> FindByLastName(string lastName);
+        IEnumerable<FileCabinetRecord> FindByLastName(string lastName);
 
         /// <summary>
         /// Helps to find record by Id.
@@ -55,7 +54,7 @@ namespace FileCabinetApp
         /// Returns all FileCabinetRecords.
         /// </summary>
         /// <returns>Array of FileCabinetRecords.</returns>
-        ReadOnlyCollection<FileCabinetRecord> GetRecords();
+        IEnumerable<FileCabinetRecord> GetRecords();
 
         /// <summary>
         /// Returns count of records.

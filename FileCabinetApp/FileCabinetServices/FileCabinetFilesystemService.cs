@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using FileCabinetApp.Validation;
@@ -105,10 +104,9 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="date">Date of birth.</param>
         /// <returns>FileCabinetRecord. </returns>
-        public ReadOnlyCollection<FileCabinetRecord> FindByBirthDate(DateTime date)
+        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
-            var list = this.GetRecordsYield().Where(x => x.DateOfBirth == date).ToList();
-            return new ReadOnlyCollection<FileCabinetRecord>(list);
+            return this.GetRecordsYield().Where(x => x.DateOfBirth == date);
         }
 
         /// <summary>
@@ -116,10 +114,9 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="firstName">FirstName.</param>
         /// <returns>FileCabinetRecord. </returns>
-        public IReadOnlyCollection<FileCabinetRecord> FindByFirstName(string firstName)
+        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
         {
-            var list = this.GetRecordsYield().Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase)).ToList();
-            return new ReadOnlyCollection<FileCabinetRecord>(list);
+            return this.GetRecordsYield().Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -127,10 +124,9 @@ namespace FileCabinetApp
         /// </summary>
         /// <param name="lastName">FirstName.</param>
         /// <returns>FileCabinetRecords. </returns>
-        public ReadOnlyCollection<FileCabinetRecord> FindByLastName(string lastName)
+        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
         {
-            var list = this.GetRecordsYield().Where(x => x.LastName.Equals(lastName, StringComparison.CurrentCultureIgnoreCase)).ToList();
-            return new ReadOnlyCollection<FileCabinetRecord>(list);
+            return this.GetRecordsYield().Where(x => x.LastName.Equals(lastName, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -147,10 +143,9 @@ namespace FileCabinetApp
         /// Returns all FileCabinetRecords.
         /// </summary>
         /// <returns>Array of FileCabinetRecords.</returns>
-        public ReadOnlyCollection<FileCabinetRecord> GetRecords()
+        public IEnumerable<FileCabinetRecord> GetRecords()
         {
-            var list = this.GetRecordsYield().ToList();
-            return new ReadOnlyCollection<FileCabinetRecord>(list);
+            return this.GetRecordsYield();
         }
 
         /// <summary>

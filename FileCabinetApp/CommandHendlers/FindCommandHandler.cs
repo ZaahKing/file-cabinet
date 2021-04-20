@@ -28,7 +28,7 @@ namespace FileCabinetApp.CommandHendlers
         protected override void Make(AppCommandRequest commandRequest)
         {
             (string fieldName, string findKey) = CommandHandleBase.SplitParam(commandRequest.Parameters);
-            IReadOnlyCollection<FileCabinetRecord> list;
+            IEnumerable<FileCabinetRecord> list;
             switch (fieldName)
             {
                 case "firstname":
