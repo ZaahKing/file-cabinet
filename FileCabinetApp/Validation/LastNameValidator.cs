@@ -28,12 +28,12 @@ namespace FileCabinetApp.Validation
         /// <inheritdoc/>
         public void ValidateParameters(FileCabinetRecord record)
         {
-            if (string.IsNullOrWhiteSpace(record.FirstName))
+            if (string.IsNullOrWhiteSpace(record.LastName))
             {
                 throw new ArgumentException("Lasstname is empty.");
             }
 
-            if (!record.FirstName.LengthInRange(this.minLength, this.maxLength))
+            if (!record.LastName.LengthInRange(this.minLength, this.maxLength))
             {
                 throw new ArgumentException("Larstname length not in range.");
             }

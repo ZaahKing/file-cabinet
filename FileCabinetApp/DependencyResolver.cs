@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using FileCabinetApp.Validation;
+using Microsoft.Extensions.Configuration;
 
 namespace FileCabinetApp
 {
@@ -12,6 +13,10 @@ namespace FileCabinetApp
     {
         private const string DefaultValidatorName = "default";
         private const string DefaultServiceName = "memory";
+        private const string StorageFilename = "cabinet-records.db";
+        private const string ValidatorConfigFilename = "validation-rules.json";
+        private const string LogFileName = "ServiceLogging.txt";
+
         private static readonly Dictionary<string, Func<IRecordValidator, IFileCabinetService>> FileCabinetServices = new ()
         {
             { "memory", GetFileCabinetMemoryService },
@@ -61,7 +66,11 @@ namespace FileCabinetApp
         /// <returns>Validator.</returns>
         public static IRecordValidator GetValidator(string validatorName)
         {
-            return RecordValidators[NormalizeValidatorName(validatorName)]();
+            var config = GetConfigurationFromJsonFile(ValidatorConfigFilename, validatorName);
+
+            return new ValidatorBuilder()
+                .AddFromConfiguration(config)
+                .Create();
         }
 
         /// <summary>
@@ -75,9 +84,29 @@ namespace FileCabinetApp
             return FileCabinetServices[NormalizeFileCabinetServiceName(serviceName)](GetValidator(validatorName));
         }
 
+        /// <summary>
+        /// MeterDecorate.
+        /// </summary>
+        /// <param name="service">Any service.</param>
+        /// <returns>Meter service.</returns>
+        public static IFileCabinetService MeterDecorate(IFileCabinetService service)
+        {
+            return new ServiceMeter(service);
+        }
+
+        /// <summary>
+        /// Loging Decorate.
+        /// </summary>
+        /// <param name="service">Any service.</param>
+        /// <returns>Meter service.</returns>
+        public static IFileCabinetService LoggingDecorate(IFileCabinetService service)
+        {
+            return new ServiceLogger(service, LogFileName);
+        }
+
         private static IFileCabinetService GetFileCabinetFilesystemService(IRecordValidator validator)
         {
-            return new FileCabinetFilesystemService(File.Open("cabinet-records.db", FileMode.OpenOrCreate), validator);
+            return new FileCabinetFilesystemService(File.Open(StorageFilename, FileMode.OpenOrCreate), validator);
         }
 
         private static IFileCabinetService GetFileCabinetMemoryService(IRecordValidator validator)
@@ -94,6 +123,14 @@ namespace FileCabinetApp
             }
 
             return defaultName;
+        }
+
+        private static ValidatorConfiguration GetConfigurationFromJsonFile(string filename, string validatorType)
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile(filename)
+                .Build();
+            return config.GetSection(validatorType).Get<ValidatorConfiguration>();
         }
     }
 }

@@ -54,5 +54,22 @@ namespace FileCabinetApp.Validation
                 .AddAnyValidator(new PinValidator())
                 .AddAnyValidator(new ClassicGenderValidator());
         }
+
+        /// <summary>
+        /// AddFromConfiguration.
+        /// </summary>
+        /// <param name="builder">Builder object.</param>
+        /// <param name="config">Configuration data.</param>
+        /// <returns>Custom validator.</returns>
+        public static ValidatorBuilder AddFromConfiguration(this ValidatorBuilder builder, ValidatorConfiguration config)
+        {
+            return builder
+                .AddAnyValidator(new FirstNameValidator(config.Firstname.Min, config.Firstname.Max))
+                .AddAnyValidator(new LastNameValidator(config.Lastname.Min, config.Lastname.Max))
+                .AddAnyValidator(new DateOfBirthValidator(config.Dateofbirth.From, config.Dateofbirth.To))
+                .AddAnyValidator(new PinValidator())
+                .AddAnyValidator(new AccountValidator())
+                .AddAnyValidator(new ClassicGenderValidator());
+        }
     }
 }

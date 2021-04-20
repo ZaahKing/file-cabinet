@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FileCabinetApp.CommandHendlers;
 using FileCabinetApp.Validation;
+using Microsoft.Extensions.Configuration;
 
 namespace FileCabinetApp
 {
@@ -13,6 +14,18 @@ namespace FileCabinetApp
     {
         private const string DeveloperName = "Alexander Belyakoff";
         private const string HintMessage = "Enter your command, or enter 'help' to get help.";
+        private static readonly Dictionary<string, string> SwitchMappings = new ()
+            {
+                { "-v", "validation" },
+                { "--validation-rules", "validation" },
+                { "-s", "storage" },
+                { "--storage", "storage" },
+                { "-u", "stopwatch" },
+                { "--use-stopwatch", "stopwatch" },
+                { "-l", "logger" },
+                { "--use-logger", "logger" },
+            };
+
         private static bool isRunning = true;
         private static IFileCabinetService fileCabinetService;
 
@@ -22,12 +35,31 @@ namespace FileCabinetApp
         /// <param name="args"> Parameters from consol.</param>
         public static void Main(string[] args)
         {
+            var appConfig = new ConfigurationBuilder()
+                .AddCommandLine(args, SwitchMappings)
+                .Build();
+
             Console.WriteLine($"File Cabinet Application, developed by {Program.DeveloperName}");
-            string validatorName = DependencyResolver.NormalizeValidatorName(GetComandLiniValueByKey(args, "--validation-rules", "-v"));
-            string fileCabinetServicerName = DependencyResolver.NormalizeFileCabinetServiceName(GetComandLiniValueByKey(args, "--storage", "-s"));
+            string validatorName = DependencyResolver.NormalizeValidatorName(appConfig["validation"]);
+            string fileCabinetServicerName = DependencyResolver.NormalizeFileCabinetServiceName(appConfig["storage"]);
             fileCabinetService = DependencyResolver.GetFileCabinetService(fileCabinetServicerName, validatorName);
             Console.WriteLine($"Using {validatorName} validation rules.");
             Console.WriteLine($"Using {fileCabinetServicerName} storage.");
+
+            // Comandline ConfigurationBuilder ignores key whithout value.
+            // I deside to add true/false value to commandline for --use-stopwatch.
+            if (appConfig.GetSection("stopwatch").Get<bool>())
+            {
+                fileCabinetService = DependencyResolver.MeterDecorate(fileCabinetService);
+                Console.WriteLine("Stopwatch is switched on.");
+            }
+
+            if (appConfig.GetSection("logger").Get<bool>())
+            {
+                fileCabinetService = DependencyResolver.LoggingDecorate(fileCabinetService);
+                Console.WriteLine("Logging is switched on.");
+            }
+
             Console.WriteLine(Program.HintMessage);
             Console.WriteLine();
             var hendler = CreateCommandsHandlers();
@@ -92,7 +124,7 @@ namespace FileCabinetApp
                     new FirstNameValidator(2, 60)),
 
                 LastName = GetOutput(
-                    "Lasttname: ",
+                    "Lastname: ",
                     () => Console.ReadLine(),
                     x => new FileCabinetRecord { LastName = x },
                     new LastNameValidator(2, 60)),
@@ -101,7 +133,7 @@ namespace FileCabinetApp
                     "Day of birth: ",
                     () => DateTime.Parse(Console.ReadLine()),
                     x => new FileCabinetRecord { DateOfBirth = x },
-                    new LastNameValidator(2, 60)),
+                    new DateOfBirthValidator()),
 
                 DigitKey = GetOutput(
                     "Digit key: ",
@@ -161,41 +193,6 @@ namespace FileCabinetApp
             }
             while (hasErrors);
             return outputValue;
-        }
-
-        private static string GetComandLiniValueByKey(string[] args, string fullKey, string shortKey)
-        {
-            string key = default;
-            string value = string.Empty;
-
-            for (int i = 0; i < args.Length; ++i)
-            {
-                if (args[i].StartsWith(shortKey))
-                {
-                    key = shortKey;
-                }
-                else if (args[i].StartsWith(fullKey))
-                {
-                    key = fullKey;
-                }
-
-                if (!string.IsNullOrEmpty(key))
-                {
-                    if (args[i] == key)
-                    {
-                        value = i + 1 < args.Length ? args[i + 1] : string.Empty;
-                    }
-                    else
-                    {
-                        var pair = args[i].Split("=", 2);
-                        value = pair.Length == 2 ? pair[1] : string.Empty;
-                    }
-
-                    break;
-                }
-            }
-
-            return value;
         }
     }
 }
