@@ -42,6 +42,9 @@ namespace FileCabinetApp
             new string[] { "export", "export records to file", "The 'export' command save data to file." },
             new string[] { "import", "import records from file", "The 'import' command load data from file." },
             new string[] { "purge", "purge storage", "The 'purge' command clear storege from unused data." },
+            new string[] { "insert", "insert in the storage", "The 'insert' command insert a record in a storage." },
+            new string[] { "delete", "delete in the storage", "The 'delete' command remove records from a storage." },
+            new string[] { "update", "updetr a record", "The 'update' command update a record in a storage." },
         };
     }
 }

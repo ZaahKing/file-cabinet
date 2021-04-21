@@ -83,6 +83,23 @@
         <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
+        <member name="T:FileCabinetApp.CommandHendlers.DeleteCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.DeleteCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
         <member name="T:FileCabinetApp.CommandHendlers.EditCommandHandler">
             <summary>
             Edit command.
@@ -200,6 +217,23 @@
         <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
+        <member name="T:FileCabinetApp.CommandHendlers.InsertCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.InsertCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
         <member name="T:FileCabinetApp.CommandHendlers.ListCommandHandler">
             <summary>
             List command.
@@ -309,6 +343,23 @@
             </summary>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.UnknownCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.UpdateCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.UpdateCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.FileCabinetMemoryGateway">

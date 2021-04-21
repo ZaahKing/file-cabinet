@@ -96,7 +96,13 @@ namespace FileCabinetApp
             var export = new ExportCommandHandler(fileCabinetService);
             var import = new ImportCommandHandler(fileCabinetService);
             var purge = new PurgeCommandHandler(fileCabinetService);
-            purge.SetNext(null);
+            var insert = new InsertCommandHandler(fileCabinetService);
+            var delete = new DeleteCommandHandler(fileCabinetService);
+            var update = new UpdateCommandHandler(fileCabinetService);
+            update.SetNext(null);
+            delete.SetNext(update);
+            insert.SetNext(delete);
+            purge.SetNext(insert);
             import.SetNext(purge);
             export.SetNext(import);
             remove.SetNext(export);
