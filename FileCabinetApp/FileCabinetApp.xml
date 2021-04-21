@@ -65,6 +65,19 @@
         <member name="M:FileCabinetApp.CommandHendlers.CommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
+        <member name="T:FileCabinetApp.CommandHendlers.CommandParameterParser">
+            <summary>
+            Just helper for parse.
+            I choose an esier way whithout strong rules for time economy.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetRecordFromInsertCommandParameter(System.String)">
+            <summary>
+            Get record.
+            </summary>
+            <param name="parameters">Just string.</param>
+            <returns>File cabinet record.</returns>
+        </member>
         <member name="T:FileCabinetApp.CommandHendlers.CreateCommandHandler">
             <summary>
             Create record comand.
@@ -569,6 +582,9 @@
             </summary>
             <param name="record">File cabinet record.</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByBirthDate(System.DateTime)">
             <summary>
             Helps to find record by date of birth.
@@ -686,6 +702,9 @@
             Edit existing record found by Id.
             </summary>
             <param name="record">File cabinet record.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.FindRecordById(System.Int32)">
             <summary>
@@ -865,6 +884,12 @@
             </summary>
             <returns>Count of purged records.</returns>
         </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Insert record.
+            </summary>
+            <param name="record">Record.</param>
+        </member>
         <member name="T:FileCabinetApp.ServiceLogger">
             <summary>
             Decorator for IFileCabinetService to log in file.
@@ -881,6 +906,9 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceLogger.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.InsertRecord(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceLogger.FindByBirthDate(System.DateTime)">
@@ -945,6 +973,9 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceMeter.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceMeter.InsertRecord(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceMeter.FindByBirthDate(System.DateTime)">

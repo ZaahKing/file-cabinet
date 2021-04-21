@@ -38,30 +38,12 @@ namespace FileCabinetApp
         /// <returns>Returns Id of new record.</returns>
         public int CreateRecord(FileCabinetRecord record)
         {
-            this.validator.ValidateParameters(record);
-            if (this.fileStream.Length == 0)
-            {
-                record.Id = 1;
-            }
-            else
-            {
-                try
-                {
-                    this.fileStream.Seek(this.fileStream.Length - 275, SeekOrigin.Begin);
-                    record.Id = this.reader.ReadInt32() + 1;
-                    this.fileStream.Seek(this.fileStream.Length, SeekOrigin.Begin);
-                }
-                catch (IOException e)
-                {
-                    throw new IOException("Cant read from file.", e);
-                }
-            }
+            record.Id = this.GetRecordsYield().Max(x => x.Id) + 1;
 
             try
             {
-                this.writer.Write((short)0);
-                this.writer.Write(record.Id);
-                this.WriteRecordWithoutIDInCurrentPosition(record);
+                this.fileStream.Seek(this.fileStream.Length, SeekOrigin.Begin);
+                this.WriteRecordInCurrentPosition(record);
                 this.writer.Flush();
             }
             catch (IOException e)
@@ -97,6 +79,21 @@ namespace FileCabinetApp
             }
             while (this.fileStream.Position + offset < this.fileStream.Length);
             this.fileStream.Seek(0, SeekOrigin.Begin);
+        }
+
+        /// <inheritdoc/>
+        public void InsertRecord(FileCabinetRecord record)
+        {
+            try
+            {
+                this.fileStream.Seek(this.fileStream.Length, SeekOrigin.Begin);
+                this.WriteRecordInCurrentPosition(record);
+                this.writer.Flush();
+            }
+            catch (IOException e)
+            {
+                throw new IOException("Cant write to file.", e);
+            }
         }
 
         /// <summary>
@@ -352,6 +349,13 @@ namespace FileCabinetApp
             this.writer.Write(record.DigitKey);
             this.writer.Write(record.Account);
             this.writer.Write(record.Sex);
+        }
+
+        private void WriteRecordInCurrentPosition(FileCabinetRecord record)
+        {
+            this.writer.Write((short)0);
+            this.writer.Write(record.Id);
+            this.WriteRecordWithoutIDInCurrentPosition(record);
         }
 
         private struct FileElement

@@ -41,6 +41,17 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
+        public void InsertRecord(FileCabinetRecord record)
+        {
+            this.Measure(
+                "Insert method execution duration is {0} ticks.",
+                () =>
+                {
+                    this.service.InsertRecord(record);
+                });
+        }
+
+        /// <inheritdoc/>
         public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
             return this.Measure(
