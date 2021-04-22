@@ -28,6 +28,11 @@ namespace FileCabinetApp
             { "sex", str => x => x.Sex = str[0] },
         };
 
+        /// <summary>
+        /// Get editor.
+        /// </summary>
+        /// <param name="editPairs">Key/value key.</param>
+        /// <returns>Delegate.</returns>
         public static Edit GetRecordEditor(this Dictionary<string, string> editPairs)
         {
             Edit edit = default;
