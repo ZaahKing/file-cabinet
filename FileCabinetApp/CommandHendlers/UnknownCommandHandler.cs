@@ -17,8 +17,22 @@ namespace FileCabinetApp.CommandHendlers
             }
             else
             {
-                Console.WriteLine($"There is no '{commandRequest.Command}' command.");
-                Console.WriteLine();
+                Console.WriteLine($"There is no '{commandRequest.Command}' command. Use 'help' command.");
+                var list = HelpData.HelpMessages.Select(x => x[HelpData.CommandHelpIndex]).Where(x => x.StartsWith(commandRequest.Command)).ToList();
+
+                if (list.Count == 1)
+                {
+                    Console.WriteLine($"The most similar command is");
+                }
+                else if (list.Count > 1)
+                {
+                    Console.WriteLine($"The most similar commands are");
+                }
+
+                foreach (var command in list)
+                {
+                    Console.WriteLine($"\t{command}");
+                }
             }
         }
     }
