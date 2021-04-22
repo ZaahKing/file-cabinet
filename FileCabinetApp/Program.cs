@@ -88,8 +88,6 @@ namespace FileCabinetApp
             var exit = new ExitCommandHelper(x => isRunning = x);
             var help = new HelpCommandHandler();
             var stat = new StatCommandHandler(fileCabinetService);
-            var create = new CreateCommandHandler(fileCabinetService, GetFileCabinetRecordFromOutput);
-            var edit = new EditCommandHandler(fileCabinetService, GetFileCabinetRecordFromOutput);
             var list = new ListCommandHandler(fileCabinetService, DefaultRecordPrint);
             var find = new FindCommandHandler(fileCabinetService, DefaultRecordPrint);
             var remove = new RemoveCommandHandler(fileCabinetService);
@@ -108,58 +106,12 @@ namespace FileCabinetApp
             remove.SetNext(export);
             find.SetNext(remove);
             list.SetNext(find);
-            edit.SetNext(list);
-            create.SetNext(edit);
-            stat.SetNext(create);
+            stat.SetNext(list);
             help.SetNext(stat);
             unknown.SetNext(help);
             exit.SetNext(unknown);
             empty.SetNext(exit);
             return empty;
-        }
-
-        private static FileCabinetRecord GetFileCabinetRecordFromOutput()
-        {
-            // var validator = fileCabinetService.GetValidator(); // !Impotand
-            var record = new FileCabinetRecord
-            {
-                FirstName = GetOutput(
-                    "Firstname: ",
-                    () => Console.ReadLine(),
-                    x => new FileCabinetRecord { FirstName = x },
-                    new FirstNameValidator(2, 60)),
-
-                LastName = GetOutput(
-                    "Lastname: ",
-                    () => Console.ReadLine(),
-                    x => new FileCabinetRecord { LastName = x },
-                    new LastNameValidator(2, 60)),
-
-                DateOfBirth = GetOutput(
-                    "Day of birth: ",
-                    () => DateTime.Parse(Console.ReadLine()),
-                    x => new FileCabinetRecord { DateOfBirth = x },
-                    new DateOfBirthValidator()),
-
-                DigitKey = GetOutput(
-                    "Digit key: ",
-                    () => short.Parse(Console.ReadLine()),
-                    x => new FileCabinetRecord { DigitKey = x },
-                    null),
-
-                Account = GetOutput(
-                    "Account value: ",
-                    () => decimal.Parse(Console.ReadLine()),
-                    x => new FileCabinetRecord { Account = x },
-                    null),
-
-                Sex = GetOutput(
-                    "Sex: ",
-                    () => char.Parse(Console.ReadLine()),
-                    x => new FileCabinetRecord { Sex = x },
-                    null),
-            };
-            return record;
         }
 
         private static void DefaultRecordPrint(IEnumerable<FileCabinetRecord> list)
@@ -175,30 +127,6 @@ namespace FileCabinetApp
             {
                 Console.WriteLine("Nothing to display.");
             }
-        }
-
-        private static T GetOutput<T>(string message, Func<T> convert, Func<T, FileCabinetRecord> getRecord, IRecordValidator validator)
-        {
-            bool hasErrors;
-            T outputValue = default(T);
-            do
-            {
-                try
-                {
-                    hasErrors = false;
-                    Console.Write(message);
-                    outputValue = convert();
-                    validator?.ValidateParameters(getRecord(outputValue));
-                }
-                catch (Exception e)
-                {
-                    hasErrors = true;
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine("Try again please.");
-                }
-            }
-            while (hasErrors);
-            return outputValue;
         }
     }
 }
