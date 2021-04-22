@@ -65,19 +65,6 @@
         <member name="M:FileCabinetApp.CommandHendlers.CommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
-        <member name="T:FileCabinetApp.CommandHendlers.CommandParameterParser">
-            <summary>
-            Just helper for parse.
-            I choose an esier way whithout strong rules for time economy.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetRecordFromInsertCommandParameter(System.String)">
-            <summary>
-            Get record.
-            </summary>
-            <param name="parameters">Just string.</param>
-            <returns>File cabinet record.</returns>
-        </member>
         <member name="T:FileCabinetApp.CommandHendlers.CreateCommandHandler">
             <summary>
             Create record comand.
@@ -374,6 +361,35 @@
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.CommandParameterParser">
+            <summary>
+            Just helper for parse.
+            I choose an esier way whithout strong rules for time economy.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetRecordFromInsertCommandParameter(System.String)">
+            <summary>
+            Get record.
+            </summary>
+            <param name="parameters">Just string.</param>
+            <returns>File cabinet record.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetPairs(System.String)">
+            <summary>
+            Get where pairs.
+            </summary>
+            <param name="section">String section whith key/value pairs.</param>
+            <returns>Dictionary.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.Split(System.String,System.String,System.StringComparison)">
+            <summary>
+            Split string by string.
+            </summary>
+            <param name="source">Trimmed string.</param>
+            <param name="separator">Separator.</param>
+            <param name="comparison">Comparison type.</param>
+            <returns>List.</returns>
         </member>
         <member name="T:FileCabinetApp.FileCabinetMemoryGateway">
             <summary>
@@ -1232,6 +1248,19 @@
             <summary>
             Help data.
             </summary>
+        </member>
+        <member name="T:FileCabinetApp.ComparisonFilterBulder">
+            <summary>
+            Buld comparison filter.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.ComparisonFilterBulder.GetFilteredList(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord},System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Get Filtered List.
+            </summary>
+            <param name="list">Source list</param>
+            <param name="compariconPairs">compariconPairs</param>
+            <returns>Enumarable with filters.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

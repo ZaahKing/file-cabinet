@@ -12,6 +12,7 @@ namespace FileCabinetApp.CommandHendlers
     /// </summary>
     internal static class CommandParameterParser
     {
+        private static readonly char[] DeleationSymbols = new char[] { '\'', ' ' };
         private static readonly Dictionary<string, Action<FileCabinetRecord, string>> ConvertRules = new (StringComparer.CurrentCultureIgnoreCase)
         {
             { "id", (record, param) => { record.Id = int.Parse(param); } },
@@ -45,11 +46,10 @@ namespace FileCabinetApp.CommandHendlers
                 throw new ArgumentException("Fields and values count must be 7.");
             }
 
-            var deleationSymbols = new char[] { '\'', ' ' };
             for (int i = 0; i < fields.Length; i++)
             {
-                fields[i] = fields[i].Trim(deleationSymbols);
-                values[i] = values[i].Trim(deleationSymbols);
+                fields[i] = fields[i].Trim(DeleationSymbols);
+                values[i] = values[i].Trim(DeleationSymbols);
             }
 
             if (!ConvertRules.Keys.All(x => fields.Any(y => y.Equals(x, StringComparison.CurrentCultureIgnoreCase))))
@@ -62,6 +62,64 @@ namespace FileCabinetApp.CommandHendlers
             {
                 ConvertRules[fields[i]](result, values[i]);
             }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get where pairs.
+        /// </summary>
+        /// <param name="section">String section whith key/value pairs.</param>
+        /// <returns>Dictionary.</returns>
+        public static Dictionary<string, string> GetPairs(this string section)
+        {
+            var list = section.Split("and", StringComparison.CurrentCultureIgnoreCase);
+            var pairs = new Dictionary<string, string>();
+            foreach (var item in list)
+            {
+                var pair = item.Split('=');
+                if (pair.Length != 2)
+                {
+                    throw new ArgumentException($"'{item}' is not a key/value pair.");
+                }
+
+                pairs.Add(pair[0].Trim(DeleationSymbols), pair[1].Trim(DeleationSymbols));
+            }
+
+            return pairs;
+        }
+
+        /// <summary>
+        /// Split string by string.
+        /// </summary>
+        /// <param name="source">Trimmed string.</param>
+        /// <param name="separator">Separator.</param>
+        /// <param name="comparison">Comparison type.</param>
+        /// <returns>List.</returns>
+        public static IEnumerable<string> Split(this string source, string separator, StringComparison comparison = StringComparison.CurrentCulture)
+        {
+            var result = new List<string>();
+
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return result;
+            }
+
+            int previouseIndex = 0, currentIndex = 0;
+            do
+            {
+                currentIndex = source.IndexOf(separator, previouseIndex, comparison);
+                if (currentIndex >= 0)
+                {
+                    result.Add(source[previouseIndex..currentIndex]);
+                    previouseIndex = currentIndex + separator.Length;
+                }
+                else
+                {
+                    result.Add(source[previouseIndex..^0]);
+                }
+            }
+            while (currentIndex >= 0);
 
             return result;
         }

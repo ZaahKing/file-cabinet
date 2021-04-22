@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp.CommandHendlers
 {
@@ -26,7 +23,30 @@ namespace FileCabinetApp.CommandHendlers
         /// <inheritdoc/>
         protected override void Make(AppCommandRequest commandRequest)
         {
-            Console.WriteLine(commandRequest.Parameters);
+            string whereString = "where";
+            int whereIndex = commandRequest.Parameters.IndexOf(whereString, StringComparison.CurrentCultureIgnoreCase);
+            string whereSection = commandRequest.Parameters.Substring(whereIndex + whereString.Length + 1);
+            var whereSectionPairList = whereSection.GetPairs();
+
+            var list = this.Service.GetRecords().GetFilteredList(whereSectionPairList).ToList();
+
+            foreach (var record in list)
+            {
+                this.Service.RemoveRecord(record.Id);
+            }
+
+            if (list.Count == 0)
+            {
+                Console.WriteLine("No records to delete.");
+            }
+            else if (list.Count == 1)
+            {
+                Console.WriteLine($"Record #{list[0].Id} is deleted.");
+            }
+            else
+            {
+                Console.WriteLine($"Records {string.Join(", ", list.Select(x => $"#{x.Id}").ToArray())} are deleted. ");
+            }
         }
     }
 }
