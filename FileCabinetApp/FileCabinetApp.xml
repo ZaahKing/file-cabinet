@@ -375,9 +375,16 @@
             <param name="parameters">Just string.</param>
             <returns>File cabinet record.</returns>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetPairs(System.String)">
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetWherePairs(System.String)">
             <summary>
             Get where pairs.
+            </summary>
+            <param name="section">String section whith key/value pairs.</param>
+            <returns>Dictionary.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetSetPairs(System.String)">
+            <summary>
+            Get set section pairs.
             </summary>
             <param name="section">String section whith key/value pairs.</param>
             <returns>Dictionary.</returns>
@@ -1258,9 +1265,20 @@
             <summary>
             Get Filtered List.
             </summary>
-            <param name="list">Source list</param>
-            <param name="compariconPairs">compariconPairs</param>
+            <param name="list">Source list.</param>
+            <param name="compariconPairs">compariconPairs.</param>
             <returns>Enumarable with filters.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Edit">
+            <summary>
+            Delegate.
+            </summary>
+            <param name="record">Record.</param>
+        </member>
+        <member name="T:FileCabinetApp.EditorBuilder">
+            <summary>
+            Record editor builder.
+            </summary>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

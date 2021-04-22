@@ -71,22 +71,21 @@ namespace FileCabinetApp.CommandHendlers
         /// </summary>
         /// <param name="section">String section whith key/value pairs.</param>
         /// <returns>Dictionary.</returns>
-        public static Dictionary<string, string> GetPairs(this string section)
+        public static Dictionary<string, string> GetWherePairs(this string section)
         {
             var list = section.Split("and", StringComparison.CurrentCultureIgnoreCase);
-            var pairs = new Dictionary<string, string>();
-            foreach (var item in list)
-            {
-                var pair = item.Split('=');
-                if (pair.Length != 2)
-                {
-                    throw new ArgumentException($"'{item}' is not a key/value pair.");
-                }
+            return SplitKeyAndValue(list);
+        }
 
-                pairs.Add(pair[0].Trim(DeleationSymbols), pair[1].Trim(DeleationSymbols));
-            }
-
-            return pairs;
+        /// <summary>
+        /// Get set section pairs.
+        /// </summary>
+        /// <param name="section">String section whith key/value pairs.</param>
+        /// <returns>Dictionary.</returns>
+        public static Dictionary<string, string> GetSetPairs(this string section)
+        {
+            var list = section.Split(',');
+            return SplitKeyAndValue(list);
         }
 
         /// <summary>
@@ -122,6 +121,23 @@ namespace FileCabinetApp.CommandHendlers
             while (currentIndex >= 0);
 
             return result;
+        }
+
+        private static Dictionary<string, string> SplitKeyAndValue(IEnumerable<string> list)
+        {
+            var pairs = new Dictionary<string, string>();
+            foreach (var item in list)
+            {
+                var pair = item.Split('=');
+                if (pair.Length != 2)
+                {
+                    throw new ArgumentException($"'{item}' is not a key/value pair.");
+                }
+
+                pairs.Add(pair[0].Trim(DeleationSymbols), pair[1].Trim(DeleationSymbols));
+            }
+
+            return pairs;
         }
     }
 }

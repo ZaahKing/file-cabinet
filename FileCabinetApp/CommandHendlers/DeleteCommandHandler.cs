@@ -26,7 +26,7 @@ namespace FileCabinetApp.CommandHendlers
             string whereString = "where";
             int whereIndex = commandRequest.Parameters.IndexOf(whereString, StringComparison.CurrentCultureIgnoreCase);
             string whereSection = commandRequest.Parameters.Substring(whereIndex + whereString.Length + 1);
-            var whereSectionPairList = whereSection.GetPairs();
+            var whereSectionPairList = whereSection.GetWherePairs();
 
             var list = this.Service.GetRecords().GetFilteredList(whereSectionPairList).ToList();
 

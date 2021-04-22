@@ -25,8 +25,8 @@ namespace FileCabinetApp
         /// <summary>
         /// Get Filtered List.
         /// </summary>
-        /// <param name="list">Source list</param>
-        /// <param name="compariconPairs">compariconPairs</param>
+        /// <param name="list">Source list.</param>
+        /// <param name="compariconPairs">compariconPairs.</param>
         /// <returns>Enumarable with filters.</returns>
         public static IEnumerable<FileCabinetRecord> GetFilteredList(this IEnumerable<FileCabinetRecord> list, Dictionary<string, string> compariconPairs)
         {

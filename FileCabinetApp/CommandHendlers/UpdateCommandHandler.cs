@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp.CommandHendlers
 {
@@ -26,7 +23,39 @@ namespace FileCabinetApp.CommandHendlers
         /// <inheritdoc/>
         protected override void Make(AppCommandRequest commandRequest)
         {
-            Console.WriteLine(commandRequest.Parameters);
+            string setString = "set";
+            string whereString = "where";
+
+            int setIndex = commandRequest.Parameters.IndexOf(setString, StringComparison.CurrentCultureIgnoreCase);
+            int whereIndex = commandRequest.Parameters.IndexOf(whereString, StringComparison.CurrentCultureIgnoreCase);
+            setIndex = setIndex + setString.Length + 1;
+
+            string setSection = commandRequest.Parameters.Substring(setIndex, whereIndex - setIndex);
+            var setSectionPairList = setSection.GetSetPairs();
+
+            string whereSection = commandRequest.Parameters.Substring(whereIndex + whereString.Length + 1);
+            var whereSectionPairList = whereSection.GetWherePairs();
+            var list = this.Service.GetRecords().GetFilteredList(whereSectionPairList).ToList();
+            var editRecord = setSectionPairList.GetRecordEditor();
+
+            foreach (var record in list)
+            {
+                editRecord?.Invoke(record);
+                this.Service.EditRecord(record);
+            }
+
+            if (list.Count == 0)
+            {
+                Console.WriteLine("No records to edit.");
+            }
+            else if (list.Count == 1)
+            {
+                Console.WriteLine("One record has edited.");
+            }
+            else
+            {
+                Console.WriteLine($"{list.Count} records have edited.");
+            }
         }
     }
 }
