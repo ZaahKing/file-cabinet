@@ -39,10 +39,7 @@ namespace FileCabinetApp
         {
             this.ValidateParameters(record);
             record.Id = (this.list.Count == 0 ? 0 : this.list.Max(x => x.Id)) + 1;
-            this.list.Add(record);
-            this.AddIndex(this.firstNameDictionary, record.FirstName, record);
-            this.AddIndex(this.lastNameDictionary, record.LastName, record);
-            this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
+            this.InsertRecord(record);
 
             return record.Id;
         }
@@ -67,6 +64,20 @@ namespace FileCabinetApp
             this.ChangeIndex(this.firstNameDictionary, oldRecord.FirstName, record.FirstName, record);
             this.ChangeIndex(this.lastNameDictionary, oldRecord.LastName, record.LastName, record);
             this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record.DateOfBirth, record);
+        }
+
+        /// <inheritdoc/>
+        public void InsertRecord(FileCabinetRecord record)
+        {
+            if (this.list.Any(x => x.Id == record.Id))
+            {
+                throw new ArgumentException("Record whith same id is already exist.");
+            }
+
+            this.list.Add(record);
+            this.AddIndex(this.firstNameDictionary, record.FirstName, record);
+            this.AddIndex(this.lastNameDictionary, record.LastName, record);
+            this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
         }
 
         /// <summary>

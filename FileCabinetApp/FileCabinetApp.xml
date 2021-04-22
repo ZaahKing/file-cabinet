@@ -65,40 +65,21 @@
         <member name="M:FileCabinetApp.CommandHendlers.CommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
-        <member name="T:FileCabinetApp.CommandHendlers.CreateCommandHandler">
+        <member name="T:FileCabinetApp.CommandHendlers.DeleteCommandHandler">
             <summary>
-            Create record comand.
+            Insert record command.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Func{FileCabinetApp.FileCabinetRecord})">
+        <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
             <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.CreateCommandHandler"/> class.
-            </summary>
-            <param name="service">File cabinet service.</param>
-            <param name="getOutput">Get output action.</param>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.GetCommandClue">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.CreateCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
-            <inheritdoc/>
-        </member>
-        <member name="T:FileCabinetApp.CommandHendlers.EditCommandHandler">
-            <summary>
-            Edit command.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Func{FileCabinetApp.FileCabinetRecord})">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.EditCommandHandler"/> class.
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.DeleteCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
-            <param name="getOutput">Get output action.</param>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.GetCommandClue">
+        <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.GetCommandClue">
             <inheritdoc/>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.EditCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+        <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.EmptyCommandHandler">
@@ -198,6 +179,23 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.ImportCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.InsertCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.InsertCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.ListCommandHandler">
@@ -310,6 +308,59 @@
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.UnknownCommandHandler.Handle(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.UpdateCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.UpdateCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.CommandParameterParser">
+            <summary>
+            Just helper for parse.
+            I choose an esier way whithout strong rules for time economy.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetRecordFromInsertCommandParameter(System.String)">
+            <summary>
+            Get record.
+            </summary>
+            <param name="parameters">Just string.</param>
+            <returns>File cabinet record.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetWherePairs(System.String)">
+            <summary>
+            Get where pairs.
+            </summary>
+            <param name="section">String section whith key/value pairs.</param>
+            <returns>Dictionary.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.GetSetPairs(System.String)">
+            <summary>
+            Get set section pairs.
+            </summary>
+            <param name="section">String section whith key/value pairs.</param>
+            <returns>Dictionary.</returns>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.CommandParameterParser.Split(System.String,System.String,System.StringComparison)">
+            <summary>
+            Split string by string.
+            </summary>
+            <param name="source">Trimmed string.</param>
+            <param name="separator">Separator.</param>
+            <param name="comparison">Comparison type.</param>
+            <returns>List.</returns>
         </member>
         <member name="T:FileCabinetApp.FileCabinetMemoryGateway">
             <summary>
@@ -518,6 +569,9 @@
             </summary>
             <param name="record">File cabinet record.</param>
         </member>
+        <member name="M:FileCabinetApp.FileCabinetFilesystemService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByBirthDate(System.DateTime)">
             <summary>
             Helps to find record by date of birth.
@@ -635,6 +689,9 @@
             Edit existing record found by Id.
             </summary>
             <param name="record">File cabinet record.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetMemoryService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.FindRecordById(System.Int32)">
             <summary>
@@ -814,6 +871,12 @@
             </summary>
             <returns>Count of purged records.</returns>
         </member>
+        <member name="M:FileCabinetApp.IFileCabinetService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Insert record.
+            </summary>
+            <param name="record">Record.</param>
+        </member>
         <member name="T:FileCabinetApp.ServiceLogger">
             <summary>
             Decorator for IFileCabinetService to log in file.
@@ -830,6 +893,9 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceLogger.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceLogger.InsertRecord(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceLogger.FindByBirthDate(System.DateTime)">
@@ -894,6 +960,9 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceMeter.EditRecord(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.ServiceMeter.InsertRecord(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceMeter.FindByBirthDate(System.DateTime)">
@@ -1125,6 +1194,37 @@
             Write collection.
             </summary>
             <param name="list">Read-only collection of file cabinet records.</param>
+        </member>
+        <member name="T:FileCabinetApp.ComparisonFilterBulder">
+            <summary>
+            Buld comparison filter.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.ComparisonFilterBulder.GetFilteredList(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord},System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Get Filtered List.
+            </summary>
+            <param name="list">Source list.</param>
+            <param name="compariconPairs">compariconPairs.</param>
+            <returns>Enumarable with filters.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Edit">
+            <summary>
+            Delegate.
+            </summary>
+            <param name="record">Record.</param>
+        </member>
+        <member name="T:FileCabinetApp.EditorBuilder">
+            <summary>
+            Record editor builder.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.EditorBuilder.GetRecordEditor(System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Get editor.
+            </summary>
+            <param name="editPairs">Key/value key.</param>
+            <returns>Delegate.</returns>
         </member>
         <member name="T:FileCabinetApp.HelpData">
             <summary>

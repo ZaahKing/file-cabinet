@@ -33,8 +33,6 @@ namespace FileCabinetApp
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
-            new string[] { "create", "create record", "The 'create' command creates a record." },
-            new string[] { "edit", "edit record", "The 'edit' command modify a record." },
             new string[] { "list", "print list of records", "The 'list' command prints list of records." },
             new string[] { "stat", "print records count", "The 'stat' command prints records count." },
             new string[] { "find", "find records", "The 'find' command prints records foud by feald and data." },
@@ -42,6 +40,9 @@ namespace FileCabinetApp
             new string[] { "export", "export records to file", "The 'export' command save data to file." },
             new string[] { "import", "import records from file", "The 'import' command load data from file." },
             new string[] { "purge", "purge storage", "The 'purge' command clear storege from unused data." },
+            new string[] { "insert", "insert in the storage", "The 'insert' command insert a record in a storage." },
+            new string[] { "delete", "delete in the storage", "The 'delete' command remove records from a storage." },
+            new string[] { "update", "updetr a record", "The 'update' command update a record in a storage." },
         };
     }
 }

@@ -30,27 +30,36 @@ namespace FileCabinetApp
         public int CreateRecord(FileCabinetRecord record)
         {
             return this.CallMethod(
-            $"Calling CreateRecord() with FirstName = '{record.FirstName}', LastName = '{record.LastName}', DateOfBirth = '{record.DateOfBirth}', Pin = '{record.DigitKey}', Account = '{record.Account}', Sex = '{record.Sex}'",
-            $"CreateRecord() returned '{0}'",
-            () => this.service.CreateRecord(record));
+                $"Calling CreateRecord() with FirstName = '{record.FirstName}', LastName = '{record.LastName}', DateOfBirth = '{record.DateOfBirth}', Pin = '{record.DigitKey}', Account = '{record.Account}', Sex = '{record.Sex}'",
+                $"CreateRecord() returned '{0}'",
+                () => this.service.CreateRecord(record));
         }
 
         /// <inheritdoc/>
         public void EditRecord(FileCabinetRecord record)
         {
             this.CallMethod(
-            $"Calling EditRecord() with Id = {record.Id}, FirstName = '{record.FirstName}', LastName = '{record.LastName}', DateOfBirth = '{record.DateOfBirth}', Pin = '{record.DigitKey}', Account = '{record.Account}', Sex = '{record.Sex}'",
-            $"EditRecord() is success.",
-            () => this.service.EditRecord(record));
+                $"Calling EditRecord() with Id = {record.Id}, FirstName = '{record.FirstName}', LastName = '{record.LastName}', DateOfBirth = '{record.DateOfBirth}', Pin = '{record.DigitKey}', Account = '{record.Account}', Sex = '{record.Sex}'",
+                $"EditRecord() is success.",
+                () => this.service.EditRecord(record));
+        }
+
+        /// <inheritdoc/>
+        public void InsertRecord(FileCabinetRecord record)
+        {
+            this.CallMethod(
+                $"Calling InsertRecord() with Id = {record.Id}, FirstName = '{record.FirstName}', LastName = '{record.LastName}', DateOfBirth = '{record.DateOfBirth}', Pin = '{record.DigitKey}', Account = '{record.Account}', Sex = '{record.Sex}'",
+                $"InsertRecord() is success.",
+                () => this.service.InsertRecord(record));
         }
 
         /// <inheritdoc/>
         public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
         {
             return this.CallMethodWithCollection(
-            $"Calling FindByBirthDate() with date = '{date:yyyy-mm-dd}.",
-            $"FindByBirthDate() returned '{0}' lines",
-            () => this.service.FindByBirthDate(date));
+                $"Calling FindByBirthDate() with date = '{date:yyyy-mm-dd}.",
+                $"FindByBirthDate() returned '{0}' lines",
+                () => this.service.FindByBirthDate(date));
         }
 
         /// <inheritdoc/>
