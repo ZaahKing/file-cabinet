@@ -1251,6 +1251,164 @@
             Help data.
             </summary>
         </member>
+        <member name="T:FileCabinetApp.Parser.AndOperator">
+            <summary>
+            And operation.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.AndOperator.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.BoolOperation">
+            <inheritdoc/>
+        </member>
+        <member name="P:FileCabinetApp.Parser.BoolOperation.OperandA">
+            <summary>
+            Gets or sets First operand.
+            </summary>
+            <value>
+            First operand.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Parser.BoolOperation.OperandB">
+            <summary>
+            Gets or sets  Second operand.
+            </summary>
+            <value>
+            Second operand.
+            </value>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BoolOperation.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.EqualOperator">
+            <summary>
+            Equals bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.EqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.EqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.EqualOperator.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.EqualOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.ExpressionBoolOperator">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionBoolOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.ExpressionBoolOperator"/> class.
+            </summary>
+            <param name="a">operandA.</param>
+            <param name="b">operandB.</param>
+        </member>
+        <member name="P:FileCabinetApp.Parser.ExpressionBoolOperator.OperandA">
+            <summary>
+            Gets OperandA.
+            </summary>
+            <value>
+            OperandA.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Parser.ExpressionBoolOperator.OperandB">
+            <summary>
+            Gets OperandB.
+            </summary>
+            <value>
+            OperandB.
+            </value>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionBoolOperator.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.ExpressionElement">
+            <summary>
+            Expretion element.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionElement.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.ExpressionElement"/> class.
+            </summary>
+            <param name="element">Element.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionElement.Execute">
+            <summary>
+            Execute element.
+            </summary>
+            <returns>Element.</returns>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionElement.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.IExpressionBoolOperation">
+            <summary>
+            Describe executavble bool operation like 'and', 'or'.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.Parser.IExpressionBoolOperation.OperandA">
+            <summary>
+            Gets or sets First operand.
+            </summary>
+            <value>
+            First operand.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Parser.IExpressionBoolOperation.OperandB">
+            <summary>
+            Gets or sets  Second operand.
+            </summary>
+            <value>
+            Second operand.
+            </value>
+        </member>
+        <member name="T:FileCabinetApp.Parser.IExpressionBoolOperator">
+            <summary>
+            Describe executavble bool operator like '=', '>', '!=' and others.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.IExpressionBoolOperator.Execute">
+            <summary>
+            Execution method.
+            </summary>
+            <returns>REsult of bool operation.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Parser.OrOperator">
+            <summary>
+            Or oteration.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.OrOperator.Execute">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.Parser">
+            <summary>
+            Create bool expression tree.
+            Anderstand breakets, 'and', 'or' operations.
+            And equality opeators.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.Parser.Parse(System.String)">
+            <summary>
+            Build expretion tree by string.
+            </summary>
+            <param name="str">Expretion.</param>
+            <returns>Tree.</returns>
+        </member>
+        <member name="M:FileCabinetApp.Parser.Parser.Split(System.String)">
+            <summary>
+            Split section to tokens.
+            </summary>
+            <param name="str">String.</param>
+            <returns>String tokens.</returns>
+        </member>
         <member name="T:FileCabinetApp.Program">
             <summary>
             Enter point class.
