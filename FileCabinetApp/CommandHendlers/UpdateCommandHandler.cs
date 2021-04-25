@@ -17,6 +17,11 @@ namespace FileCabinetApp.CommandHendlers
         {
         }
 
+        /// <summary>
+        /// On update;
+        /// </summary>
+        public event EventHandler OnUpdate;
+
         /// <inheritdoc/>
         protected override string GetCommandClue() => "update";
 
@@ -58,6 +63,8 @@ namespace FileCabinetApp.CommandHendlers
             {
                 Console.WriteLine($"{counter} records have edited.");
             }
+
+            this.OnUpdate?.Invoke(this, new EventArgs());
         }
     }
 }

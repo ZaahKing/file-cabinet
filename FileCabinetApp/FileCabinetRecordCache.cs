@@ -50,5 +50,16 @@ namespace FileCabinetApp
         {
             this.cache.Clear();
         }
+
+        /// <summary>
+        /// Clear cache.
+        /// </summary>
+        /// <param name="sender">sender.</param>
+        /// <param name="e">data.</param>
+        public void Clear(object sender, EventArgs e)
+        {
+            this.cache.Clear();
+        }
     }
+}
 }

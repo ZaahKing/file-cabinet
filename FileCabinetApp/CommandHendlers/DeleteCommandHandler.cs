@@ -17,6 +17,11 @@ namespace FileCabinetApp.CommandHendlers
         {
         }
 
+        /// <summary>
+        /// On delete;
+        /// </summary>
+        public event EventHandler OnDelete;
+
         /// <inheritdoc/>
         protected override string GetCommandClue() => "delete";
 
@@ -46,6 +51,8 @@ namespace FileCabinetApp.CommandHendlers
             {
                 Console.WriteLine($"Records {string.Join(", ", list.Select(x => $"#{x.Id}").ToArray())} are deleted. ");
             }
+
+            this.OnDelete?.Invoke(this, new EventArgs());
         }
     }
 }

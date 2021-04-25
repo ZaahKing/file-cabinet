@@ -94,8 +94,11 @@ namespace FileCabinetApp
             var import = new ImportCommandHandler(fileCabinetService);
             var purge = new PurgeCommandHandler(fileCabinetService);
             var insert = new InsertCommandHandler(fileCabinetService);
+            insert.OnInsert += cache.Clear;
             var delete = new DeleteCommandHandler(fileCabinetService);
+            delete.OnDelete += cache.Clear;
             var update = new UpdateCommandHandler(fileCabinetService);
+            update.OnUpdate += cache.Clear;
             var select = new SelectCommandHandler(fileCabinetService, cache);
             select.SetNext(null);
             update.SetNext(select);
