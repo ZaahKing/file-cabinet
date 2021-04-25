@@ -97,36 +97,6 @@ namespace FileCabinetApp
         }
 
         /// <summary>
-        /// Helps to find record by date of birth.
-        /// </summary>
-        /// <param name="date">Date of birth.</param>
-        /// <returns>FileCabinetRecord. </returns>
-        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
-        {
-            return this.GetRecordsYield().Where(x => x.DateOfBirth == date);
-        }
-
-        /// <summary>
-        /// Helps to find record by first name.
-        /// </summary>
-        /// <param name="firstName">FirstName.</param>
-        /// <returns>FileCabinetRecord. </returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
-        {
-            return this.GetRecordsYield().Where(x => x.FirstName.Equals(firstName, StringComparison.CurrentCultureIgnoreCase));
-        }
-
-        /// <summary>
-        /// Helps to find record by last name.
-        /// </summary>
-        /// <param name="lastName">FirstName.</param>
-        /// <returns>FileCabinetRecords. </returns>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
-        {
-            return this.GetRecordsYield().Where(x => x.LastName.Equals(lastName, StringComparison.CurrentCultureIgnoreCase));
-        }
-
-        /// <summary>
         /// Helps to find record by Id.
         /// </summary>
         /// <param name="id">Id.</param>
@@ -282,7 +252,7 @@ namespace FileCabinetApp
             this.writer?.Dispose();
         }
 
-        private char[] StringToChars(string data, int arrayLength)
+        private static char[] StringToChars(string data, int arrayLength)
         {
             char[] result = new char[arrayLength];
             for (int i = 0; i < data.Length; ++i)
@@ -339,9 +309,9 @@ namespace FileCabinetApp
 
         private void WriteRecordWithoutIDInCurrentPosition(FileCabinetRecord record)
         {
-            char[] buffer = this.StringToChars(record.FirstName, 120);
+            char[] buffer = StringToChars(record.FirstName, 120);
             this.writer.Write(buffer);
-            buffer = this.StringToChars(record.LastName, 120);
+            buffer = StringToChars(record.LastName, 120);
             this.writer.Write(buffer);
             this.writer.Write(record.DateOfBirth.Year);
             this.writer.Write(record.DateOfBirth.Month);

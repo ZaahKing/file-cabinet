@@ -88,8 +88,6 @@ namespace FileCabinetApp
             var exit = new ExitCommandHelper(x => isRunning = x);
             var help = new HelpCommandHandler();
             var stat = new StatCommandHandler(fileCabinetService);
-            var list = new ListCommandHandler(fileCabinetService, DefaultRecordPrint);
-            var find = new FindCommandHandler(fileCabinetService, DefaultRecordPrint);
             var remove = new RemoveCommandHandler(fileCabinetService);
             var export = new ExportCommandHandler(fileCabinetService);
             var import = new ImportCommandHandler(fileCabinetService);
@@ -106,29 +104,12 @@ namespace FileCabinetApp
             import.SetNext(purge);
             export.SetNext(import);
             remove.SetNext(export);
-            find.SetNext(remove);
-            list.SetNext(find);
-            stat.SetNext(list);
+            stat.SetNext(remove);
             help.SetNext(stat);
             unknown.SetNext(help);
             exit.SetNext(unknown);
             empty.SetNext(exit);
             return empty;
-        }
-
-        private static void DefaultRecordPrint(IEnumerable<FileCabinetRecord> list)
-        {
-            int counter = 0;
-            foreach (var record in list)
-            {
-                counter++;
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
-            }
-
-            if (counter == 0)
-            {
-                Console.WriteLine("Nothing to display.");
-            }
         }
     }
 }

@@ -23,27 +23,6 @@ namespace FileCabinetApp
         void EditRecord(FileCabinetRecord record);
 
         /// <summary>
-        /// Helps to find record by date of birth.
-        /// </summary>
-        /// <param name="date">Date of birth.</param>
-        /// <returns>FileCabinetRecord. </returns>
-        IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date);
-
-        /// <summary>
-        /// Helps to find record by first name.
-        /// </summary>
-        /// <param name="firstName">FirstName.</param>
-        /// <returns>FileCabinetRecord. </returns>
-        IEnumerable<FileCabinetRecord> FindByFirstName(string firstName);
-
-        /// <summary>
-        /// Helps to find record by last name.
-        /// </summary>
-        /// <param name="lastName">FirstName.</param>
-        /// <returns>FileCabinetRecords. </returns>
-        IEnumerable<FileCabinetRecord> FindByLastName(string lastName);
-
-        /// <summary>
         /// Helps to find record by Id.
         /// </summary>
         /// <param name="id">Id.</param>
