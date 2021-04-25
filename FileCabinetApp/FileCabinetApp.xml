@@ -219,11 +219,12 @@
             Insert record command.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,FileCabinetApp.FileCabinetRecordCache)">
             <summary>
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.SelectCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+            <param name="cache">File cabinet service cache.</param>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -466,6 +467,37 @@
             </summary>
             <returns> Sex of user.</returns>
             <value> Sex.</value>
+        </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordCache">
+            <summary>
+            Cache.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.IsCached(System.String)">
+            <summary>
+            Check is cached.
+            </summary>
+            <param name="key">By key.</param>
+            <returns>True if cached.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.GetCashe(System.String)">
+            <summary>
+            Get cache.
+            </summary>
+            <param name="key">By key.</param>
+            <returns>List.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.PutCache(System.String,System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Put cache.
+            </summary>
+            <param name="key">key.</param>
+            <param name="data">data.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.Clear">
+            <summary>
+            Clear cache.
+            </summary>
         </member>
         <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
             <summary>

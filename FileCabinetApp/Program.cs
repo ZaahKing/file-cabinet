@@ -83,6 +83,7 @@ namespace FileCabinetApp
 
         private static ICommandHandler CreateCommandsHandlers()
         {
+            var cache = new FileCabinetRecordCache();
             var empty = new EmptyCommandHandler();
             var unknown = new UnknownCommandHandler();
             var exit = new ExitCommandHelper(x => isRunning = x);
@@ -95,7 +96,7 @@ namespace FileCabinetApp
             var insert = new InsertCommandHandler(fileCabinetService);
             var delete = new DeleteCommandHandler(fileCabinetService);
             var update = new UpdateCommandHandler(fileCabinetService);
-            var select = new SelectCommandHandler(fileCabinetService);
+            var select = new SelectCommandHandler(fileCabinetService, cache);
             select.SetNext(null);
             update.SetNext(select);
             delete.SetNext(update);
