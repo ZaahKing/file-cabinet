@@ -11,15 +11,15 @@ namespace FileCabinetApp
     /// </summary>
     internal static class ComparisonFilterBulder
     {
-        private static readonly Dictionary<string, Func<string, Func<FileCabinetRecord, bool>>> ComperisonFilterFunctions = new ()
+        private static readonly Dictionary<string, Func<string, Func<IComparable, IComparable, bool>, Func<FileCabinetRecord, bool>>> ComperisonFilterFunctions = new ()
             {
-                { "id", str => x => x.Id == int.Parse(str) },
-                { "firstname", str => x => x.FirstName.Equals(str, StringComparison.CurrentCultureIgnoreCase) },
-                { "lastname", str => x => x.LastName.Equals(str, StringComparison.CurrentCultureIgnoreCase) },
-                { "dateofbirth", str => x => x.DateOfBirth == DateTime.Parse(str) },
-                { "digitkey", str => x => x.DigitKey == short.Parse(str) },
-                { "account", str => x => x.Account == decimal.Parse(str) },
-                { "sex", str => x => x.Sex == str[0] },
+                { "id", (str, copareFunc) => x => copareFunc(x.Id, int.Parse(str)) },
+                { "firstname", (str, copareFunc) => x => copareFunc(x.FirstName, str) },
+                { "lastname", (str, copareFunc) => x => copareFunc(x.LastName, str) },
+                { "dateofbirth", (str, copareFunc) => x => copareFunc(x.DateOfBirth, DateTime.Parse(str)) },
+                { "digitkey", (str, copareFunc) => x => copareFunc(x.DigitKey,short.Parse(str)) },
+                { "account", (str, copareFunc) => x => copareFunc(x.Account, decimal.Parse(str)) },
+                { "sex", (str, copareFunc) => x => copareFunc(x.Sex, str[0]) },
             };
 
         /// <summary>
@@ -32,10 +32,15 @@ namespace FileCabinetApp
         {
             foreach (var item in compariconPairs)
             {
-                list = list.Where(ComperisonFilterFunctions[item.Key](item.Value));
+                list = list.Where(ComperisonFilterFunctions[item.Key](item.Value, (a, b) => a.CompareTo(b) == 0));
             }
 
             return list;
+        }
+
+        public static Func<FileCabinetRecord, bool> GetComterisonFunction(string key, string value, Func<IComparable, IComparable, bool> CompareFunc)
+        {
+            return ComperisonFilterFunctions[key](value, CompareFunc);
         }
     }
 }

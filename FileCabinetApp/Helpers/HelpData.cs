@@ -43,6 +43,7 @@ namespace FileCabinetApp
             new string[] { "insert", "insert in the storage", "The 'insert' command insert a record in a storage." },
             new string[] { "delete", "delete in the storage", "The 'delete' command remove records from a storage." },
             new string[] { "update", "updetr a record", "The 'update' command update a record in a storage." },
+            new string[] { "select", "select records", "The 'select' print record filtered list." },
         };
     }
 }

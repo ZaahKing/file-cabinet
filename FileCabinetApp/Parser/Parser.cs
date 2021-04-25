@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp.Parser
 {
@@ -105,9 +103,40 @@ namespace FileCabinetApp.Parser
             switch (words[index])
             {
                 case "=":
+                case "==":
                     {
                         index++;
                         return new EqualOperator(leftOperand, GetElement(words, ref index));
+                    }
+
+                case "<":
+                    {
+                        index++;
+                        return new LessOperator(leftOperand, GetElement(words, ref index));
+                    }
+
+                case ">":
+                    {
+                        index++;
+                        return new BiggerOperator(leftOperand, GetElement(words, ref index));
+                    }
+
+                case "!=":
+                    {
+                        index++;
+                        return new NotEqualOperator(leftOperand, GetElement(words, ref index));
+                    }
+
+                case "<=":
+                    {
+                        index++;
+                        return new LessOrEqualOperator(leftOperand, GetElement(words, ref index));
+                    }
+
+                case ">=":
+                    {
+                        index++;
+                        return new BiggerOrEqualOperator(leftOperand, GetElement(words, ref index));
                     }
 
                 default:
@@ -131,7 +160,7 @@ namespace FileCabinetApp.Parser
         {
             List<string> words = new ();
             StringBuilder currentWord = new ();
-            string symbols = "()<>=";
+            string symbols = "()<>=!";
             string numberSymbols = ".,";
             LetterType previousType = LetterType.Unknown;
             foreach (var letter in str)

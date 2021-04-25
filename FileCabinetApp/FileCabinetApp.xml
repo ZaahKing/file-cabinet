@@ -250,6 +250,23 @@
         <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
+        <member name="T:FileCabinetApp.CommandHendlers.SelectCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.SelectCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
         <member name="T:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase">
             <summary>
             Base command with service.
@@ -1256,7 +1273,43 @@
             And operation.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Parser.AndOperator.Execute">
+        <member name="M:FileCabinetApp.Parser.AndOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.BiggerOperator">
+            <summary>
+            Bigger bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.BiggerOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.BiggerOrEqualOperator">
+            <summary>
+            Equal or bigger bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOrEqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.BiggerOrEqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOrEqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOrEqualOperator.ToString">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.Parser.BoolOperation">
@@ -1278,7 +1331,7 @@
             Second operand.
             </value>
         </member>
-        <member name="M:FileCabinetApp.Parser.BoolOperation.Execute">
+        <member name="M:FileCabinetApp.Parser.BoolOperation.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.Parser.EqualOperator">
@@ -1293,7 +1346,7 @@
             <param name="a">OperandA.</param>
             <param name="b">OperandB.</param>
         </member>
-        <member name="M:FileCabinetApp.Parser.EqualOperator.Execute">
+        <member name="M:FileCabinetApp.Parser.EqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.Parser.EqualOperator.ToString">
@@ -1325,7 +1378,7 @@
             OperandB.
             </value>
         </member>
-        <member name="M:FileCabinetApp.Parser.ExpressionBoolOperator.Execute">
+        <member name="M:FileCabinetApp.Parser.ExpressionBoolOperator.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.Parser.ExpressionElement">
@@ -1374,18 +1427,73 @@
             Describe executavble bool operator like '=', '>', '!=' and others.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Parser.IExpressionBoolOperator.Execute">
+        <member name="M:FileCabinetApp.Parser.IExpressionBoolOperator.Execute(FileCabinetApp.FileCabinetRecord)">
             <summary>
             Execution method.
             </summary>
+            <param name="record">FileCabinetRecord.</param>
             <returns>REsult of bool operation.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Parser.LessOperator">
+            <summary>
+            Less bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.LessOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.LessOrEqualOperator">
+            <summary>
+            Equal or less bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOrEqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.LessOrEqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOrEqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOrEqualOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.NotEqualOperator">
+            <summary>
+            Not equals bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.NotEqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.NotEqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.NotEqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.NotEqualOperator.ToString">
+            <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.Parser.OrOperator">
             <summary>
             Or oteration.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Parser.OrOperator.Execute">
+        <member name="M:FileCabinetApp.Parser.OrOperator.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.Parser.Parser">

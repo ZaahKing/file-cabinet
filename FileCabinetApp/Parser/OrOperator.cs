@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FileCabinetApp.Parser
+﻿namespace FileCabinetApp.Parser
 {
     /// <summary>
     /// Or oteration.
@@ -12,9 +6,9 @@ namespace FileCabinetApp.Parser
     internal class OrOperator : BoolOperation, IExpressionBoolOperator
     {
         /// <inheritdoc/>
-        public override bool Execute()
+        public override bool Execute(FileCabinetRecord record)
         {
-            return this.OperandA.Execute() || this.OperandB.Execute();
+            return this.OperandA.Execute(record) || this.OperandB.Execute(record);
         }
     }
 }

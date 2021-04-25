@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FileCabinetApp.Parser
+﻿namespace FileCabinetApp.Parser
 {
     /// <inheritdoc/>
     internal abstract class BoolOperation : IExpressionBoolOperation
@@ -26,6 +20,6 @@ namespace FileCabinetApp.Parser
         public IExpressionBoolOperator OperandB { get; set; }
 
         /// <inheritdoc/>
-        public abstract bool Execute();
+        public abstract bool Execute(FileCabinetRecord record);
     }
 }

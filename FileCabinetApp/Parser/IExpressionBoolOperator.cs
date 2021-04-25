@@ -8,7 +8,8 @@
         /// <summary>
         /// Execution method.
         /// </summary>
+        /// <param name="record">FileCabinetRecord.</param>
         /// <returns>REsult of bool operation.</returns>
-        public bool Execute();
+        public bool Execute(FileCabinetRecord record);
     }
 }

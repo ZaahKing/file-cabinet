@@ -31,6 +31,6 @@
         protected ExpressionElement OperandB { get; init; }
 
         /// <inheritdoc/>
-        public abstract bool Execute();
+        public abstract bool Execute(FileCabinetRecord record);
     }
 }

@@ -97,7 +97,9 @@ namespace FileCabinetApp
             var insert = new InsertCommandHandler(fileCabinetService);
             var delete = new DeleteCommandHandler(fileCabinetService);
             var update = new UpdateCommandHandler(fileCabinetService);
-            update.SetNext(null);
+            var select = new SelectCommandHandler(fileCabinetService);
+            select.SetNext(null);
+            update.SetNext(select);
             delete.SetNext(update);
             insert.SetNext(delete);
             purge.SetNext(insert);

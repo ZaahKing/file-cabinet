@@ -13,7 +13,7 @@
         /// <param name="element">Element.</param>
         public ExpressionElement(string element)
         {
-            this.element = element;
+            this.element = element.Trim('\'');
         }
 
         /// <summary>
