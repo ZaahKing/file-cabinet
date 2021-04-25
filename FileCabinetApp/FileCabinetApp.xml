@@ -1225,6 +1225,15 @@
             <param name="compariconPairs">compariconPairs.</param>
             <returns>Enumarable with filters.</returns>
         </member>
+        <member name="M:FileCabinetApp.ComparisonFilterBulder.GetComterisonFunction(System.String,System.String,System.Func{System.IComparable,System.IComparable,System.Boolean})">
+            <summary>
+            GetComterisonFunction.
+            </summary>
+            <param name="key">Key of record.</param>
+            <param name="value">Value to compare.</param>
+            <param name="CompareFunc">Compare function.</param>
+            <returns>Result.</returns>
+        </member>
         <member name="T:FileCabinetApp.Edit">
             <summary>
             Delegate.
@@ -1267,6 +1276,23 @@
             <summary>
             Help data.
             </summary>
+        </member>
+        <member name="T:FileCabinetApp.Helpers.Printer">
+            <summary>
+            Print FileCabinetRecords list.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Helpers.Printer.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Helpers.Printer"/> class.
+            </summary>
+            <param name="fields">Printable fields.</param>
+        </member>
+        <member name="M:FileCabinetApp.Helpers.Printer.Print(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Print method.
+            </summary>
+            <param name="list">List for print.</param>
         </member>
         <member name="T:FileCabinetApp.Parser.AndOperator">
             <summary>

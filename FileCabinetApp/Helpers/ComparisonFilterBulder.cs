@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FileCabinetApp
 {
@@ -17,7 +15,7 @@ namespace FileCabinetApp
                 { "firstname", (str, copareFunc) => x => copareFunc(x.FirstName, str) },
                 { "lastname", (str, copareFunc) => x => copareFunc(x.LastName, str) },
                 { "dateofbirth", (str, copareFunc) => x => copareFunc(x.DateOfBirth, DateTime.Parse(str)) },
-                { "digitkey", (str, copareFunc) => x => copareFunc(x.DigitKey,short.Parse(str)) },
+                { "digitkey", (str, copareFunc) => x => copareFunc(x.DigitKey, short.Parse(str)) },
                 { "account", (str, copareFunc) => x => copareFunc(x.Account, decimal.Parse(str)) },
                 { "sex", (str, copareFunc) => x => copareFunc(x.Sex, str[0]) },
             };
@@ -38,9 +36,16 @@ namespace FileCabinetApp
             return list;
         }
 
-        public static Func<FileCabinetRecord, bool> GetComterisonFunction(string key, string value, Func<IComparable, IComparable, bool> CompareFunc)
+        /// <summary>
+        /// GetComterisonFunction.
+        /// </summary>
+        /// <param name="key">Key of record.</param>
+        /// <param name="value">Value to compare.</param>
+        /// <param name="compareFunc">Compare function.</param>
+        /// <returns>Result.</returns>
+        public static Func<FileCabinetRecord, bool> GetComterisonFunction(string key, string value, Func<IComparable, IComparable, bool> compareFunc)
         {
-            return ComperisonFilterFunctions[key](value, CompareFunc);
+            return ComperisonFilterFunctions[key](value, compareFunc);
         }
     }
 }
