@@ -207,23 +207,6 @@
         <member name="M:FileCabinetApp.CommandHendlers.PurgeCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
-        <member name="T:FileCabinetApp.CommandHendlers.RemoveCommandHandler">
-            <summary>
-            Remove record command.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.#ctor(FileCabinetApp.IFileCabinetService)">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.RemoveCommandHandler"/> class.
-            </summary>
-            <param name="service">File cabinet service.</param>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.GetCommandClue">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
-            <inheritdoc/>
-        </member>
         <member name="T:FileCabinetApp.CommandHendlers.SelectCommandHandler">
             <summary>
             Insert record command.

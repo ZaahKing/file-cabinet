@@ -51,11 +51,10 @@ namespace FileCabinetGenerator
             }
 
             var recordGenerator = new FileCabinetRecordsGenerator();
-            var list = recordGenerator.Generate(recordAmount, startId);
-            FileCabinetServiceSnapshot snapshot = new (list);
-            using FileStream fileStream = new (fileName, FileMode.Create, FileAccess.Write);
-            using StreamWriter writer = new (fileStream);
+            FileCabinetRecord[] records = recordGenerator.Generate(recordAmount, startId);
+            FileCabinetServiceSnapshot snapshot = new (records);
 
+            using StreamWriter writer = new (fileName, false);
             switch (fileType.ToLower())
             {
                 case "csv":
