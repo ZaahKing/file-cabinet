@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FileCabinetApp.Helpers;
 
 namespace FileCabinetApp.Parser
 {
@@ -56,10 +57,10 @@ namespace FileCabinetApp.Parser
                     return root;
                 case "and":
                     {
-                        var andOperator = new AndOperator();
+                        var andOperator = new AndOperation();
                         index++;
                         var temp = GetExpression(words, ref index, andOperator);
-                        if (root is OrOperator)
+                        if (root is OrOperation)
                         {
                             var castedRoot = root as IExpressionBoolOperation;
                             andOperator.OperandA = castedRoot.OperandB;
@@ -75,7 +76,7 @@ namespace FileCabinetApp.Parser
 
                 case "or":
                     {
-                        var orOperator = new OrOperator();
+                        var orOperator = new OrOperation();
                         index++;
                         orOperator.OperandA = root;
                         orOperator.OperandB = GetExpression(words, ref index, orOperator);
@@ -85,7 +86,7 @@ namespace FileCabinetApp.Parser
 
                 default:
                     {
-                        var operation = GetOperation(words, ref index, GetElement(words, ref index));
+                        var operation = GetOperation(words, ref index, GetField(words, ref index));
                         if (root is null)
                         {
                             return GetExpression(words, ref index, operation);
@@ -100,7 +101,7 @@ namespace FileCabinetApp.Parser
         {
             if (leftOperand is null)
             {
-                leftOperand = GetElement(words, ref index);
+                leftOperand = GetField(words, ref index);
             }
 
             switch (words[index])
@@ -149,6 +150,18 @@ namespace FileCabinetApp.Parser
 
         private static ExpressionElement GetElement(List<string> words, ref int index)
         {
+            var result = new ExpressionElement(words[index]);
+            index++;
+            return result;
+        }
+
+        private static ExpressionElement GetField(List<string> words, ref int index)
+        {
+            if (!SelectorBuilder.HasField(words[index]))
+            {
+                throw new ArgumentException($"Field name '{words[index]}' is not correct.");
+            }
+
             var result = new ExpressionElement(words[index]);
             index++;
             return result;

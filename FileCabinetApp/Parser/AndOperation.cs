@@ -3,7 +3,7 @@
     /// <summary>
     /// And operation.
     /// </summary>
-    internal class AndOperator : BoolOperation, IExpressionBoolOperator
+    internal class AndOperation : BoolOperation, IExpressionBoolOperator
     {
         /// <inheritdoc/>
         public override bool Execute(FileCabinetRecord record)

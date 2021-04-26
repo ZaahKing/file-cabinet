@@ -41,5 +41,15 @@ namespace FileCabinetApp.Helpers
         {
             return SelectFunctions.Keys;
         }
+
+        /// <summary>
+        /// Chech field.
+        /// </summary>
+        /// <param name="name">Field name.</param>
+        /// <returns>True if exist.</returns>
+        public static bool HasField(string name)
+        {
+            return SelectFunctions.ContainsKey(name);
+        }
     }
 }

@@ -1233,12 +1233,19 @@
             </summary>
             <returns>List of fields.</returns>
         </member>
-        <member name="T:FileCabinetApp.Parser.AndOperator">
+        <member name="M:FileCabinetApp.Helpers.SelectorBuilder.HasField(System.String)">
+            <summary>
+            Chech field.
+            </summary>
+            <param name="name">Field name.</param>
+            <returns>True if exist.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Parser.AndOperation">
             <summary>
             And operation.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Parser.AndOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Parser.AndOperation.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.Parser.BiggerOperator">
@@ -1453,12 +1460,12 @@
         <member name="M:FileCabinetApp.Parser.NotEqualOperator.ToString">
             <inheritdoc/>
         </member>
-        <member name="T:FileCabinetApp.Parser.OrOperator">
+        <member name="T:FileCabinetApp.Parser.OrOperation">
             <summary>
             Or oteration.
             </summary>
         </member>
-        <member name="M:FileCabinetApp.Parser.OrOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+        <member name="M:FileCabinetApp.Parser.OrOperation.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
         <!-- Badly formed XML comment ignored for member "T:FileCabinetApp.Parser.Parser" -->
