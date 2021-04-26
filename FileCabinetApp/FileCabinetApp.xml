@@ -76,6 +76,11 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
+        <member name="E:FileCabinetApp.CommandHendlers.DeleteCommandHandler.OnDelete">
+            <summary>
+            On delete;
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.GetCommandClue">
             <inheritdoc/>
         </member>
@@ -173,6 +178,11 @@
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.InsertCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+        </member>
+        <member name="E:FileCabinetApp.CommandHendlers.InsertCommandHandler.OnInsert">
+            <summary>
+            On insert;
+            </summary>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -301,6 +311,11 @@
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.UpdateCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+        </member>
+        <member name="E:FileCabinetApp.CommandHendlers.UpdateCommandHandler.OnUpdate">
+            <summary>
+            On update;
+            </summary>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -498,6 +513,13 @@
             <summary>
             Clear cache.
             </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.Clear(System.Object,System.EventArgs)">
+            <summary>
+            Clear cache.
+            </summary>
+            <param name="sender">sender.</param>
+            <param name="e">data.</param>
         </member>
         <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
             <summary>
@@ -1456,13 +1478,7 @@
         <member name="M:FileCabinetApp.Parser.OrOperator.Execute(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
-        <member name="T:FileCabinetApp.Parser.Parser">
-            <summary>
-            Create bool expression tree.
-            Anderstand breakets, 'and', 'or' operations.
-            And equality opeators.
-            </summary>
-        </member>
+        <!-- Badly formed XML comment ignored for member "T:FileCabinetApp.Parser.Parser" -->
         <member name="M:FileCabinetApp.Parser.Parser.Parse(System.String)">
             <summary>
             Build expretion tree by string.

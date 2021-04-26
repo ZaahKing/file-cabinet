@@ -56,7 +56,8 @@ namespace FileCabinetApp.CommandHendlers
                     Console.WriteLine(e.Message);
                 }
             }
-            OnInsert?.Invoke(this, new EventArgs());
+
+            this.OnInsert?.Invoke(this, new EventArgs());
         }
     }
 }

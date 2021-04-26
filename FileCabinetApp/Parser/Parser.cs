@@ -4,11 +4,14 @@ using System.Text;
 
 namespace FileCabinetApp.Parser
 {
+#pragma warning disable SA1629, CS1570
     /// <summary>
     /// Create bool expression tree.
-    /// Anderstand breakets, 'and', 'or' operations.
-    /// And equality opeators.
+    /// It understands brakets, 'and', 'or' operations and their prioiries.
+    /// Also equality opeators like '=', '==', '!=', '<', '<=', '>', '>='.
+    /// Expressions like (id >= 10 or id < 40) and (firstname = Zaah or lastname = 'Mr. Anderson') or account > 1000 is possible.
     /// </summary>
+#pragma warning restore SA1629, CS1570
     public static class Parser
     {
         private enum LetterType

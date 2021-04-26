@@ -83,13 +83,14 @@ namespace FileCabinetApp
 
         private static ICommandHandler CreateCommandsHandlers()
         {
+            // I don't understand how to transsmit cache key to service returning enumerator.
+            // I decide to make global cache.
             var cache = new FileCabinetRecordCache();
             var empty = new EmptyCommandHandler();
             var unknown = new UnknownCommandHandler();
             var exit = new ExitCommandHelper(x => isRunning = x);
             var help = new HelpCommandHandler();
             var stat = new StatCommandHandler(fileCabinetService);
-            var remove = new RemoveCommandHandler(fileCabinetService);
             var export = new ExportCommandHandler(fileCabinetService);
             var import = new ImportCommandHandler(fileCabinetService);
             var purge = new PurgeCommandHandler(fileCabinetService);
@@ -107,8 +108,7 @@ namespace FileCabinetApp
             purge.SetNext(insert);
             import.SetNext(purge);
             export.SetNext(import);
-            remove.SetNext(export);
-            stat.SetNext(remove);
+            stat.SetNext(export);
             help.SetNext(stat);
             unknown.SetNext(help);
             exit.SetNext(unknown);
