@@ -75,8 +75,14 @@ namespace FileCabinetApp
                     Command = inputs[commandIndex],
                     Parameters = inputs.Length > 1 ? inputs[parametersIndex] : string.Empty,
                 };
-
-                hendler.Handle(request);
+                try
+                {
+                    hendler.Handle(request);
+                }
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             while (isRunning);
         }
