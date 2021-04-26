@@ -76,6 +76,11 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
+        <member name="E:FileCabinetApp.CommandHendlers.DeleteCommandHandler.OnDelete">
+            <summary>
+            On delete;
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.DeleteCommandHandler.GetCommandClue">
             <inheritdoc/>
         </member>
@@ -119,24 +124,6 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.ExportCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
-            <inheritdoc/>
-        </member>
-        <member name="T:FileCabinetApp.CommandHendlers.FindCommandHandler">
-            <summary>
-            Find command.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Action{System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord}})">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.FindCommandHandler"/> class.
-            </summary>
-            <param name="service">File cabinet service.</param>
-            <param name="printer">Printer.</param>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.GetCommandClue">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.FindCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.HelpCommandHandler">
@@ -192,28 +179,15 @@
             </summary>
             <param name="service">File cabinet service.</param>
         </member>
+        <member name="E:FileCabinetApp.CommandHendlers.InsertCommandHandler.OnInsert">
+            <summary>
+            On insert;
+            </summary>
+        </member>
         <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.GetCommandClue">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.InsertCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
-            <inheritdoc/>
-        </member>
-        <member name="T:FileCabinetApp.CommandHendlers.ListCommandHandler">
-            <summary>
-            List command.
-            </summary>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,System.Action{System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord}})">
-            <summary>
-            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.ListCommandHandler"/> class.
-            </summary>
-            <param name="service">File cabinet service.</param>
-            <param name="printer">Printer.</param>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.GetCommandClue">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.CommandHendlers.ListCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.PurgeCommandHandler">
@@ -248,6 +222,24 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.RemoveCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.CommandHendlers.SelectCommandHandler">
+            <summary>
+            Insert record command.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.#ctor(FileCabinetApp.IFileCabinetService,FileCabinetApp.FileCabinetRecordCache)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.SelectCommandHandler"/> class.
+            </summary>
+            <param name="service">File cabinet service.</param>
+            <param name="cache">File cabinet service cache.</param>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.GetCommandClue">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.CommandHendlers.SelectCommandHandler.Make(FileCabinetApp.CommandHendlers.AppCommandRequest)">
             <inheritdoc/>
         </member>
         <member name="T:FileCabinetApp.CommandHendlers.ServiceCommandHandlerBase">
@@ -319,6 +311,11 @@
             Initializes a new instance of the <see cref="T:FileCabinetApp.CommandHendlers.UpdateCommandHandler"/> class.
             </summary>
             <param name="service">File cabinet service.</param>
+        </member>
+        <member name="E:FileCabinetApp.CommandHendlers.UpdateCommandHandler.OnUpdate">
+            <summary>
+            On update;
+            </summary>
         </member>
         <member name="M:FileCabinetApp.CommandHendlers.UpdateCommandHandler.GetCommandClue">
             <inheritdoc/>
@@ -486,6 +483,44 @@
             <returns> Sex of user.</returns>
             <value> Sex.</value>
         </member>
+        <member name="T:FileCabinetApp.FileCabinetRecordCache">
+            <summary>
+            Cache.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.IsCached(System.String)">
+            <summary>
+            Check is cached.
+            </summary>
+            <param name="key">By key.</param>
+            <returns>True if cached.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.GetCashe(System.String)">
+            <summary>
+            Get cache.
+            </summary>
+            <param name="key">By key.</param>
+            <returns>List.</returns>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.PutCache(System.String,System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Put cache.
+            </summary>
+            <param name="key">key.</param>
+            <param name="data">data.</param>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.Clear">
+            <summary>
+            Clear cache.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.FileCabinetRecordCache.Clear(System.Object,System.EventArgs)">
+            <summary>
+            Clear cache.
+            </summary>
+            <param name="sender">sender.</param>
+            <param name="e">data.</param>
+        </member>
         <member name="T:FileCabinetApp.FileCabinetServiceSnapshot">
             <summary>
             Keep file cabinrt records snapshot.
@@ -571,27 +606,6 @@
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.InsertRecord(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByBirthDate(System.DateTime)">
-            <summary>
-            Helps to find record by date of birth.
-            </summary>
-            <param name="date">Date of birth.</param>
-            <returns>FileCabinetRecord. </returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByFirstName(System.String)">
-            <summary>
-            Helps to find record by first name.
-            </summary>
-            <param name="firstName">FirstName.</param>
-            <returns>FileCabinetRecord. </returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindByLastName(System.String)">
-            <summary>
-            Helps to find record by last name.
-            </summary>
-            <param name="lastName">FirstName.</param>
-            <returns>FileCabinetRecords. </returns>
         </member>
         <member name="M:FileCabinetApp.FileCabinetFilesystemService.FindRecordById(System.Int32)">
             <summary>
@@ -700,27 +714,6 @@
             <param name="id">Id.</param>
             <returns>FileCabinetRecord. </returns>
         </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByFirstName(System.String)">
-            <summary>
-            Helps to find record by first name.
-            </summary>
-            <param name="firstName">FirstName.</param>
-            <returns>FileCabinetRecord. </returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByLastName(System.String)">
-            <summary>
-            Helps to find record by last name.
-            </summary>
-            <param name="lastName">FirstName.</param>
-            <returns>FileCabinetRecords. </returns>
-        </member>
-        <member name="M:FileCabinetApp.FileCabinetMemoryService.FindByBirthDate(System.DateTime)">
-            <summary>
-            Helps to find record by date of birth.
-            </summary>
-            <param name="date">Date of birth.</param>
-            <returns>FileCabinetRecord. </returns>
-        </member>
         <member name="M:FileCabinetApp.FileCabinetMemoryService.GetRecords">
             <summary>
             Returns all FileCabinetRecords.
@@ -793,27 +786,6 @@
             Edit existing record found by Id.
             </summary>
             <param name="record">File cabinet record.</param>
-        </member>
-        <member name="M:FileCabinetApp.IFileCabinetService.FindByBirthDate(System.DateTime)">
-            <summary>
-            Helps to find record by date of birth.
-            </summary>
-            <param name="date">Date of birth.</param>
-            <returns>FileCabinetRecord. </returns>
-        </member>
-        <member name="M:FileCabinetApp.IFileCabinetService.FindByFirstName(System.String)">
-            <summary>
-            Helps to find record by first name.
-            </summary>
-            <param name="firstName">FirstName.</param>
-            <returns>FileCabinetRecord. </returns>
-        </member>
-        <member name="M:FileCabinetApp.IFileCabinetService.FindByLastName(System.String)">
-            <summary>
-            Helps to find record by last name.
-            </summary>
-            <param name="lastName">FirstName.</param>
-            <returns>FileCabinetRecords. </returns>
         </member>
         <member name="M:FileCabinetApp.IFileCabinetService.FindRecordById(System.Int32)">
             <summary>
@@ -898,15 +870,6 @@
         <member name="M:FileCabinetApp.ServiceLogger.InsertRecord(FileCabinetApp.FileCabinetRecord)">
             <inheritdoc/>
         </member>
-        <member name="M:FileCabinetApp.ServiceLogger.FindByBirthDate(System.DateTime)">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.ServiceLogger.FindByFirstName(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.ServiceLogger.FindByLastName(System.String)">
-            <inheritdoc/>
-        </member>
         <member name="M:FileCabinetApp.ServiceLogger.FindRecordById(System.Int32)">
             <inheritdoc/>
         </member>
@@ -963,15 +926,6 @@
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceMeter.InsertRecord(FileCabinetApp.FileCabinetRecord)">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.ServiceMeter.FindByBirthDate(System.DateTime)">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.ServiceMeter.FindByFirstName(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:FileCabinetApp.ServiceMeter.FindByLastName(System.String)">
             <inheritdoc/>
         </member>
         <member name="M:FileCabinetApp.ServiceMeter.FindRecordById(System.Int32)">
@@ -1208,6 +1162,15 @@
             <param name="compariconPairs">compariconPairs.</param>
             <returns>Enumarable with filters.</returns>
         </member>
+        <member name="M:FileCabinetApp.ComparisonFilterBulder.GetComterisonFunction(System.String,System.String,System.Func{System.IComparable,System.IComparable,System.Boolean})">
+            <summary>
+            GetComterisonFunction.
+            </summary>
+            <param name="key">Key of record.</param>
+            <param name="value">Value to compare.</param>
+            <param name="compareFunc">Compare function.</param>
+            <returns>Result.</returns>
+        </member>
         <member name="T:FileCabinetApp.Edit">
             <summary>
             Delegate.
@@ -1250,6 +1213,285 @@
             <summary>
             Help data.
             </summary>
+        </member>
+        <member name="T:FileCabinetApp.Helpers.Printer">
+            <summary>
+            Print FileCabinetRecords list.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Helpers.Printer.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Helpers.Printer"/> class.
+            </summary>
+            <param name="fields">Printable fields.</param>
+        </member>
+        <member name="M:FileCabinetApp.Helpers.Printer.Print(System.Collections.Generic.IEnumerable{FileCabinetApp.FileCabinetRecord})">
+            <summary>
+            Print method.
+            </summary>
+            <param name="list">List for print.</param>
+        </member>
+        <member name="T:FileCabinetApp.Helpers.SelectorBuilder">
+            <summary>
+            HElper to select field from record.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Helpers.SelectorBuilder.GetFieldValue(FileCabinetApp.FileCabinetRecord,System.String)">
+            <summary>
+            GEt field value.
+            </summary>
+            <param name="record">Record.</param>
+            <param name="fieldName">Field name.</param>
+            <returns>Function which returns field value.</returns>
+        </member>
+        <member name="M:FileCabinetApp.Helpers.SelectorBuilder.GetFieldsNames">
+            <summary>
+            Get list of fields.
+            </summary>
+            <returns>List of fields.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Parser.AndOperator">
+            <summary>
+            And operation.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.AndOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.BiggerOperator">
+            <summary>
+            Bigger bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.BiggerOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.BiggerOrEqualOperator">
+            <summary>
+            Equal or bigger bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOrEqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.BiggerOrEqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOrEqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BiggerOrEqualOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.BoolOperation">
+            <inheritdoc/>
+        </member>
+        <member name="P:FileCabinetApp.Parser.BoolOperation.OperandA">
+            <summary>
+            Gets or sets First operand.
+            </summary>
+            <value>
+            First operand.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Parser.BoolOperation.OperandB">
+            <summary>
+            Gets or sets  Second operand.
+            </summary>
+            <value>
+            Second operand.
+            </value>
+        </member>
+        <member name="M:FileCabinetApp.Parser.BoolOperation.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.EqualOperator">
+            <summary>
+            Equals bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.EqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.EqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.EqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.EqualOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.ExpressionBoolOperator">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionBoolOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.ExpressionBoolOperator"/> class.
+            </summary>
+            <param name="a">operandA.</param>
+            <param name="b">operandB.</param>
+        </member>
+        <member name="P:FileCabinetApp.Parser.ExpressionBoolOperator.OperandA">
+            <summary>
+            Gets OperandA.
+            </summary>
+            <value>
+            OperandA.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Parser.ExpressionBoolOperator.OperandB">
+            <summary>
+            Gets OperandB.
+            </summary>
+            <value>
+            OperandB.
+            </value>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionBoolOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.ExpressionElement">
+            <summary>
+            Expretion element.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionElement.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.ExpressionElement"/> class.
+            </summary>
+            <param name="element">Element.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionElement.Execute">
+            <summary>
+            Execute element.
+            </summary>
+            <returns>Element.</returns>
+        </member>
+        <member name="M:FileCabinetApp.Parser.ExpressionElement.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.IExpressionBoolOperation">
+            <summary>
+            Describe executavble bool operation like 'and', 'or'.
+            </summary>
+        </member>
+        <member name="P:FileCabinetApp.Parser.IExpressionBoolOperation.OperandA">
+            <summary>
+            Gets or sets First operand.
+            </summary>
+            <value>
+            First operand.
+            </value>
+        </member>
+        <member name="P:FileCabinetApp.Parser.IExpressionBoolOperation.OperandB">
+            <summary>
+            Gets or sets  Second operand.
+            </summary>
+            <value>
+            Second operand.
+            </value>
+        </member>
+        <member name="T:FileCabinetApp.Parser.IExpressionBoolOperator">
+            <summary>
+            Describe executavble bool operator like '=', '>', '!=' and others.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.IExpressionBoolOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <summary>
+            Execution method.
+            </summary>
+            <param name="record">FileCabinetRecord.</param>
+            <returns>REsult of bool operation.</returns>
+        </member>
+        <member name="T:FileCabinetApp.Parser.LessOperator">
+            <summary>
+            Less bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.LessOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.LessOrEqualOperator">
+            <summary>
+            Equal or less bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOrEqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.LessOrEqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOrEqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.LessOrEqualOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.NotEqualOperator">
+            <summary>
+            Not equals bool oprerator.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.NotEqualOperator.#ctor(FileCabinetApp.Parser.ExpressionElement,FileCabinetApp.Parser.ExpressionElement)">
+            <summary>
+            Initializes a new instance of the <see cref="T:FileCabinetApp.Parser.NotEqualOperator"/> class.
+            </summary>
+            <param name="a">OperandA.</param>
+            <param name="b">OperandB.</param>
+        </member>
+        <member name="M:FileCabinetApp.Parser.NotEqualOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <member name="M:FileCabinetApp.Parser.NotEqualOperator.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:FileCabinetApp.Parser.OrOperator">
+            <summary>
+            Or oteration.
+            </summary>
+        </member>
+        <member name="M:FileCabinetApp.Parser.OrOperator.Execute(FileCabinetApp.FileCabinetRecord)">
+            <inheritdoc/>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:FileCabinetApp.Parser.Parser" -->
+        <member name="M:FileCabinetApp.Parser.Parser.Parse(System.String)">
+            <summary>
+            Build expretion tree by string.
+            </summary>
+            <param name="str">Expretion.</param>
+            <returns>Tree.</returns>
+        </member>
+        <member name="M:FileCabinetApp.Parser.Parser.Split(System.String)">
+            <summary>
+            Split section to tokens.
+            </summary>
+            <param name="str">String.</param>
+            <returns>String tokens.</returns>
         </member>
         <member name="T:FileCabinetApp.Program">
             <summary>

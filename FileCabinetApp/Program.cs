@@ -83,50 +83,37 @@ namespace FileCabinetApp
 
         private static ICommandHandler CreateCommandsHandlers()
         {
+            // I don't understand how to transsmit cache key to service returning enumerator.
+            // I decide to make global cache.
+            var cache = new FileCabinetRecordCache();
             var empty = new EmptyCommandHandler();
             var unknown = new UnknownCommandHandler();
             var exit = new ExitCommandHelper(x => isRunning = x);
             var help = new HelpCommandHandler();
             var stat = new StatCommandHandler(fileCabinetService);
-            var list = new ListCommandHandler(fileCabinetService, DefaultRecordPrint);
-            var find = new FindCommandHandler(fileCabinetService, DefaultRecordPrint);
-            var remove = new RemoveCommandHandler(fileCabinetService);
             var export = new ExportCommandHandler(fileCabinetService);
             var import = new ImportCommandHandler(fileCabinetService);
             var purge = new PurgeCommandHandler(fileCabinetService);
             var insert = new InsertCommandHandler(fileCabinetService);
+            insert.OnInsert += cache.Clear;
             var delete = new DeleteCommandHandler(fileCabinetService);
+            delete.OnDelete += cache.Clear;
             var update = new UpdateCommandHandler(fileCabinetService);
-            update.SetNext(null);
+            update.OnUpdate += cache.Clear;
+            var select = new SelectCommandHandler(fileCabinetService, cache);
+            select.SetNext(null);
+            update.SetNext(select);
             delete.SetNext(update);
             insert.SetNext(delete);
             purge.SetNext(insert);
             import.SetNext(purge);
             export.SetNext(import);
-            remove.SetNext(export);
-            find.SetNext(remove);
-            list.SetNext(find);
-            stat.SetNext(list);
+            stat.SetNext(export);
             help.SetNext(stat);
             unknown.SetNext(help);
             exit.SetNext(unknown);
             empty.SetNext(exit);
             return empty;
-        }
-
-        private static void DefaultRecordPrint(IEnumerable<FileCabinetRecord> list)
-        {
-            int counter = 0;
-            foreach (var record in list)
-            {
-                counter++;
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MMM-dd}, {record.DigitKey}, {record.Account}, {record.Sex}");
-            }
-
-            if (counter == 0)
-            {
-                Console.WriteLine("Nothing to display.");
-            }
         }
     }
 }

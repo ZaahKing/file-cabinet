@@ -54,33 +54,6 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
-        {
-            return this.CallMethodWithCollection(
-                $"Calling FindByBirthDate() with date = '{date:yyyy-mm-dd}.",
-                $"FindByBirthDate() returned '{0}' lines",
-                () => this.service.FindByBirthDate(date));
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
-        {
-            return this.CallMethodWithCollection(
-            $"Calling FindByFirstName() with firstname = '{firstName}.",
-            $"FindByFirstName() returned '{0}' lines",
-            () => this.service.FindByFirstName(firstName));
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
-        {
-            return this.CallMethodWithCollection(
-            $"Calling FindByLastName() with lastname = '{lastName}.",
-            $"FindByLastName() returned '{0}' lines",
-            () => this.service.FindByLastName(lastName));
-        }
-
-        /// <inheritdoc/>
         public FileCabinetRecord FindRecordById(int id)
         {
             return this.CallMethod(
@@ -207,15 +180,6 @@ namespace FileCabinetApp
             this.LogMessage(inMessage);
             loggededAction();
             this.LogMessage(outMessage);
-        }
-
-        private TOutput CallMethodWithCollection<TOutput>(string inMessage, string outMessage, Func<TOutput> loggededAction)
-            where TOutput : IEnumerable<FileCabinetRecord>
-        {
-            this.LogMessage(inMessage);
-            TOutput result = loggededAction();
-            this.LogMessage(string.Format(outMessage, result.Count()));
-            return result;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public int CreateRecord(FileCabinetRecord record)
         {
-            return this.Measure(
+            return Measure(
                 "Create method execution duration is {0} ticks.",
                 () => this.service.CreateRecord(record));
         }
@@ -32,7 +32,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public void EditRecord(FileCabinetRecord record)
         {
-            this.Measure(
+            Measure(
                 "Edit method execution duration is {0} ticks.",
                 () =>
                 {
@@ -43,7 +43,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public void InsertRecord(FileCabinetRecord record)
         {
-            this.Measure(
+            Measure(
                 "Insert method execution duration is {0} ticks.",
                 () =>
                 {
@@ -52,33 +52,9 @@ namespace FileCabinetApp
         }
 
         /// <inheritdoc/>
-        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
-        {
-            return this.Measure(
-                "FindByBirthDate method execution duration is {0} ticks.",
-                () => this.service.FindByBirthDate(date));
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
-        {
-            return this.Measure(
-                "FindByFirstName method execution duration is {0} ticks.",
-                () => this.service.FindByFirstName(firstName));
-        }
-
-        /// <inheritdoc/>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
-        {
-            return this.Measure(
-                "FindByLastName method execution duration is {0} ticks.",
-                () => this.service.FindByLastName(lastName));
-        }
-
-        /// <inheritdoc/>
         public FileCabinetRecord FindRecordById(int id)
         {
-            return this.Measure(
+            return Measure(
                 "FindRecordById method execution duration is {0} ticks.",
                 () => this.service.FindRecordById(id));
         }
@@ -86,7 +62,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public IEnumerable<FileCabinetRecord> GetRecords()
         {
-            return this.Measure(
+            return Measure(
                 "GetRecords method execution duration is {0} ticks.",
                 () => this.service.GetRecords());
         }
@@ -94,7 +70,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public int GetStat()
         {
-            return this.Measure(
+            return Measure(
                 "GetStat method execution duration is {0} ticks.",
                 () => this.service.GetStat());
         }
@@ -102,7 +78,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public int GetStatDeleted()
         {
-            return this.Measure(
+            return Measure(
                 "GetStatDeleted method execution duration is {0} ticks.",
                 () => this.service.GetStatDeleted());
         }
@@ -110,7 +86,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public IRecordValidator GetValidator()
         {
-            return this.Measure(
+            return Measure(
                 "GetValidator method execution duration is {0} ticks.",
                 () => this.service.GetValidator());
         }
@@ -118,7 +94,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public FileCabinetServiceSnapshot MakeSnapshot()
         {
-            return this.Measure(
+            return Measure(
                 "MakeSnapshot method execution duration is {0} ticks.",
                 () => this.service.MakeSnapshot());
         }
@@ -126,7 +102,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public int PurgeStorage()
         {
-            return this.Measure(
+            return Measure(
                 "PurgeStorage method execution duration is {0} ticks.",
                 () => this.service.PurgeStorage());
         }
@@ -134,7 +110,7 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public void RemoveRecord(int id)
         {
-            this.Measure(
+            Measure(
                 "RemoveRecord method execution duration is {0} ticks.",
                 () =>
                 {
@@ -145,12 +121,12 @@ namespace FileCabinetApp
         /// <inheritdoc/>
         public int Restore(FileCabinetServiceSnapshot snapshot)
         {
-            return this.Measure(
+            return Measure(
                 "Restore method execution duration is {0} ticks.",
                 () => this.service.Restore(snapshot));
         }
 
-        private TOutput Measure<TOutput>(string messageMask, Func<TOutput> measuredAction)
+        private static TOutput Measure<TOutput>(string messageMask, Func<TOutput> measuredAction)
         {
             TOutput output;
             var timer = new Stopwatch();
@@ -161,7 +137,7 @@ namespace FileCabinetApp
             return output;
         }
 
-        private void Measure(string messageMask, Action measuredAction)
+        private static void Measure(string messageMask, Action measuredAction)
         {
             var timer = new Stopwatch();
             timer.Start();

@@ -10,9 +10,6 @@ namespace FileCabinetApp
     /// </summary>
     public class FileCabinetMemoryService : IFileCabinetService
     {
-        private readonly Dictionary<string, List<FileCabinetRecord>> firstNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
-        private readonly Dictionary<string, List<FileCabinetRecord>> lastNameDictionary = new (StringComparer.CurrentCultureIgnoreCase);
-        private readonly Dictionary<DateTime, List<FileCabinetRecord>> bithdayDictionary = new ();
         private ICollection<FileCabinetRecord> list = new List<FileCabinetRecord>();
 
         /// <summary>
@@ -60,10 +57,6 @@ namespace FileCabinetApp
 
             this.list.Remove(oldRecord);
             this.list.Add(record);
-
-            this.ChangeIndex(this.firstNameDictionary, oldRecord.FirstName, record.FirstName, record);
-            this.ChangeIndex(this.lastNameDictionary, oldRecord.LastName, record.LastName, record);
-            this.ChangeIndex(this.bithdayDictionary, oldRecord.DateOfBirth, record.DateOfBirth, record);
         }
 
         /// <inheritdoc/>
@@ -75,9 +68,6 @@ namespace FileCabinetApp
             }
 
             this.list.Add(record);
-            this.AddIndex(this.firstNameDictionary, record.FirstName, record);
-            this.AddIndex(this.lastNameDictionary, record.LastName, record);
-            this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
         }
 
         /// <summary>
@@ -88,51 +78,6 @@ namespace FileCabinetApp
         public FileCabinetRecord FindRecordById(int id)
         {
             return this.list.FirstOrDefault(x => x.Id == id);
-        }
-
-        /// <summary>
-        /// Helps to find record by first name.
-        /// </summary>
-        /// <param name="firstName">FirstName.</param>
-        /// <returns>FileCabinetRecord. </returns>
-        public IEnumerable<FileCabinetRecord> FindByFirstName(string firstName)
-        {
-            if (this.firstNameDictionary.ContainsKey(firstName))
-            {
-                return this.firstNameDictionary[firstName];
-            }
-
-            return new List<FileCabinetRecord>();
-        }
-
-        /// <summary>
-        /// Helps to find record by last name.
-        /// </summary>
-        /// <param name="lastName">FirstName.</param>
-        /// <returns>FileCabinetRecords. </returns>
-        public IEnumerable<FileCabinetRecord> FindByLastName(string lastName)
-        {
-            if (this.lastNameDictionary.ContainsKey(lastName))
-            {
-                return this.lastNameDictionary[lastName];
-            }
-
-            return new List<FileCabinetRecord>();
-        }
-
-        /// <summary>
-        /// Helps to find record by date of birth.
-        /// </summary>
-        /// <param name="date">Date of birth.</param>
-        /// <returns>FileCabinetRecord. </returns>
-        public IEnumerable<FileCabinetRecord> FindByBirthDate(DateTime date)
-        {
-            if (this.bithdayDictionary.ContainsKey(date))
-            {
-                return this.bithdayDictionary[date];
-            }
-
-            return new List<FileCabinetRecord>();
         }
 
         /// <summary>
@@ -171,9 +116,6 @@ namespace FileCabinetApp
                 return;
             }
 
-            this.RemoveIndex(this.firstNameDictionary, record.FirstName, record);
-            this.RemoveIndex(this.lastNameDictionary, record.LastName, record);
-            this.RemoveIndex(this.bithdayDictionary, record.DateOfBirth, record);
             this.list.Remove(record);
         }
 
@@ -201,9 +143,6 @@ namespace FileCabinetApp
                 {
                     this.Validator.ValidateParameters(record);
                     this.list.Add(record);
-                    this.AddIndex(this.firstNameDictionary, record.FirstName, record);
-                    this.AddIndex(this.lastNameDictionary, record.LastName, record);
-                    this.AddIndex(this.bithdayDictionary, record.DateOfBirth, record);
                     successCounter++;
                 }
                 catch (Exception e)
@@ -234,38 +173,6 @@ namespace FileCabinetApp
         protected virtual void ValidateParameters(FileCabinetRecord record)
         {
             this.Validator.ValidateParameters(record);
-        }
-
-        private void AddIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
-            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
-        {
-            if (!dictinary.ContainsKey(key))
-            {
-                dictinary.Add(key, new List<FileCabinetRecord>());
-            }
-
-            dictinary[key].Add(record);
-        }
-
-        private void RemoveIndex<TDictionary, TKey>(TDictionary dictinary, TKey key, FileCabinetRecord record)
-            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
-        {
-            if (!dictinary.ContainsKey(key) && dictinary[key].Count <= 1)
-            {
-                dictinary.Remove(key);
-            }
-
-            dictinary[key].Remove(record);
-        }
-
-        private void ChangeIndex<TDictionary, TKey>(TDictionary dictinary, TKey oldKey, TKey newKey, FileCabinetRecord record)
-            where TDictionary : Dictionary<TKey, List<FileCabinetRecord>>
-        {
-            if (!oldKey.Equals(newKey))
-            {
-                this.RemoveIndex(dictinary, oldKey, record);
-                this.AddIndex(dictinary, newKey, record);
-            }
         }
     }
 }

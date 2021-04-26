@@ -17,6 +17,11 @@ namespace FileCabinetApp.CommandHendlers
         {
         }
 
+        /// <summary>
+        /// On update;
+        /// </summary>
+        public event EventHandler OnUpdate;
+
         /// <inheritdoc/>
         protected override string GetCommandClue() => "update";
 
@@ -34,28 +39,32 @@ namespace FileCabinetApp.CommandHendlers
             var setSectionPairList = setSection.GetSetPairs();
 
             string whereSection = commandRequest.Parameters.Substring(whereIndex + whereString.Length + 1);
-            var whereSectionPairList = whereSection.GetWherePairs();
-            var list = this.Service.GetRecords().GetFilteredList(whereSectionPairList).ToList();
+            var filter = Parser.Parser.Parse(whereSection);
+            var list = this.Service.GetRecords().Where(x => filter.Execute(x)).ToList();
             var editRecord = setSectionPairList.GetRecordEditor();
 
+            int counter = 0;
             foreach (var record in list)
             {
                 editRecord?.Invoke(record);
                 this.Service.EditRecord(record);
+                counter++;
             }
 
-            if (list.Count == 0)
+            if (counter == 0)
             {
                 Console.WriteLine("No records to edit.");
             }
-            else if (list.Count == 1)
+            else if (counter == 1)
             {
                 Console.WriteLine("One record has edited.");
             }
             else
             {
-                Console.WriteLine($"{list.Count} records have edited.");
+                Console.WriteLine($"{counter} records have edited.");
             }
+
+            this.OnUpdate?.Invoke(this, new EventArgs());
         }
     }
 }

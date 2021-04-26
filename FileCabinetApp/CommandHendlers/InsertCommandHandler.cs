@@ -16,6 +16,11 @@ namespace FileCabinetApp.CommandHendlers
         {
         }
 
+        /// <summary>
+        /// On insert;
+        /// </summary>
+        public event EventHandler OnInsert;
+
         /// <inheritdoc/>
         protected override string GetCommandClue() => "insert";
 
@@ -51,6 +56,8 @@ namespace FileCabinetApp.CommandHendlers
                     Console.WriteLine(e.Message);
                 }
             }
+
+            this.OnInsert?.Invoke(this, new EventArgs());
         }
     }
 }
